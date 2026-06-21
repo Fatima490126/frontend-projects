@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee-bean. | Modern Coffee Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #562101;
+            --secondary: #4c2002;
+            --light: #fff9f0;
+            --dark: #3d2c1c;
+            --accent: #8a2e00;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .order-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 140, 66, 0.3);
+            background: var(--accent);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Page Sections */
+        .page-section {
+            min-height: 100vh;
+            padding: 120px 40px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .page-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .page-section:not(.active) {
+            display: none;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            color: var(--secondary);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coffee-text {
+            font-size: 18vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 0.85;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 15;
+        }
+
+        .hero-tagline {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            line-height: 1.4;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 15;
+            position: relative;
+        }
+
+        /* Coffee Cup Image */
+        .hero-coffee-cup {
+            position: absolute;
+            z-index: 10;
+            max-width: 800px;
+            width: 60%;
+            height: auto;
+            animation: floatCup 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+            pointer-events: none;
+        }
+
+        @keyframes floatCup {
+            0% {
+                transform: translateY(0px) rotate(-5deg);
+            }
+            100% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* Coffee Beans Animation */
+        .coffee-beans {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .coffee-bean {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: var(--dark);
+            border-radius: 50% / 40%;
+            opacity: 0.6;
+            transform-origin: center;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        /* Hero Content Layout */
+        .hero-text-content {
+            position: relative;
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Menu Section */
+        .menu-section {
+            background-color: wheat;
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 12px 30px;
+            background: var(--light);
+            border: 2px solid #eee;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .category-btn:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: wheat;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--accent);
+        }
+
+        /* About Section */
+        .about-section {
+            background-color: wheat;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-top: 30px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Locations Section */
+        .locations-section {
+            background-color: wheat;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .location-card {
+            background: wheat;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .location-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .location-info {
+            padding: 25px;
+        }
+
+        .location-name {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .location-hours {
+            margin: 15px 0;
+        }
+
+        .hours-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Landscape Gallery Section */
+        .landscape-section {
+            background-color: wheat;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--light);
+        }
+
+        .contact-content {
+            display: flex;
+            gap: 60px;
+            margin-top: 30px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .contact-form {
+            flex: 1;
+            background: wheat;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary);
+            color: white;
+            padding: 60px 40px 30px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links h3, .footer-social h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h3::after, .footer-social h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-coffee-cup {
+                width: 70%;
+            }
+            .coffee-text {
+                font-size: 20vw;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-coffee-cup {
+                width: 80%;
+            }
+            .coffee-text {
+                font-size: 22vw;
+                margin-bottom: 30px;
+            }
+            
+            .hero-tagline {
+                font-size: 20px;
+            }
+            
+            .about-content, .contact-content {
+                flex-direction: column;
+            }
+            
+            .section-title {
+                font-size: 2.8rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 25px;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 80px 40px;
+                transition: right 0.4s ease;
+                backdrop-filter: blur(10px);
+                z-index: 99;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-coffee-cup {
+                width: 90%;
+                max-width: 500px;
+            }
+            
+            .coffee-text {
+                font-size: 25vw;
+                margin-bottom: 40px;
+            }
+            
+            .page-section {
+                padding: 120px 25px 60px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .menu-categories {
+                gap: 10px;
+            }
+            
+            .category-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .products-grid, .locations-grid, .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-item {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-coffee-cup {
+                width: 100%;
+            }
+            
+            .coffee-text {
+                font-size: 28vw;
+                margin-bottom: 50px;
+            }
+            
+            .hero-tagline {
+                font-size: 18px;
+            }
+            
+            .page-section {
+                padding: 100px 20px 40px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .footer {
+                padding: 40px 20px 20px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#home" class="logo">
+            <div class="logo-circle">C</div>
+            <span>Coffee-bean.</span>
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#menu" class="nav-link">Menu</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#landscape" class="nav-link">Gallery</a></li>
+            <li><a href="#locations" class="nav-link">Locations</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        
+        <button class="order-btn desktop-only" id="nav-order-btn">Order Now</button>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="page-section active">
+        <div class="hero-section">
+
+            
+            <div class="coffee-beans" id="coffee-beans-container"></div>
+
+            <div class="hero-content">
+                <div class="hero-text-content">
+                    <h1 class="coffee-text">COFFEE</h1>
+                    <p class="hero-tagline">Experience the perfect blend of craftsmanship and flavor in every cup</p>
+                    <button class="order-btn" style="font-size: 18px; padding: 15px 35px; z-index: 25;">
+                        <i class="fas fa-mug-hot"></i> Order Your Coffee
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="page-section menu-section">
+        <h2 class="section-title">Our Menu</h2>
+        <div class="menu-categories">
+            <button class="category-btn active" data-category="all">All Items</button>
+            <button class="category-btn" data-category="coffee">Coffee</button>
+            <button class="category-btn" data-category="espresso">Espresso</button>
+            <button class="category-btn" data-category="tea">Tea</button>
+            <button class="category-btn" data-category="pastry">Pastries</button>
+        </div>
+        <div class="products-grid" id="products-container"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="page-section about-section">
+        <h2 class="section-title">Our Story</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Founded in 2010, Coffee & Co. began as a small neighborhood cafe with a simple mission: to serve exceptional coffee in a warm, welcoming environment. Our founders, Sarah and Michael, believed that great coffee could bring people together and create meaningful connections.</p>
+                <p>Today, with locations across the city, we remain committed to our original values. We source our beans directly from sustainable farms, roast them to perfection in-house, and train our baristas to craft each cup with care and precision.</p>
+                <p>But we're more than just a coffee shop. We're a community hub where friends meet, ideas are born, and everyone feels at home. Whether you're stopping by for your morning espresso or settling in for an afternoon of work, we're here to make your day better, one cup at a time.</p>
+                <button class="order-btn" style="margin-top: 20px;">
+                    <i class="fas fa-book-open"></i> Read Our Full Story
+                </button>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Coffee & Co. interior">
+            </div>
+        </div>
+    </section>
+
+    <!-- Landscape Gallery Section -->
+    <section id="landscape" class="page-section landscape-section">
+        <h2 class="section-title">Our Spaces</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Coffee Shop Interior">
+                <div class="gallery-overlay">
+                    <h3>Cozy Interior</h3>
+                    <p>Warm and inviting atmosphere</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Outdoor Seating">
+                <div class="gallery-overlay">
+                    <h3>Outdoor Patio</h3>
+                    <p>Perfect for sunny days</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Coffee Bar">
+                <div class="gallery-overlay">
+                    <h3>Expert Baristas</h3>
+                    <p>Watch our professionals at work</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1518495978942-83cdb633d6d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Cozy Corner">
+                <div class="gallery-overlay">
+                    <h3>Reading Corner</h3>
+                    <p>Relax with a good book</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Morning Coffee">
+                <div class="gallery-overlay">
+                    <h3>Morning Brew</h3>
+                    <p>Start your day right</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Artisan Coffee">
+                <div class="gallery-overlay">
+                    <h3>Artisan Coffee</h3>
+                    <p>Handcrafted perfection</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="page-section locations-section">
+        <h2 class="section-title">Our Locations</h2>
+        <div class="locations-grid">
+            <div class="location-card">
+                <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Downtown Location" class="location-image">
+                <div class="location-info">
+                    <h3 class="location-name">Downtown</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, City Center</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <div class="location-hours">
+                        <h4 class="hours-title">Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon-Fri</span><span>6:00 AM - 10:00 PM</span></li>
+                            <li><span>Saturday</span><span>7:00 AM - 11:00 PM</span></li>
+                            <li><span>Sunday</span><span>7:00 AM - 9:00 PM</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="location-card">
+                <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Riverside Location" class="location-image">
+                <div class="location-info">
+                    <h3 class="location-name">Riverside</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 456 River Road, Riverside District</p>
+                    <p><i class="fas fa-phone"></i> (555) 234-5678</p>
+                    <div class="location-hours">
+                        <h4 class="hours-title">Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon-Fri</span><span>6:30 AM - 9:00 PM</span></li>
+                            <li><span>Saturday</span><span>7:30 AM - 10:00 PM</span></li>
+                            <li><span>Sunday</span><span>8:00 AM - 8:00 PM</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="location-card">
+                <img src="https://images.unsplash.com/photo-1518495978942-83cdb633d6d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="University Location" class="location-image">
+                <div class="location-info">
+                    <h3 class="location-name">University</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 789 College Avenue, University District</p>
+                    <p><i class="fas fa-phone"></i> (555) 345-6789</p>
+                    <div class="location-hours">
+                        <h4 class="hours-title">Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon-Fri</span><span>6:00 AM - 11:00 PM</span></li>
+                            <li><span>Saturday</span><span>7:00 AM - 11:00 PM</span></li>
+                            <li><span>Sunday</span><span>8:00 AM - 10:00 PM</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="page-section contact-section">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h3>Visit Us</h3>
+                        <p>123 Main Street, City Center<br>Riverside District & University District</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <h3>Call Us</h3>
+                        <p>(555) 123-4567<br>Monday to Friday, 8am to 6pm</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h3>Email Us</h3>
+                        <p>info@coffee-bean.com<br>We'll respond within 24 hours</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <h3>Opening Hours</h3>
+                        <p>Monday - Friday: 6:00 AM - 10:00 PM<br>Saturday - Sunday: 7:00 AM - 11:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3 style="color: var(--secondary); margin-bottom: 25px;">Send Us a Message</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" placeholder="How can we help you?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" rows="5" placeholder="Your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="order-btn" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <div class="logo-circle">C</div>
+                    <span>Coffee-bean.</span>
+                </div>
+                <p>We're passionate about serving the finest coffee and creating a welcoming space for our community. Every cup tells a story.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home" class="footer-nav-link">Home</a></li>
+                    <li><a href="#menu" class="footer-nav-link">Menu</a></li>
+                    <li><a href="#about" class="footer-nav-link">Our Story</a></li>
+                    <li><a href="#landscape" class="footer-nav-link">Gallery</a></li>
+                    <li><a href="#locations" class="footer-nav-link">Locations</a></li>
+                    <li><a href="#contact" class="footer-nav-link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Our Products</h3>
+                <ul>
+                    <li><a href="#menu" class="footer-category-link" data-category="coffee">Coffee</a></li>
+                    <li><a href="#menu" class="footer-category-link" data-category="espresso">Espresso Drinks</a></li>
+                    <li><a href="#menu" class="footer-category-link" data-category="tea">Tea</a></li>
+                    <li><a href="#menu" class="footer-category-link" data-category="pastry">Pastries</a></li>
+                    <li><a href="#menu" class="footer-nav-link">Seasonal Specials</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Connect With Us</h3>
+                <p>Follow us on social media for the latest updates, promotions, and coffee tips!</p>
+                <div class="social-icons">
+                    <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://tiktok.com" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://youtube.com" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Coffee-bean. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i> and <i class="fas fa-mug-hot" style="color: var(--primary);"></i></p>
+        </div>
+    </footer>
+
+    <script>
+        // Product data with landscape images
+        const products = [
+            {
+                id: 1,
+                name: "Classic Drip Coffee",
+                category: "coffee",
+                price: 3.50,
+                description: "Our signature blend, freshly brewed to perfection.",
+                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 2,
+                name: "Caramel Macchiato",
+                category: "espresso",
+                price: 5.25,
+                description: "Espresso with vanilla syrup, milk, and caramel drizzle.",
+                image: "https://images.unsplash.com/photo-1561047029-3000c68339ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 3,
+                name: "Iced Matcha Latte",
+                category: "tea",
+                price: 5.75,
+                description: "Ceremonial grade matcha with milk over ice.",
+                image: "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 4,
+                name: "Croissant",
+                category: "pastry",
+                price: 3.75,
+                description: "Freshly baked, buttery French croissant.",
+                image: "https://images.unsplash.com/photo-1555507036-ab794f27d2e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 5,
+                name: "Cold Brew",
+                category: "coffee",
+                price: 4.50,
+                description: "Slow-steeped for 18 hours for a smooth, bold flavor.",
+                image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 6,
+                name: "Cappuccino",
+                category: "espresso",
+                price: 4.75,
+                description: "Equal parts espresso, steamed milk, and foam.",
+                image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 7,
+                name: "Chai Latte",
+                category: "tea",
+                price: 4.95,
+                description: "Spiced black tea with steamed milk and honey.",
+                image: "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 8,
+                name: "Chocolate Chip Cookie",
+                category: "pastry",
+                price: 2.75,
+                description: "Freshly baked with premium chocolate chunks.",
+                image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            }
+        ];
+
+        // Generate floating coffee beans
+        function generateCoffeeBeans() {
+            const container = document.getElementById('coffee-beans-container');
+            const beanCount = 25;
+            
+            for (let i = 0; i < beanCount; i++) {
+                const bean = document.createElement('div');
+                bean.className = 'coffee-bean';
+                
+                const left = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = 15 + Math.random() * 10;
+                const size = 0.5 + Math.random() * 0.5;
+                
+                bean.style.left = `${left}%`;
+                bean.style.animationDelay = `${delay}s`;
+                bean.style.animationDuration = `${duration}s`;
+                bean.style.transform = `scale(${size}) rotate(${Math.random() * 360}deg)`;
+                
+                container.appendChild(bean);
+            }
+        }
+        
+        // Generate product cards
+        function generateProductCards(category = 'all') {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
+            
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <button class="add-to-cart" data-id="${product.id}">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+                    const product = products.find(p => p.id == productId);
+                    alert(`Added ${product.name} to your cart!`);
+                });
+            });
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+            this.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Navigation function
+        function navigateToSection(sectionId, category = null) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // If navigating to menu with category
+                if (sectionId === 'menu' && category) {
+                    setTimeout(() => {
+                        document.querySelectorAll('.category-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                            if (btn.getAttribute('data-category') === category) {
+                                btn.classList.add('active');
+                            }
+                        });
+                        generateProductCards(category);
+                    }, 100);
+                }
+                
+                // Close mobile menu if open
+                closeMobileMenu();
+                
+                // Scroll to top of section
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        // Navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('href').substring(1);
+                navigateToSection(sectionId);
+            });
+        });
+        
+        // Footer navigation links
+        document.querySelectorAll('.footer-nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('href').substring(1);
+                navigateToSection(sectionId);
+            });
+        });
+        
+        // Footer category links
+        document.querySelectorAll('.footer-category-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('href').substring(1);
+                const category = this.getAttribute('data-category');
+                navigateToSection(sectionId, category);
+            });
+        });
+        
+        // Category buttons
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                const category = this.getAttribute('data-category');
+                generateProductCards(category);
+            });
+        });
+        
+        // Order buttons
+        document.querySelectorAll('.order-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.id === 'nav-order-btn' || this.closest('.nav-links')) {
+                    navigateToSection('menu');
+                } else {
+                    alert('Redirecting to order page... In a real implementation, this would take you to our ordering system.');
+                }
+            });
+        });
+        
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+        
+        // Close mobile menu
+        function closeMobileMenu() {
+            document.getElementById('nav-links').classList.remove('active');
+            document.getElementById('mobile-menu-toggle').innerHTML = '<i class="fas fa-bars"></i>';
+        }
+        
+        // Social media links
+        document.querySelectorAll('.social-icon').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    alert('Social media links would open in a new tab in a real implementation.');
+                }
+            });
+        });
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            generateCoffeeBeans();
+            generateProductCards('all');
+            
+            // Parallax effect
+            document.querySelector('.hero-section').addEventListener('mousemove', function(e) {
+                const beans = document.querySelectorAll('.coffee-bean');
+                const cup = document.querySelector('.hero-coffee-cup');
+                
+                const x = (e.clientX / window.innerWidth) * 30 - 15;
+                const y = (e.clientY / window.innerHeight) * 30 - 15;
+                
+                if (cup) {
+                    cup.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) rotate(${x * 0.1}deg)`;
+                }
+                
+                beans.forEach(bean => {
+                    const speed = 0.5 + Math.random() * 1;
+                    bean.style.transform += ` translate(${x * speed * 0.5}px, ${y * speed * 0.5}px)`;
+                });
+            });
+            
+            // Reset cup position
+            document.querySelector('.hero-section').addEventListener('mouseleave', function() {
+                const cup = document.querySelector('.hero-coffee-cup');
+                if (cup) {
+                    cup.style.transform = 'translateY(0px) rotate(0deg)';
+                }
+            });
+            
+            // Fade in animations
+            const coffeeText = document.querySelector('.coffee-text');
+            const coffeeCup = document.querySelector('.hero-coffee-cup');
+            
+            coffeeText.style.opacity = '0';
+            coffeeText.style.transform = 'translateY(20px)';
+            
+            if (coffeeCup) {
+                coffeeCup.style.opacity = '0';
+                coffeeCup.style.transform = 'translateY(30px) scale(0.9)';
+            }
+            
+            setTimeout(() => {
+                coffeeText.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                coffeeText.style.opacity = '1';
+                coffeeText.style.transform = 'translateY(0)';
+                
+                if (coffeeCup) {
+                    coffeeCup.style.transition = 'opacity 1s ease 0.3s, transform 1s ease 0.3s';
+                    coffeeCup.style.opacity = '1';
+                    coffeeCup.style.transform = 'translateY(0) scale(1)';
+                }
+            }, 300);
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 100) {
+                    navbar.style.padding = '15px 40px';
+                    navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                } else {
+                    navbar.style.padding = '20px 40px';
+                    navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

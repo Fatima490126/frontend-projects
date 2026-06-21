@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AL BAIQ · fresh fields</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #fefef7;
+      color: #1a2e1f;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* brand palette */
+    :root {
+      --green: #1f8b4c;      /* fresh green */
+      --green-light: #e3f5e9;
+      --orange: #f59e0b;     /* warm orange */
+      --yellow: #fde047;     /* soft yellow */
+      --cream: #fff9e6;
+      --gray-800: #2b4532;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 90px 0;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1b4b2b;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-tag {
+      color: var(--orange);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ---- navigation ---- */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 36px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 16px rgba(0, 60, 20, 0.06);
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--green);
+      line-height: 1;
+    }
+    .logo span {
+      color: var(--orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      font-weight: 600;
+      color: #1f3e28;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--orange);
+    }
+
+    /* ----- hero slider (full screen, fade + zoom) ----- */
+    .hero {
+      height: 100vh;
+      min-height: 680px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 0;
+    }
+
+    .slider {
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 1.4s;
+      z-index: 1;
+    }
+
+    .slide.active-slide {
+      opacity: 1;
+      visibility: visible;
+      z-index: 10;
+    }
+
+    .bg-zoom {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1);
+      transition: transform 7s ease-out;
+      z-index: 1;
+    }
+
+    .slide.active-slide .bg-zoom {
+      transform: scale(1.08);
+    }
+
+    .slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,40,20,0.3) 0%, rgba(0,0,0,0.1) 60%);
+      z-index: 2;
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 20;
+      max-width: 700px;
+      padding: 0 10%;
+      color: white;
+      text-shadow: 0 8px 28px rgba(0, 30, 0, 0.5);
+      animation: slideUp 1s ease;
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-content h1 {
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .slide-content p {
+      font-size: 1.7rem;
+      font-weight: 400;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--orange);
+      color: #1d2f1d;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 16px 42px;
+      border-radius: 60px;
+      text-decoration: none;
+      box-shadow: 0 12px 30px -10px #b45f06;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+      background-color: #f3b43c;
+      transform: scale(1.03);
+      box-shadow: 0 22px 35px -12px #b45f06;
+    }
+
+    /* ----- about ----- */
+    .about-grid {
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .about-text {
+      flex: 1 1 300px;
+    }
+    .about-text p {
+      font-size: 1.2rem;
+      color: #2f4d3a;
+      margin: 24px 0;
+    }
+    .about-highlight {
+      color: var(--orange);
+      font-weight: 600;
+      background: var(--green-light);
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 40px;
+    }
+    .about-image {
+      flex: 1 1 300px;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 25px 35px -15px rgba(31, 139, 76, 0.3);
+    }
+    .about-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .about-image:hover img {
+      transform: scale(1.03);
+    }
+
+    /* ----- products (cards) ----- */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 35px;
+      margin-top: 50px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px -12px rgba(0,70,30,0.15);
+      transition: all 0.3s ease;
+      text-align: center;
+      padding-bottom: 28px;
+      border: 1px solid #f0ffe0;
+    }
+    .product-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 28px 40px -12px #1f8b4c70;
+    }
+    .product-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .product-card:hover img {
+      transform: scale(1.03);
+    }
+    .product-card h3 {
+      font-size: 1.7rem;
+      margin: 16px 0 8px;
+      color: #1b4b2b;
+    }
+    .product-card .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--orange);
+      margin: 12px 0 8px;
+    }
+    .product-card .btn-small {
+      background: var(--green);
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 12px;
+    }
+    .product-card .btn-small:hover {
+      background: #116f3a;
+    }
+
+    /* ----- why choose us (icon boxes) ----- */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-top: 50px;
+    }
+    .why-item {
+      background: var(--green-light);
+      padding: 40px 25px;
+      border-radius: 40px;
+      text-align: center;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    .why-item:hover {
+      border-color: var(--orange);
+      background: #ffffff;
+    }
+    .why-item i {
+      font-size: 3.2rem;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+    .why-item h4 {
+      font-size: 1.8rem;
+      color: var(--green);
+    }
+
+    /* ----- gallery (carousel) ----- */
+    .gallery-carousel {
+      overflow: hidden;
+      padding: 20px 0;
+    }
+    .gallery-track {
+      display: flex;
+      gap: 30px;
+      animation: scrollGallery 25s linear infinite;
+      width: max-content;
+    }
+    .gallery-track img {
+      height: 260px;
+      width: auto;
+      border-radius: 40px;
+      box-shadow: 0 20px 30px -10px #2f6e4670;
+      transition: 0.3s;
+    }
+    .gallery-track img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 28px 40px -10px #1f8b4c;
+    }
+    @keyframes scrollGallery {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-260px * 4 - 90px)); } /* 4 images + gaps */
+    }
+    /* pause on hover (optional) */
+    .gallery-carousel:hover .gallery-track {
+      animation-play-state: paused;
+    }
+
+    /* ----- testimonials (auto slide) ----- */
+    .testimonials {
+      background: var(--cream);
+    }
+    .testimonial-slider {
+      max-width: 800px;
+      margin: 40px auto 0;
+      position: relative;
+      height: 200px;
+    }
+    .testi-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease;
+      text-align: center;
+      background: white;
+      padding: 40px 40px;
+      border-radius: 70px;
+      box-shadow: 0 20px 30px -10px rgba(255,166,0,0.1);
+    }
+    .testi-slide.active-testi {
+      opacity: 1;
+      visibility: visible;
+    }
+    .testi-slide p {
+      font-size: 1.4rem;
+      font-style: italic;
+      color: #1f402a;
+    }
+    .testi-slide h4 {
+      color: var(--orange);
+      margin-top: 18px;
+      font-size: 1.3rem;
+    }
+    .testi-slide i {
+      color: var(--yellow);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    /* ----- contact ----- */
+    .contact-row {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+    .contact-info {
+      flex: 1 1 250px;
+      background: var(--green-light);
+      padding: 40px;
+      border-radius: 50px;
+    }
+    .contact-info i {
+      font-size: 2.2rem;
+      color: var(--orange);
+      margin-right: 15px;
+      width: 40px;
+    }
+    .contact-info p {
+      margin: 20px 0;
+      font-size: 1.2rem;
+    }
+    .contact-form {
+      flex: 2 1 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-form input, .contact-form textarea {
+      padding: 18px 24px;
+      border: 1px solid #d0e6d0;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      background: white;
+      outline: none;
+      transition: 0.2s;
+    }
+    .contact-form input:focus, .contact-form textarea:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px #ffe45e80;
+    }
+    .contact-form button {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 18px 32px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .contact-form button:hover {
+      background: #0f642f;
+    }
+
+    /* footer */
+    footer {
+      background: #1a3a24;
+      color: #eee;
+      text-align: center;
+      padding: 28px;
+    }
+
+    /* mobile adjustments */
+    @media (max-width: 800px) {
+      nav {
+        padding: 16px 20px;
+      }
+      .nav-links {
+        display: none; /* simplify demo, keep clean */
+      }
+      .slide-content h1 {
+        font-size: 3.2rem;
+      }
+      .slide-content p {
+        font-size: 1.3rem;
+      }
+      h2 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- fixed navigation -->
+  <nav>
+    <div class="logo">AL_<span>BAIQ</span></div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#products">Products</a>
+      <a href="#why">Why us</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero slider full screen (fade + zoom) -->
+  <section class="hero" id="home">
+    <div class="slider">
+      <!-- slide 1 -->
+      <div class="slide active-slide">
+        <div class="bg-zoom" style="background-image: url('https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="slide-content">
+          <h1>fresh from the farm</h1>
+          <p>organic fruits & vegetables</p>
+          <a href="#" class="btn">SHOP NOW →</a>
+        </div>
+      </div>
+      <!-- slide 2 -->
+      <div class="slide">
+        <div class="bg-zoom" style="background-image: url('https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="slide-content">
+          <h1>always seasonal</h1>
+          <p>harvested with care</p>
+          <a href="#" class="btn">SHOP NOW →</a>
+        </div>
+      </div>
+      <!-- slide 3 -->
+      <div class="slide">
+        <div class="bg-zoom" style="background-image: url('https://images.pexels.com/photos/264537/pexels-photo-264537.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="slide-content">
+          <h1>crunchy & sweet</h1>
+          <p>direct from our fields</p>
+          <a href="#" class="btn">SHOP NOW →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About section -->
+  <section id="about">
+    <div class="container">
+      <div class="section-tag">who we are</div>
+      <h2>about AL_BAIQ</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>We bring the freshest harvest from local farms to your table. Every fruit and vegetable is handpicked at peak ripeness. <span class="about-highlight">100% organic & natural</span> — just as nature intended.</p>
+          <p>With a legacy of three generations, AL_BAIQ stands for quality, taste, and sustainable farming. Our green, orange and yellow vibe reflects the colors of vitality.</p>
+        </div>
+        <div class="about-image">
+          <img src="https://images.pexels.com/photos/4198020/pexels-photo-4198020.jpeg?auto=compress&cs=tinysrgb&w=600" alt="fresh fruits arrangement" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products card layout -->
+  <section id="products" style="background: #fafff7;">
+    <div class="container">
+      <div class="section-tag">our baskets</div>
+      <h2>fresh picks</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.pexels.com/photos/61127/pexels-photo-61127.jpeg?auto=compress&cs=tinysrgb&w=600" alt="oranges" loading="lazy">
+          <h3>citrus box</h3>
+          <div class="price">$18.99</div>
+          <button class="btn-small">add to cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.pexels.com/photos/48713/raspberries-berries-fruit-raspberry-48713.jpeg?auto=compress&cs=tinysrgb&w=600" alt="berries" loading="lazy">
+          <h3>berry mix</h3>
+          <div class="price">$24.50</div>
+          <button class="btn-small">add to cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.pexels.com/photos/2329440/pexels-photo-2329440.jpeg?auto=compress&cs=tinysrgb&w=600" alt="vegetables" loading="lazy">
+          <h3>green harvest</h3>
+          <div class="price">$22.30</div>
+          <button class="btn-small">add to cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.pexels.com/photos/1306559/pexels-photo-1306559.jpeg?auto=compress&cs=tinysrgb&w=600" alt="apples" loading="lazy">
+          <h3>apple bag</h3>
+          <div class="price">$15.99</div>
+          <button class="btn-small">add to cart</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section id="why">
+    <div class="container">
+      <div class="section-tag">our promise</div>
+      <h2>why choose us</h2>
+      <div class="why-grid">
+        <div class="why-item"><i class="fas fa-leaf"></i><h4>100% organic</h4><p>No pesticides, just pure nature.</p></div>
+        <div class="why-item"><i class="fas fa-truck"></i><h4>farm to fork</h4><p>Delivered within 24 hours.</p></div>
+        <div class="why-item"><i class="fas fa-sun"></i><h4>sun ripened</h4><p>Picked at perfect sweetness.</p></div>
+        <div class="why-item"><i class="fas fa-hand-holding-heart"></i><h4>family farmers</h4><p>Supporting local growers.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery (carousel) -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-tag">colorful moments</div>
+      <h2>gallery</h2>
+    </div>
+    <div class="gallery-carousel">
+      <div class="gallery-track">
+        <img src="https://images.pexels.com/photos/947879/pexels-photo-947879.jpeg?auto=compress&cs=tinysrgb&w=600" alt="fruit" loading="lazy">
+        <img src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-51312.jpeg?auto=compress&cs=tinysrgb&w=600" alt="kiwi" loading="lazy">
+        <img src="https://images.pexels.com/photos/1414651/pexels-photo-1414651.jpeg?auto=compress&cs=tinysrgb&w=600" alt="paprika" loading="lazy">
+        <img src="https://images.pexels.com/photos/257278/pexels-photo-257278.jpeg?auto=compress&cs=tinysrgb&w=600" alt="pineapple" loading="lazy">
+        <img src="https://images.pexels.com/photos/1002778/pexels-photo-1002778.jpeg?auto=compress&cs=tinysrgb&w=600" alt="pomegranate" loading="lazy">
+        <!-- duplicated for infinite loop effect -->
+        <img src="https://images.pexels.com/photos/947879/pexels-photo-947879.jpeg?auto=compress&cs=tinysrgb&w=600" alt="fruit" loading="lazy">
+        <img src="https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-51312.jpeg?auto=compress&cs=tinysrgb&w=600" alt="kiwi" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials auto-slide -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-tag">happy customers</div>
+      <h2>testimonials</h2>
+      <div class="testimonial-slider">
+        <div class="testi-slide active-testi"><i class="fas fa-quote-left"></i><p>“The oranges are incredibly juicy. AL_BAIQ is now my family's favorite.”</p><h4>— Nadia K.</h4></div>
+        <div class="testi-slide"><i class="fas fa-quote-left"></i><p>“I love the weekly basket. Always fresh, always colourful!”</p><h4>— Ravi M.</h4></div>
+        <div class="testi-slide"><i class="fas fa-quote-left"></i><p>“Best quality veggies in town. Fast delivery too.”</p><h4>— Samira L.</h4></div>
+        <div class="testi-slide"><i class="fas fa-quote-left"></i><p>“You can taste the sunshine. Absolutely worth it.”</p><h4>— Carlos D.</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact section -->
+  <section id="contact" style="background: #f3fcf3;">
+    <div class="container">
+      <div class="section-tag">get in touch</div>
+      <h2>contact us</h2>
+      <div class="contact-row">
+        <div class="contact-info">
+          <p><i class="fas fa-map-pin"></i> 12 Orchard Lane, Greenfield</p>
+          <p><i class="fas fa-phone-alt"></i> +1 (800) 456-7890</p>
+          <p><i class="fas fa-envelope"></i> hello@albaiq.farm</p>
+          <p><i class="fas fa-clock"></i> Mon-Sat 8am – 8pm</p>
+        </div>
+        <div class="contact-form">
+          <input type="text" placeholder="Your name">
+          <input type="email" placeholder="Email address">
+          <textarea rows="3" placeholder="How can we help?"></textarea>
+          <button type="button">send message →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 AL_BAIQ — fresh fruits & vegetables. All rights reserved.</p>
+  </footer>
+
+  <!-- auto slider logic (hero fade+zoom, testi auto) -->
+  <script>
+    (function() {
+      // hero slider
+      const slides = document.querySelectorAll('.slide');
+      let currentSlide = 0;
+
+      function nextSlide() {
+        slides[currentSlide].classList.remove('active-slide');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active-slide');
+      }
+      setInterval(nextSlide, 5500); // smooth auto
+
+      // testimonials auto slide
+      const testiSlides = document.querySelectorAll('.testi-slide');
+      let currentTesti = 0;
+      function nextTesti() {
+        testiSlides[currentTesti].classList.remove('active-testi');
+        currentTesti = (currentTesti + 1) % testiSlides.length;
+        testiSlides[currentTesti].classList.add('active-testi');
+      }
+      setInterval(nextTesti, 4500);
+    })();
+  </script>
+  <!-- manual fix for gallery animation on smaller sets (just keep same) -->
+</body>
+</html>
