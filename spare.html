@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Particle Sphere</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            pointer-events: none;
+            z-index: 100;
+            font-size: 14px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="info">✨ Interactive Particle Sphere • Drag to rotate • Scroll to zoom</div>
+
+    <!-- Import Three.js core and add-ons from CDN -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        
+        // --- Setup Scene, Camera, Renderer ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050510); // dark blue-black
+        
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2, 15);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // limit for performance
+        document.body.appendChild(renderer.domElement);
+        
+        // --- Controls for interaction ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1.5;
+        controls.enableZoom = true;
+        controls.enablePan = false;
+        controls.maxDistance = 30;
+        controls.minDistance = 6;
+        controls.rotateSpeed = 1.0;
+        
+        // --- Add subtle ambient and point lights for any future elements (though particles are self-illuminated) ---
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        const light = new THREE.PointLight(0xffffff, 0.5);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+        
+        // --- Create a glowing particle sphere ---
+        const particleCount = 6000;
+        const radius = 5.0;
+        
+        // Geometry with positions and colors
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        
+        const color = new THREE.Color();
+        
+        for (let i = 0; i < particleCount; i++) {
+            // Method: generate random points on a sphere using spherical coordinates with random distribution
+            // to ensure uniform distribution, we use the standard approach: 
+            // theta = 2*PI*random, phi = acos(2*random - 1)
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            
+            const x = radius * Math.sin(phi) * Math.cos(theta);
+            const y = radius * Math.sin(phi) * Math.sin(theta);
+            const z = radius * Math.cos(phi);
+            
+            positions[i*3] = x;
+            positions[i*3+1] = y;
+            positions[i*3+2] = z;
+            
+            // Color based on position: mix of blues, cyans, purples with some randomness
+            // Map y from -radius..radius to hue in 0.6..0.9 (blue to purple range)
+            const hue = 0.65 + (y / radius) * 0.25; // range 0.4 to 0.9 roughly
+            const saturation = 0.9;
+            const lightness = 0.5 + 0.3 * Math.sin(x * 0.8) * Math.cos(z * 0.8); // subtle variation
+            
+            color.setHSL(hue, saturation, lightness);
+            
+            colors[i*3] = color.r;
+            colors[i*3+1] = color.g;
+            colors[i*3+2] = color.b;
+        }
+        
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        
+        // Create a canvas texture for the particle sprite (a soft circle)
+        function createParticleTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw radial gradient for soft glow
+            const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(0.5, 'rgba(200,220,255,0.8)');
+            gradient.addColorStop(0.8, 'rgba(100,150,255,0.2)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 32, 32);
+            
+            return new THREE.CanvasTexture(canvas);
+        }
+        
+        const particleTexture = createParticleTexture();
+        
+        // Material using vertex colors for individual particle colors
+        const material = new THREE.PointsMaterial({
+            size: 0.25,
+            map: particleTexture,
+            vertexColors: true,        // use per-vertex colors
+            transparent: true,
+            blending: THREE.AdditiveBlending, // gives a glowing look
+            depthWrite: false,
+            sizeAttenuation: true
+        });
+        
+        const particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
+        
+        // --- Add a faint inner sphere wireframe or additional tiny particles for depth? ---
+        // Create a second layer of smaller, faint particles inside to enhance depth
+        const innerGeo = new THREE.BufferGeometry();
+        const innerCount = 2000;
+        const innerPos = new Float32Array(innerCount * 3);
+        const innerColors = new Float32Array(innerCount * 3);
+        
+        for (let i = 0; i < innerCount; i++) {
+            const r = radius * 0.6 + Math.random() * radius * 0.3; // inner radius range
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = r * Math.cos(phi);
+            
+            innerPos[i*3] = x;
+            innerPos[i*3+1] = y;
+            innerPos[i*3+2] = z;
+            
+            // Lighter colors
+            color.setHSL(0.7 + (y / radius) * 0.2, 0.8, 0.7);
+            innerColors[i*3] = color.r;
+            innerColors[i*3+1] = color.g;
+            innerColors[i*3+2] = color.b;
+        }
+        
+        innerGeo.setAttribute('position', new THREE.BufferAttribute(innerPos, 3));
+        innerGeo.setAttribute('color', new THREE.BufferAttribute(innerColors, 3));
+        
+        const innerMaterial = new THREE.PointsMaterial({
+            size: 0.15,
+            map: particleTexture,
+            vertexColors: true,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true
+        });
+        
+        const innerParticles = new THREE.Points(innerGeo, innerMaterial);
+        scene.add(innerParticles);
+        
+        // --- Add some background stars for context ---
+        const starsGeo = new THREE.BufferGeometry();
+        const starsCount = 1500;
+        const starsPos = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount; i++) {
+            // Random points in a large sphere
+            const r = 80 + Math.random() * 50;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            
+            starsPos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+            starsPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+            starsPos[i*3+2] = r * Math.cos(phi);
+        }
+        starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
+        
+        const starsMat = new THREE.PointsMaterial({
+            size: 0.4,
+            color: 0xaaccff,
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            opacity: 0.6,
+            sizeAttenuation: true
+        });
+        const stars = new THREE.Points(starsGeo, starsMat);
+        scene.add(stars);
+        
+        // --- Post-processing for extra bloom glow ---
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 1.2;
+        bloomPass.radius = 0.5;
+        
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+        
+        // --- Animation loop ---
+        let clock = new THREE.Clock();
+        
+        function animate() {
+            const delta = clock.getDelta();
+            const elapsedTime = performance.now() * 0.001; // seconds
+            
+            // Subtle animation: rotate inner particles slightly differently, and pulse size a tiny bit
+            innerParticles.rotation.y += 0.0002;
+            innerParticles.rotation.x += 0.0001;
+            
+            particleSystem.rotation.y += 0.0005;
+            particleSystem.rotation.x += 0.0003;
+            
+            // Update controls (auto-rotate is enabled)
+            controls.update();
+            
+            // Render via composer for bloom
+            composer.render();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // --- Handle window resize ---
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // --- Little extra: interactive hover effect? Not necessary, but controls already provide interaction.
+        // Optionally, we could make particles move away from mouse, but that's complex. 
+        // However, let's add a subtle "pulse" to the main sphere rotation speed based on user interaction?
+        // Could be overkill. We'll keep it simple and beautiful.
+        
+        console.log('3D Particle Sphere ready!');
+    </script>
+</body>
+</html>
