@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUSHA — Premium Colored Contact Lenses</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --mint: #5EEAD4;
+    --mint-light: #CCFBF1;
+    --mint-pale: #F0FDFA;
+    --turquoise: #0D9488;
+    --turquoise-deep: #0F766E;
+    --turquoise-dark: #115E59;
+    --white: #FFFFFF;
+    --off-white: #F7FDFC;
+    --text-dark: #0C1F1D;
+    --text-muted: #5F7A77;
+    --accent-glow: rgba(94, 234, 212, 0.5);
+    --card-bg: rgba(255, 255, 255, 0.85);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--off-white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* --- Fade-in on load --- */
+  .hero-fade {
+    opacity: 0;
+    animation: heroFadeIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes heroFadeIn {
+    0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* --- Staggered scroll reveal --- */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- Hero background blobs --- */
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .blob-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--mint) 0%, transparent 70%);
+    top: -150px; right: -100px;
+    animation: blobFloat1 12s ease-in-out infinite;
+  }
+
+  .blob-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--turquoise) 0%, transparent 70%);
+    bottom: -200px; left: -100px;
+    animation: blobFloat2 15s ease-in-out infinite;
+  }
+
+  .blob-3 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--mint-light) 0%, transparent 70%);
+    top: 40%; left: 30%;
+    animation: blobFloat3 10s ease-in-out infinite;
+  }
+
+  @keyframes blobFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-40px, 30px) scale(1.1); }
+  }
+  @keyframes blobFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.08); }
+  }
+  @keyframes blobFloat3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, -20px) scale(1.15); }
+  }
+
+  /* --- Product Card --- */
+  .product-card {
+    position: relative;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(94, 234, 212, 0.12);
+    border-radius: 28px;
+    overflow: hidden;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    will-change: transform;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 30px;
+    padding: 2px;
+    background: conic-gradient(
+      from var(--glow-angle, 0deg),
+      transparent 0%,
+      var(--mint) 10%,
+      var(--turquoise) 20%,
+      transparent 30%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .product-card:hover::before {
+    opacity: 1;
+    animation: glowSpin 3s linear infinite;
+  }
+
+  @keyframes glowSpin {
+    0% { --glow-angle: 0deg; }
+    100% { --glow-angle: 360deg; }
+  }
+
+  @property --glow-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .product-card:hover {
+    border-color: rgba(94, 234, 212, 0.3);
+    box-shadow:
+      0 0 30px rgba(94, 234, 212, 0.12),
+      0 20px 60px rgba(13, 148, 136, 0.1);
+  }
+
+  .card-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 12px;
+    background: linear-gradient(135deg, var(--mint-pale), #E0F7F4);
+  }
+
+  .card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+  }
+
+  .product-card:hover .card-image-wrap img {
+    transform: scale(1.05);
+    filter: brightness(1.05) contrast(1.02);
+  }
+
+  .card-shine {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(
+      circle at var(--shine-x, 50%) var(--shine-y, 50%),
+      rgba(255,255,255,0.35) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+  }
+
+  .product-card:hover .card-shine {
+    opacity: 1;
+  }
+
+  /* --- Lens color dot --- */
+  .lens-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.9);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.12);
+    display: inline-block;
+  }
+
+  /* --- Floating particles --- */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: particleFloat linear infinite;
+  }
+
+  @keyframes particleFloat {
+    0% { opacity: 0; transform: translateY(0) scale(0); }
+    10% { opacity: 0.6; transform: translateY(-20px) scale(1); }
+    90% { opacity: 0.3; transform: translateY(-300px) scale(0.5); }
+    100% { opacity: 0; transform: translateY(-350px) scale(0); }
+  }
+
+  /* --- Navbar glass --- */
+  .nav-glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border-bottom: 1px solid rgba(94, 234, 212, 0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .nav-glass.scrolled {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 30px rgba(13, 148, 136, 0.06);
+  }
+
+  /* --- Custom button --- */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--turquoise-deep), var(--turquoise));
+    color: var(--white);
+    border: none;
+    padding: 14px 36px;
+    border-radius: 60px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--turquoise), var(--mint));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 60px;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(13, 148, 136, 0.35);
+  }
+
+  .btn-primary:hover::after {
+    opacity: 1;
+  }
+
+  .btn-primary span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--turquoise-deep);
+    border: 1.5px solid var(--turquoise);
+    padding: 14px 36px;
+    border-radius: 60px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline:hover {
+    background: var(--turquoise);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(13, 148, 136, 0.25);
+  }
+
+  /* --- Feature icon circle --- */
+  .feature-icon {
+    width: 56px; height: 56px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--mint-light), var(--mint-pale));
+    color: var(--turquoise-deep);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* --- Section divider wave --- */
+  .wave-divider {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 60px;
+  }
+
+  /* --- Toast notification --- */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--white);
+    border: 1px solid rgba(94, 234, 212, 0.3);
+    border-radius: 16px;
+    padding: 16px 24px;
+    box-shadow: 0 12px 40px rgba(13, 148, 136, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    transform: translateY(120%);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+  }
+
+  /* --- Marquee --- */
+  .marquee-track {
+    display: flex;
+    animation: marqueeScroll 30s linear infinite;
+    width: max-content;
+  }
+
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* --- Scrollbar --- */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--mint-pale); }
+  ::-webkit-scrollbar-thumb { background: var(--mint); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--turquoise); }
+
+  /* --- Reduced motion --- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.8rem !important; }
+    .product-grid { grid-template-columns: 1fr !important; max-width: 380px; margin: 0 auto; }
+    .features-grid { grid-template-columns: 1fr !important; }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="nav-glass fixed top-0 left-0 w-full z-50" id="navbar">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2" aria-label="LUSHA Home">
+      <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--turquoise-deep),var(--mint));display:flex;align-items:center;justify-content:center;">
+        <i class="fa-solid fa-eye text-white text-sm"></i>
+      </div>
+      <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:var(--turquoise-dark);letter-spacing:-0.02em;">LUSHA</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#collection" class="text-sm font-medium" style="color:var(--text-muted);transition:color 0.3s;" onmouseover="this.style.color='var(--turquoise-deep)'" onmouseout="this.style.color='var(--text-muted)'">Collection</a>
+      <a href="#why" class="text-sm font-medium" style="color:var(--text-muted);transition:color 0.3s;" onmouseover="this.style.color='var(--turquoise-deep)'" onmouseout="this.style.color='var(--text-muted)'">Why LUSHA</a>
+      <a href="#" class="text-sm font-medium" style="color:var(--text-muted);transition:color 0.3s;" onmouseover="this.style.color='var(--turquoise-deep)'" onmouseout="this.style.color='var(--text-muted)'">Eye Care</a>
+      <a href="#" class="text-sm font-medium" style="color:var(--text-muted);transition:color 0.3s;" onmouseover="this.style.color='var(--turquoise-deep)'" onmouseout="this.style.color='var(--text-muted)'">Reviews</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="hidden sm:flex items-center gap-2 text-sm font-medium" style="color:var(--turquoise-deep);" aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+      <button class="relative" aria-label="Shopping bag" id="cartBtn">
+        <i class="fa-solid fa-bag-shopping text-lg" style="color:var(--turquoise-dark);"></i>
+        <span id="cartCount" class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full text-white text-[10px] font-bold flex items-center justify-center" style="background:var(--turquoise);display:none;">0</span>
+      </button>
+      <button class="md:hidden" aria-label="Menu" id="menuBtn">
+        <i class="fa-solid fa-bars text-lg" style="color:var(--turquoise-dark);"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<header class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background:linear-gradient(160deg, var(--white) 0%, var(--mint-pale) 40%, #E0F7F4 100%);">
+  <!-- Blobs -->
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div class="hero-blob blob-3"></div>
+
+  <!-- Particles container -->
+  <div id="heroParticles" class="absolute inset-0 pointer-events-none"></div>
+
+  <div class="hero-fade relative z-10 text-center px-6 max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8" style="background:rgba(94,234,212,0.15);border:1px solid rgba(94,234,212,0.25);">
+      <span class="w-2 h-2 rounded-full" style="background:var(--mint);animation:pulse 2s ease-in-out infinite;"></span>
+      <span class="text-xs font-semibold tracking-wider uppercase" style="color:var(--turquoise-deep);">Hydrating Comfort Technology</span>
+    </div>
+
+    <h1 class="hero-title" style="font-family:'Playfair Display',serif;font-size:4.5rem;font-weight:700;line-height:1.05;color:var(--turquoise-dark);letter-spacing:-0.03em;margin-bottom:24px;">
+      See the World<br>
+      <span style="background:linear-gradient(135deg,var(--turquoise),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Through New Eyes</span>
+    </h1>
+
+    <p class="text-lg font-light leading-relaxed max-w-xl mx-auto mb-10" style="color:var(--text-muted);">
+      Premium colored contact lenses infused with moisture-locking hyaluronic acid. All-day comfort that lets your true color shine.
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <button class="btn-primary" onclick="scrollToCollection()">
+        <span>Explore Collection</span>
+      </button>
+      <button class="btn-outline" onclick="showToast('Virtual try-on coming soon')">
+        Virtual Try-On
+      </button>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="flex flex-wrap items-center justify-center gap-8 mt-16" style="opacity:0.6;">
+      <div class="flex items-center gap-2 text-xs font-medium" style="color:var(--text-muted);">
+        <i class="fa-solid fa-droplet" style="color:var(--turquoise);"></i> 38% Water Content
+      </div>
+      <div class="flex items-center gap-2 text-xs font-medium" style="color:var(--text-muted);">
+        <i class="fa-solid fa-shield-halved" style="color:var(--turquoise);"></i> FDA Approved
+      </div>
+      <div class="flex items-center gap-2 text-xs font-medium" style="color:var(--text-muted);">
+        <i class="fa-solid fa-leaf" style="color:var(--turquoise);"></i> Vegan Formula
+      </div>
+      <div class="flex items-center gap-2 text-xs font-medium" style="color:var(--text-muted);">
+        <i class="fa-solid fa-clock" style="color:var(--turquoise);"></i> 12hr Wear
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hero-fade" style="animation-delay:0.6s;">
+    <span class="text-[10px] font-medium uppercase tracking-widest" style="color:var(--text-muted);">Scroll</span>
+    <div style="width:1px;height:32px;background:linear-gradient(to bottom,var(--turquoise),transparent);animation:scrollPulse 2s ease-in-out infinite;"></div>
+  </div>
+</header>
+
+<style>
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+  @keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1);} 50%{opacity:1;transform:scaleY(1.2);} }
+</style>
+
+<!-- ========== MARQUEE STRIP ========== -->
+<div class="overflow-hidden py-5" style="background:var(--turquoise-dark);">
+  <div class="marquee-track">
+    <span class="flex items-center gap-12 px-6 text-sm font-medium tracking-wide" style="color:rgba(255,255,255,0.7);">
+      <span>HAZEL GLAZE</span><span style="color:var(--mint);">&#9679;</span>
+      <span>OCEAN MIST</span><span style="color:var(--mint);">&#9679;</span>
+      <span>AMBER DUSK</span><span style="color:var(--mint);">&#9679;</span>
+      <span>JADE AURA</span><span style="color:var(--mint);">&#9679;</span>
+      <span>VIOLET HAZE</span><span style="color:var(--mint);">&#9679;</span>
+      <span>ROSE QUARTZ</span><span style="color:var(--mint);">&#9679;</span>
+      <span>STORM GREY</span><span style="color:var(--mint);">&#9679;</span>
+      <span>HONEY AMBER</span><span style="color:var(--mint);">&#9679;</span>
+    </span>
+    <span class="flex items-center gap-12 px-6 text-sm font-medium tracking-wide" style="color:rgba(255,255,255,0.7);">
+      <span>HAZEL GLAZE</span><span style="color:var(--mint);">&#9679;</span>
+      <span>OCEAN MIST</span><span style="color:var(--mint);">&#9679;</span>
+      <span>AMBER DUSK</span><span style="color:var(--mint);">&#9679;</span>
+      <span>JADE AURA</span><span style="color:var(--mint);">&#9679;</span>
+      <span>VIOLET HAZE</span><span style="color:var(--mint);">&#9679;</span>
+      <span>ROSE QUARTZ</span><span style="color:var(--mint);">&#9679;</span>
+      <span>STORM GREY</span><span style="color:var(--mint);">&#9679;</span>
+      <span>HONEY AMBER</span><span style="color:var(--mint);">&#9679;</span>
+    </span>
+  </div>
+</div>
+
+<!-- ========== COLLECTION SECTION ========== -->
+<section id="collection" class="py-24 px-6" style="background:var(--white);">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 scroll-reveal">
+      <span class="inline-block text-xs font-semibold tracking-[0.2em] uppercase mb-4" style="color:var(--turquoise);">The Collection</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--turquoise-dark);letter-spacing:-0.02em;line-height:1.15;">
+        Colors That Captivate
+      </h2>
+      <p class="mt-4 text-base font-light max-w-lg mx-auto" style="color:var(--text-muted);">
+        Each lens is crafted with ultra-thin pigmentation for a natural, breathable look that enhances without overwhelming.
+      </p>
+    </div>
+
+    <!-- Filter pills -->
+    <div class="flex flex-wrap justify-center gap-3 mb-14 scroll-reveal">
+      <button class="filter-pill active" data-filter="all" onclick="filterProducts('all', this)">All Shades</button>
+      <button class="filter-pill" data-filter="natural" onclick="filterProducts('natural', this)">Natural</button>
+      <button class="filter-pill" data-filter="vivid" onclick="filterProducts('vivid', this)">Vivid</button>
+      <button class="filter-pill" data-filter="cool" onclick="filterProducts('cool', this)">Cool Tones</button>
+      <button class="filter-pill" data-filter="warm" onclick="filterProducts('warm', this)">Warm Tones</button>
+    </div>
+
+    <style>
+      .filter-pill {
+        padding: 8px 20px;
+        border-radius: 40px;
+        border: 1.5px solid rgba(94,234,212,0.2);
+        background: transparent;
+        color: var(--text-muted);
+        font-family: 'Outfit', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .filter-pill:hover {
+        border-color: var(--turquoise);
+        color: var(--turquoise-deep);
+      }
+      .filter-pill.active {
+        background: var(--turquoise);
+        border-color: var(--turquoise);
+        color: var(--white);
+      }
+    </style>
+
+    <!-- Product Grid -->
+    <div class="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7" id="productGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ========== WHY LUSHA ========== -->
+<section id="why" class="py-24 px-6 relative overflow-hidden" style="background:linear-gradient(180deg, var(--mint-pale) 0%, var(--white) 100%);">
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none" style="background:radial-gradient(circle, rgba(94,234,212,0.15) 0%, transparent 70%);filter:blur(60px);"></div>
+
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16 scroll-reveal">
+      <span class="inline-block text-xs font-semibold tracking-[0.2em] uppercase mb-4" style="color:var(--turquoise);">Why LUSHA</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--turquoise-dark);letter-spacing:-0.02em;">
+        Engineered for Your Eyes
+      </h2>
+    </div>
+
+    <div class="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="scroll-reveal p-7 rounded-3xl transition-all duration-300" style="background:var(--white);border:1px solid rgba(94,234,212,0.1);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(13,148,136,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="feature-icon mb-5"><i class="fa-solid fa-droplet"></i></div>
+        <h3 class="text-lg font-semibold mb-2" style="color:var(--turquoise-dark);">Hyaluronic Acid Infused</h3>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--text-muted);">Each lens is embedded with micro-droplets of hyaluronic acid, releasing moisture continuously for 12+ hours of comfortable wear.</p>
+      </div>
+
+      <div class="scroll-reveal p-7 rounded-3xl transition-all duration-300" style="background:var(--white);border:1px solid rgba(94,234,212,0.1);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(13,148,136,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="feature-icon mb-5"><i class="fa-solid fa-wind"></i></div>
+        <h3 class="text-lg font-semibold mb-2" style="color:var(--turquoise-dark);">Ultra-Breathable Material</h3>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--text-muted);">Advanced silicone hydrogel with 150 Dk/t oxygen transmissibility. Your eyes breathe as if wearing nothing at all.</p>
+      </div>
+
+      <div class="scroll-reveal p-7 rounded-3xl transition-all duration-300" style="background:var(--white);border:1px solid rgba(94,234,212,0.1);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(13,148,136,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="feature-icon mb-5"><i class="fa-solid fa-palette"></i></div>
+        <h3 class="text-lg font-semibold mb-2" style="color:var(--turquoise-dark);">Sandwich Pigment Tech</h3>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--text-muted);">Color pigment is sealed between two lens layers, so it never touches your eye. Safe, natural-looking, and fade-resistant.</p>
+      </div>
+
+      <div class="scroll-reveal p-7 rounded-3xl transition-all duration-300" style="background:var(--white);border:1px solid rgba(94,234,212,0.1);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(13,148,136,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="feature-icon mb-5"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 class="text-lg font-semibold mb-2" style="color:var(--turquoise-dark);">UV Block Protection</h3>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--text-muted);">Built-in Class 1 UV blocking shields your cornea from harmful UVA and UVB rays during daily outdoor activities.</p>
+      </div>
+
+      <div class="scroll-reveal p-7 rounded-3xl transition-all duration-300" style="background:var(--white);border:1px solid rgba(94,234,212,0.1);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(13,148,136,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="feature-icon mb-5"><i class="fa-solid fa-leaf"></i></div>
+        <h3 class="text-lg font-semibold mb-2" style="color:var(--turquoise-dark);">100% Vegan & Cruelty-Free</h3>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--text-muted);">No animal testing, no animal-derived ingredients. Certified vegan by the Vegan Society. Beauty with a clear conscience.</p>
+      </div>
+
+      <div class="scroll-reveal p-7 rounded-3xl transition-all duration-300" style="background:var(--white);border:1px solid rgba(94,234,212,0.1);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(13,148,136,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="feature-icon mb-5"><i class="fa-solid fa-circle-check"></i></div>
+        <h3 class="text-lg font-semibold mb-2" style="color:var(--turquoise-dark);">FDA & CE Certified</h3>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--text-muted);">Rigorously tested and approved by the FDA and CE marking. Manufactured in ISO 13485 certified cleanroom facilities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA SECTION ========== -->
+<section class="py-28 px-6 relative overflow-hidden" style="background:linear-gradient(160deg, var(--turquoise-dark) 0%, var(--turquoise-deep) 50%, var(--turquoise) 100%);">
+  <div class="absolute inset-0 pointer-events-none" style="background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><circle cx=%2230%22 cy=%2230%22 r=%221%22 fill=%22rgba(255,255,255,0.06)%22/></svg>');"></div>
+  <div class="absolute top-10 left-10 w-72 h-72 rounded-full pointer-events-none" style="background:radial-gradient(circle, rgba(94,234,212,0.2) 0%, transparent 70%);filter:blur(60px);"></div>
+  <div class="absolute bottom-10 right-10 w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);filter:blur(80px);"></div>
+
+  <div class="max-w-3xl mx-auto text-center relative z-10 scroll-reveal">
+    <h2 style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--white);letter-spacing:-0.02em;line-height:1.15;">
+      Your Eyes Deserve<br>Something Extraordinary
+    </h2>
+    <p class="mt-5 text-base font-light max-w-lg mx-auto" style="color:rgba(255,255,255,0.7);">
+      Join 200,000+ people who transformed their look with LUSHA. Free shipping on your first order, plus a 30-day satisfaction guarantee.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4 mt-10">
+      <button class="btn-primary" style="background:linear-gradient(135deg, var(--white), var(--mint-light));" onclick="scrollToCollection()">
+        <span style="color:var(--turquoise-dark);">Shop Now</span>
+      </button>
+      <button class="btn-outline" style="border-color:rgba(255,255,255,0.3);color:var(--white);" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.5)';" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,255,255,0.3)';">
+        Take the Quiz
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="py-16 px-6" style="background:var(--turquoise-dark);">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
+      <div>
+        <div class="flex items-center gap-2 mb-5">
+          <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--mint),var(--turquoise));display:flex;align-items:center;justify-content:center;">
+            <i class="fa-solid fa-eye text-white text-xs"></i>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--white);">LUSHA</span>
+        </div>
+        <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.5);">Premium colored contact lenses designed for comfort, safety, and stunning natural beauty.</p>
+        <div class="flex gap-4 mt-5">
+          <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);" onmouseover="this.style.background='var(--turquoise)';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.5)';"><i class="fa-brands fa-instagram text-sm"></i></a>
+          <a href="#" aria-label="TikTok" class="w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);" onmouseover="this.style.background='var(--turquoise)';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.5)';"><i class="fa-brands fa-tiktok text-sm"></i></a>
+          <a href="#" aria-label="Pinterest" class="w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);" onmouseover="this.style.background='var(--turquoise)';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.5)';"><i class="fa-brands fa-pinterest-p text-sm"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-wider mb-5" style="color:var(--mint);">Shop</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Natural Collection</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Vivid Collection</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Torica (Astigmatism)</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Multifocal</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Bundles & Sets</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-wider mb-5" style="color:var(--mint);">Support</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">How to Wear</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Lens Care Guide</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Prescription Help</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Returns & Refunds</a></li>
+          <li><a href="#" class="text-sm font-light transition-colors duration-300" style="color:rgba(255,255,255,0.5);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-wider mb-5" style="color:var(--mint);">Stay Updated</h4>
+        <p class="text-sm font-light mb-4" style="color:rgba(255,255,255,0.5);">New shades, exclusive drops, and eye care tips delivered monthly.</p>
+        <form onsubmit="handleSubscribe(event)" class="flex gap-2">
+          <input type="email" required placeholder="your@email.com" class="flex-1 px-4 py-3 rounded-full text-sm outline-none transition-all duration-300" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;font-family:'Outfit',sans-serif;" onfocus="this.style.borderColor='var(--mint)';this.style.background='rgba(255,255,255,0.12)';" onblur="this.style.borderColor='rgba(255,255,255,0.12)';this.style.background='rgba(255,255,255,0.08)';">
+          <button type="submit" class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300" style="background:var(--turquoise);color:white;" onmouseover="this.style.background='var(--mint)';this.style.color='var(--turquoise-dark)'" onmouseout="this.style.background='var(--turquoise)';this.style.color='white'" aria-label="Subscribe">
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="pt-8 flex flex-wrap items-center justify-between gap-4" style="border-top:1px solid rgba(255,255,255,0.08);">
+      <p class="text-xs font-light" style="color:rgba(255,255,255,0.35);">2025 LUSHA Vision Inc. All rights reserved.</p>
+      <div class="flex gap-6">
+        <a href="#" class="text-xs font-light transition-colors duration-300" style="color:rgba(255,255,255,0.35);" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Privacy</a>
+        <a href="#" class="text-xs font-light transition-colors duration-300" style="color:rgba(255,255,255,0.35);" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Terms</a>
+        <a href="#" class="text-xs font-light transition-colors duration-300" style="color:rgba(255,255,255,0.35);" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== TOAST ========== -->
+<div class="toast" id="toast">
+  <i class="fa-solid fa-circle-check" style="color:var(--turquoise);font-size:18px;"></i>
+  <span id="toastMsg">Added to bag</span>
+</div>
+
+<script>
+// ========== PRODUCT DATA ==========
+const products = [
+  {
+    id: 1, name: "Hazel Glaze", price: 39.99, category: "natural",
+    color: "#8B7355", colorName: "Warm Hazel",
+    desc: "Soft golden-brown with honey flecks",
+    img: "https://i.pinimg.com/1200x/ea/a0/fa/eaa0fa97bfe886b3220e6fb2685824dc.jpg",
+    badge: "Bestseller"
+  },
+  {
+    id: 2, name: "Ocean Mist", price: 42.99, category: "cool",
+    color: "#4A90A4", colorName: "Cool Blue-Grey",
+    desc: "Misty aqua with silver undertones",
+    img: "https://i.pinimg.com/1200x/c8/b5/ca/c8b5ca62acdfb8051ab99b7a7470e45f.jpg",
+    badge: null
+  },
+  {
+    id: 3, name: "Amber Dusk", price: 44.99, category: "warm",
+    color: "#C4843E", colorName: "Deep Amber",
+    desc: "Rich burnt amber with copper glow",
+    img: "https://i.pinimg.com/736x/f2/b5/d9/f2b5d9cd31e86851ee971ebf1b052cb0.jpg",
+    badge: "New"
+  },
+  {
+    id: 4, name: "Jade Aura", price: 41.99, category: "vivid",
+    color: "#3D8B6E", colorName: "Vivid Green",
+    desc: "Luminous emerald with jade depth",
+    img: "https://i.pinimg.com/736x/31/9e/60/319e60cf380d6cff01dda2164e5cf21a.jpg",
+    badge: null
+  },
+  {
+    id: 5, name: "Violet Haze", price: 46.99, category: "vivid",
+    color: "#7B5EA7", colorName: "Soft Violet",
+    desc: "Dreamy lavender with prismatic shift",
+    img: "https://i.pinimg.com/736x/6d/59/50/6d5950efdb17126749e786fbb9ccdd3d.jpg",
+    badge: "Limited"
+  },
+  {
+    id: 6, name: "Rose Quartz", price: 43.99, category: "warm",
+    color: "#C47A8A", colorName: "Pink Blush",
+    desc: "Delicate rose with warm pink shimmer",
+    img: "https://i.pinimg.com/736x/ed/b1/f6/edb1f62ccfcbaa6ba99898a047bccfa9.jpg",
+    badge: null
+  },
+  {
+    id: 7, name: "Storm Grey", price: 40.99, category: "cool",
+    color: "#6B7B8D", colorName: "Steel Grey",
+    desc: "Cool charcoal with blue-grey dimension",
+    img: "https://i.pinimg.com/736x/82/87/2f/82872fba61f7e4df9c085e75a2144351.jpg",
+    badge: null
+  },
+  {
+    id: 8, name: "Honey Amber", price: 42.99, category: "natural",
+    color: "#D4A03C", colorName: "Golden Honey",
+    desc: "Sun-kissed gold with warm radiance",
+    img: "https://i.pinimg.com/736x/15/7e/35/157e350465e4740372ffef50d4247852.jpg",
+    badge: "Popular"
+  },
+   {
+    id: 9, name: "Honey Amber", price: 42.99, category: "natural",
+    color: "#D4A03C", colorName: "Golden Honey",
+    desc: "Sun-kissed gold with warm radiance",
+    img: "https://i.pinimg.com/1200x/7d/5a/4e/7d5a4e2354a703deae2b42700bd33daf.jpg",
+    badge: "new"
+  }
+];
+
+// ========== CART STATE ==========
+let cartCount = 0;
+
+// ========== RENDER PRODUCTS ==========
+function renderProducts(filter = 'all') {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+
+  const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+  filtered.forEach((product, index) => {
+    const card = document.createElement('div');
+    card.className = 'product-card scroll-reveal';
+    card.style.transitionDelay = `${index * 0.1}s`;
+    card.setAttribute('data-category', product.category);
+    card.setAttribute('role', 'article');
+    card.setAttribute('aria-label', `${product.name} colored contact lenses`);
+
+    card.innerHTML = `
+      <div class="card-image-wrap">
+        <img src="${product.img}" alt="${product.name} contact lens on eye" loading="lazy">
+        <div class="card-shine"></div>
+        ${product.badge ? `<span style="position:absolute;top:16px;left:16px;z-index:4;background:${product.badge === 'New' ? 'var(--turquoise)' : product.badge === 'Limited' ? '#7B5EA7' : 'var(--turquoise-dark)'};color:white;font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase;">${product.badge}</span>` : ''}
+        <button class="add-to-cart-btn" onclick="event.stopPropagation();addToCart('${product.name}')" aria-label="Add ${product.name} to bag" style="position:absolute;bottom:16px;right:16px;z-index:4;width:42px;height:42px;border-radius:50%;background:var(--white);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.1);transition:all 0.3s ease;opacity:0;transform:translateY(8px);" onmouseover="this.style.background='var(--turquoise)';this.querySelector('i').style.color='white';" onmouseout="this.style.background='var(--white)';this.querySelector('i').style.color='var(--turquoise-dark)';">
+          <i class="fa-solid fa-plus" style="color:var(--turquoise-dark);font-size:14px;transition:color 0.3s;"></i>
+        </button>
+      </div>
+      <div style="padding:4px 20px 22px 20px;">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="lens-dot" style="background:${product.color};"></span>
+          <span class="text-[11px] font-medium tracking-wide uppercase" style="color:var(--text-muted);">${product.colorName}</span>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:var(--turquoise-dark);margin-bottom:4px;">${product.name}</h3>
+        <p class="text-xs font-light mb-4" style="color:var(--text-muted);">${product.desc}</p>
+        <div class="flex items-center justify-between">
+          <span style="font-size:1.1rem;font-weight:700;color:var(--turquoise-dark);">$${product.price.toFixed(2)}</span>
+          <span class="text-[10px] font-medium" style="color:var(--text-muted);">per pair</span>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+
+    // Show add-to-cart button on card hover
+    const addBtn = card.querySelector('.add-to-cart-btn');
+    card.addEventListener('mouseenter', () => {
+      addBtn.style.opacity = '1';
+      addBtn.style.transform = 'translateY(0)';
+    });
+    card.addEventListener('mouseleave', () => {
+      addBtn.style.opacity = '0';
+      addBtn.style.transform = 'translateY(8px)';
+    });
+  });
+
+  // Re-init scroll observer for new cards
+  initScrollObserver();
+  // Re-init 3D tilt for new cards
+  initTilt();
+}
+
+// ========== FILTER ==========
+function filterProducts(filter, btn) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(filter);
+}
+
+// ========== ADD TO CART ==========
+function addToCart(name) {
+  cartCount++;
+  const counter = document.getElementById('cartCount');
+  counter.style.display = 'flex';
+  counter.textContent = cartCount;
+  counter.style.transform = 'scale(1.4)';
+  setTimeout(() => counter.style.transform = 'scale(1)', 200);
+  counter.style.transition = 'transform 0.2s ease';
+  showToast(`${name} added to bag`);
+}
+
+// ========== TOAST ==========
+let toastTimeout;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+// ========== SUBSCRIBE ==========
+function handleSubscribe(e) {
+  e.preventDefault();
+  e.target.reset();
+  showToast('Welcome to the LUSHA family');
+}
+
+// ========== SCROLL TO COLLECTION ==========
+function scrollToCollection() {
+  document.getElementById('collection').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ========== NAVBAR SCROLL EFFECT ==========
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 60) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// ========== SCROLL REVEAL (IntersectionObserver) ==========
+function initScrollObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.scroll-reveal:not(.revealed)').forEach(el => observer.observe(el));
+}
+
+// ========== 3D PARALLAX TILT ==========
+function initTilt() {
+  document.querySelectorAll('.product-card').forEach(card => {
+    const shine = card.querySelector('.card-shine');
+    let rafId = null;
+
+    card.addEventListener('mousemove', (e) => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        // Tilt angles (max ±8 degrees)
+        const rotateY = ((x - centerX) / centerX) * 8;
+        const rotateX = ((centerY - y) / centerY) * 8;
+
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+        // Move shine
+        const shineX = (x / rect.width) * 100;
+        const shineY = (y / rect.height) * 100;
+        if (shine) {
+          shine.style.setProperty('--shine-x', shineX + '%');
+          shine.style.setProperty('--shine-y', shineY + '%');
+        }
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease';
+      setTimeout(() => {
+        card.style.transition = 'border-color 0.4s ease, box-shadow 0.4s ease';
+      }, 500);
+    });
+
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'border-color 0.4s ease, box-shadow 0.4s ease';
+    });
+  });
+}
+
+// ========== HERO PARTICLES ==========
+function createHeroParticles() {
+  const container = document.getElementById('heroParticles');
+  if (!container) return;
+
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    const size = Math.random() * 5 + 2;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 8;
+    const duration = Math.random() * 6 + 6;
+    const isMint = Math.random() > 0.5;
+
+    particle.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${left}%;
+      bottom: ${Math.random() * 30}%;
+      background: ${isMint ? 'var(--mint)' : 'var(--turquoise)'};
+      animation-delay: ${delay}s;
+      animation-duration: ${duration}s;
+      box-shadow: 0 0 ${size * 2}px ${isMint ? 'rgba(94,234,212,0.4)' : 'rgba(13,148,136,0.4)'};
+    `;
+    container.appendChild(particle);
+  }
+}
+
+// ========== MOBILE MENU (simple toggle) ==========
+document.getElementById('menuBtn').addEventListener('click', () => {
+  showToast('Mobile navigation opened');
+});
+
+document.getElementById('cartBtn').addEventListener('click', () => {
+  if (cartCount === 0) {
+    showToast('Your bag is empty');
+  } else {
+    showToast(`You have ${cartCount} item${cartCount > 1 ? 's' : ''} in your bag`);
+  }
+});
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  renderProducts();
+  createHeroParticles();
+  initScrollObserver();
+});
+</script>
+</body>
+</html>
