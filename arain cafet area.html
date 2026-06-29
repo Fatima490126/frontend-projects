@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIN CEFIT AREA | Premium Coffee Experience</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            /* Palette */
+            --color-cream: #F5F1E8;
+            --color-cream-dark: #E8E0D5;
+            --color-latte: #D4C4B0;
+            --color-brown-light: #A98467;
+            --color-brown: #6F4E37;
+            --color-espresso: #3B2F2F;
+            --color-white: #FFFFFF;
+            --color-accent: #C19A6B;
+
+            /* Typography */
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+
+            /* Spacing & Layout */
+            --container-width: 1200px;
+            --section-padding: 5rem 1.5rem;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-cream);
+            color: var(--color-espresso);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--color-espresso);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--color-brown);
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--transition-speed);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- UTILITY CLASSES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background-color: var(--color-brown);
+            color: var(--color-white);
+            border: 2px solid var(--color-brown);
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--color-brown);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(111, 78, 55, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-white);
+            border-color: var(--color-white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-white);
+            color: var(--color-espresso);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--color-brown-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent);
+            margin: 0 auto 3rem auto;
+            border-radius: 2px;
+        }
+
+        /* --- ANIMATIONS --- */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            background-color: rgba(245, 241, 232, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: padding 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-brown);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--color-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--color-accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-brown);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--color-espresso);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* --- HERO SLIDER --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Overlay for text readability */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: var(--color-white);
+            max-width: 800px;
+            padding: 0 1.5rem;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 1s ease forwards 0.5s;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--color-cream);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 1s ease forwards 0.8s;
+        }
+
+        .hero-buttons {
+            opacity: 0;
+            animation: slideUpFade 1s ease forwards 1.1s;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .control-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-dot.active {
+            background-color: var(--color-white);
+            transform: scale(1.2);
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about {
+            padding: var(--section-padding);
+            background-color: var(--color-cream);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-img-wrapper {
+            position: relative;
+        }
+
+        .about-img {
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 40px rgba(59, 47, 47, 0.15);
+            width: 90%;
+        }
+
+        .about-img-bg {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            width: 90%;
+            height: 100%;
+            border: 2px solid var(--color-accent);
+            border-radius: var(--border-radius);
+            z-index: -1;
+        }
+
+        /* --- MENU SECTION --- */
+        .menu {
+            padding: var(--section-padding);
+            background-color: var(--color-white);
+        }
+
+        .menu-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-brown-light);
+            cursor: pointer;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: var(--color-brown);
+            border-bottom-color: var(--color-brown);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background-color: var(--color-cream);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(111, 78, 55, 0.15);
+            background-color: var(--color-white);
+        }
+
+        .menu-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: -3rem auto 1rem auto;
+            object-fit: cover;
+            border: 4px solid var(--color-white);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .menu-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            color: var(--color-accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .menu-desc {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- GALLERY SECTION --- */
+        .gallery {
+            padding: var(--section-padding);
+            background-color: var(--color-cream);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 300px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(59, 47, 47, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-icon {
+            color: var(--color-white);
+            width: 40px;
+            height: 40px;
+        }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials {
+            padding: var(--section-padding);
+            background-color: var(--color-white);
+            text-align: center;
+        }
+
+        .testimonial-slider-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 2rem;
+        }
+
+        .testimonial-text {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: var(--color-brown);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
+        }
+
+        .author-info span {
+            font-size: 0.85rem;
+            color: var(--color-brown-light);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--color-latte);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .slider-arrow:hover {
+            color: var(--color-brown);
+        }
+
+        .prev-arrow { left: 0; }
+        .next-arrow { right: 0; }
+
+        /* --- CONTACT SECTION --- */
+        .contact {
+            padding: var(--section-padding);
+            background: linear-gradient(rgba(59, 47, 47, 0.9), rgba(59, 47, 47, 0.9)), url('https://picsum.photos/seed/coffeebg/1920/1080.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--color-white);
+        }
+
+        .contact h2 { color: var(--color-white); }
+        .contact p { color: var(--color-cream); }
+        .divider { background-color: var(--color-accent); margin-bottom: 3rem; }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--color-accent);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--color-white);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: background-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: var(--color-accent);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--color-espresso);
+            color: var(--color-cream);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--color-brown-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        .social-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-cream);
+        }
+
+        .copyright {
+            color: var(--color-brown-light);
+            font-size: 0.9rem;
+        }
+
+        /* --- TOAST NOTIFICATION --- */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--color-brown);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.5s, bottom 0.5s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .about-img-bg { display: none; }
+            .about-img { width: 100%; }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 0; }
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--color-cream);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                gap: 1.5rem;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease-in-out;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+            }
+            .nav-links.active { transform: translateY(0); }
+            .hamburger { display: flex; }
+            .hero-content h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">ARIN <span>CEFIT AREA</span></a>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="home" class="hero">
+        <!-- Slide 1 -->
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1775203291807-c086b69cba1a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTcxfHxjb2ZmZWUlMjBwaWNzJTIwYWNjdGljZXR8ZW58MHx8MHx8fDA%3D.');"></div>
+        <!-- Slide 2 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1667279601083-ce3cccc604a1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjIxfHxjb2ZmZWUlMjBwaWNzJTIwYWNjdGljZXR8ZW58MHx8MHx8fDA%3D');"></div>
+        <!-- Slide 3 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1771764753575-54dbd0ae8bf8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);"></div>
+
+        <div class="hero-content">
+            <h1>Experience the Art of Coffee</h1>
+            <p>Warm atmosphere, premium beans, and unforgettable moments in the heart of the city.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn">View Menu</a>
+                <a href="#contact" class="btn btn-outline">Find Us</a>
+            </div>
+        </div>
+
+        <div class="slider-controls">
+            <div class="control-dot active" data-index="0"></div>
+            <div class="control-dot" data-index="1"></div>
+            <div class="control-dot" data-index="2"></div>
+        </div>
+    </header>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="about fade-in-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2 class="section-title" style="transform: none; left: 0; display: block;">Our Story</h2>
+                    <div class="divider" style="margin: 0 0 2rem 0;"></div>
+                    <p>At <strong>ARIN CEFIT AREA</strong>, we believe coffee is more than just a drink—it's a ritual. Established in 2023, our mission has been to provide a sanctuary for coffee lovers who appreciate the finer nuances of a perfectly brewed cup.</p>
+                    <p>We source our beans ethically from sustainable farms across South America and Africa, roasted to perfection in small batches right here in the city. Whether you are here for a quick espresso or a long afternoon chat, our cozy, elegant interiors are designed to make you feel right at home.</p>
+                    <a href="#gallery" class="btn">Explore Gallery</a>
+                </div>
+                <div class="about-img-wrapper">
+                    <div class="about-img-bg"></div>
+                    <img src="https://plus.unsplash.com/premium_photo-1726848210392-5a7f89ae7a3b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Barista pouring coffee" class="about-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section id="menu" class="menu fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            <p class="section-subtitle">Curated for Perfection</p>
+            <div class="divider"></div>
+
+            <div class="menu-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="hot">Hot Coffee</button>
+                <button class="filter-btn" data-filter="cold">Cold Brews</button>
+                <button class="filter-btn" data-filter="pastry">Pastries</button>
+            </div>
+
+            <div class="menu-grid">
+                <!-- Item 1 -->
+                <div class="menu-card" data-category="hot">
+                    <img src="https://plus.unsplash.com/premium_photo-1726848210392-5a7f89ae7a3b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Caramel Latte" class="menu-img">
+                    <h3>Caramel Latte</h3>
+                    <span class="price">$5.50</span>
+                    <p class="menu-desc">Rich espresso, steamed milk, and artisanal caramel syrup.</p>
+                    <button class="btn" onclick="addToCart('Caramel Latte')">Order</button>
+                </div>
+                <!-- Item 2 -->
+                <div class="menu-card" data-category="hot">
+                    <img src="https://img.freepik.com/free-photo/cup-coffee-cappuccino-art-latte-art-latte-cappuccino_114579-178.jpg?t=st=1776924915~exp=1776928515~hmac=898cd783d80ddfe97beabfbfb7ebc696635518764b27656b2b57e03a3cbbd0e0&w=360" alt="Double Espresso" class="menu-img">
+                    <h3>Double Espresso</h3>
+                    <span class="price">$3.50</span>
+                    <p class="menu-desc">A powerful shot of our signature dark roast blend.</p>
+                    <button class="btn" onclick="addToCart('Double Espresso')">Order</button>
+                </div>
+                <!-- Item 3 -->
+                <div class="menu-card" data-category="cold">
+                    <img src="https://img.freepik.com/free-photo/coffee-with-whipped-cream-chocolate-drawing_140725-2724.jpg?t=st=1776925014~exp=1776928614~hmac=91529e6d2020e53bdbd2f0e292afca32db9ce0f8da1450b4dd09b6dc73e32a84&w=360" alt="Cold Brew" class="menu-img">
+                    <h3>Nitro Cold Brew</h3>
+                    <span class="price">$6.00</span>
+                    <p class="menu-desc">Steeped for 24 hours and infused with nitrogen for a creamy texture.</p>
+                    <button class="btn" onclick="addToCart('Nitro Cold Brew')">Order</button>
+                </div>
+                <!-- Item 4 -->
+                <div class="menu-card" data-category="pastry">
+                    <img src="https://img.freepik.com/free-photo/front-view-cup-cappuccino-with-bear-pattern_141793-2824.jpg?t=st=1776925108~exp=1776928708~hmac=b53e79efe3421ec6346c8e7396d86596aa0ff7bbc9ebba6731d3cb43bc3c530b&w=740" alt="Butter Croissant" class="menu-img">
+                    <h3>Butter Croissant</h3>
+                    <span class="price">$4.00</span>
+                    <p class="menu-desc">Freshly baked every morning, flaky and golden brown.</p>
+                    <button class="btn" onclick="addToCart('Butter Croissant')">Order</button>
+                </div>
+                <!-- Item 5 -->
+                <div class="menu-card" data-category="pastry">
+                    <img src="https://img.freepik.com/free-photo/cup-cappuccino-with-cocoa-floral-decoration_114579-3315.jpg?t=st=1776925146~exp=1776928746~hmac=986dfc402e9e49ffd1ce62e81d2e700a136a0a515b20fb6551d0fa0b0a44c737&w=740" alt="Cheesecake" class="menu-img">
+                    <h3>New York Cheesecake</h3>
+                    <span class="price">$7.00</span>
+                    <p class="menu-desc">Classic creamy cheesecake with a graham cracker crust.</p>
+                    <button class="btn" onclick="addToCart('New York Cheesecake')">Order</button>
+                </div>
+                 <!-- Item 6 -->
+                 <div class="menu-card" data-category="hot">
+                    <img src="https://img.freepik.com/free-photo/cup-coffee-stands-coffee-beans-cinnamon_8353-1481.jpg?t=st=1776925224~exp=1776928824~hmac=351fe9ec8fc2f0d2b3a82b30328be9c51eaf269e93308b2ec1a3563df914a24c&w=1060" alt="Mocha" class="menu-img">
+                    <h3>Dark Mocha</h3>
+                    <span class="price">$5.75</span>
+                    <p class="menu-desc">Espresso, dark chocolate, and topped with whipped cream.</p>
+                    <button class="btn" onclick="addToCart('Dark Mocha')">Order</button>
+                </div>
+                 <!-- Item 7 -->
+                 <div class="menu-card" data-category="hot">
+                    <img src="https://images.unsplash.com/photo-1771764753575-54dbd0ae8bf8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Mocha" class="menu-img">
+                    <h3>Dark Mocha</h3>
+                    <span class="price">$5.75</span>
+                    <p class="menu-desc">Espresso, dark chocolate, and topped with whipped cream.</p>
+                    <button class="btn" onclick="addToCart('Dark Mocha')">Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="gallery fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <p class="section-subtitle">Moments at Arin Cefit</p>
+            <div class="divider"></div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/cafeinterior1/400/500.jpg" alt="Interior">
+                    <div class="gallery-overlay">
+                        <!-- Simple SVG Plus Icon -->
+                        <svg class="gallery-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/latteart/400/500.jpg" alt="Latte Art">
+                    <div class="gallery-overlay">
+                        <svg class="gallery-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/coffebeans/400/500.jpg" alt="Coffee Beans">
+                    <div class="gallery-overlay">
+                        <svg class="gallery-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/friends/400/500.jpg" alt="Customers">
+                    <div class="gallery-overlay">
+                        <svg class="gallery-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section id="testimonials" class="testimonials fade-in-section">
+        <div class="container">
+            <h2 class="section-title">What People Say</h2>
+            <div class="divider"></div>
+
+            <div class="testimonial-slider-container">
+                <button class="slider-arrow prev-arrow" id="prev-testimonial">&#10094;</button>
+                
+                <div class="testimonial-track" id="testimonial-track">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-slide">
+                        <p class="testimonial-text">"The atmosphere here is unmatched. It's the perfect place to work or relax. The Nitro Cold Brew is the best I've had in the city."</p>
+                        <div class="testimonial-author">
+                            <img src="https://picsum.photos/seed/person1/100/100.jpg" alt="User" class="author-img">
+                            <div class="author-info">
+                                <h4>Sarah Jenkins</h4>
+                                <span>Coffee Enthusiast</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-slide">
+                        <p class="testimonial-text">"I love the warm tones of the interior and the incredibly friendly staff. ARIN CEFIT AREA has become my morning ritual spot."</p>
+                        <div class="testimonial-author">
+                            <img src="https://picsum.photos/seed/person2/100/100.jpg" alt="User" class="author-img">
+                            <div class="author-info">
+                                <h4>Michael Chen</h4>
+                                <span>Freelance Designer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-slide">
+                        <p class="testimonial-text">"Their pastries are fresh and the coffee is always roasted to perfection. A hidden gem that definitely deserves more attention!"</p>
+                        <div class="testimonial-author">
+                            <img src="https://picsum.photos/seed/person3/100/100.jpg" alt="User" class="author-img">
+                            <div class="author-info">
+                                <h4>Elena Rodriguez</h4>
+                                <span>Local Guide</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="slider-arrow next-arrow" id="next-testimonial">&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact fade-in-section">
+        <div class="container">
+            <h2>Visit Us Today</h2>
+            <div class="divider"></div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24">
+                            <path d="M12,2C15.31,2 18,4.66 18,7.95C18,12.41 12,19 12,19C12,19 6,12.41 6,7.95C6,4.66 8.69,2 12,2M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M20,19C20,21.21 16.42,23 12,23C7.58,23 4,21.21 4,19C4,17.71 5.22,16.56 7.11,15.83L7.75,16.74C6.67,17.19 6,17.81 6,18.5C6,19.88 8.69,21 12,21C15.31,21 18,19.88 18,18.5C18,17.81 17.33,17.19 16.25,16.74L16.89,15.83C18.78,16.56 20,17.71 20,19Z" />
+                        </svg>
+                        <div>
+                            <h4>Location</h4>
+                            <p style="margin-bottom:0">123 Cefit Boulevard, Downtown District<br>Metropolis, NY 10012</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24">
+                            <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
+                        </svg>
+                        <div>
+                            <h4>Phone</h4>
+                            <p style="margin-bottom:0">+1 (555) 123-4567<br>+1 (555) 987-6543</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                        </svg>
+                        <div>
+                            <h4>Email</h4>
+                            <p style="margin-bottom:0">hello@arincefitarea.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">ARIN CEFIT AREA</div>
+        <div class="social-links">
+            <a href="#">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.15 5.96C15.21 5.96 16.12 6.04 16.39 6.08V8.7H14.86C13.65 8.7 13.41 9.28 13.41 10.12V12.06H16.32L15.86 14.96H13.41V21.96C18.19 21.21 21.86 17.06 21.86 12.06C21.86 6.53 17.36 2.04 12 2.04Z"/></svg>
+            </a>
+            <a href="#">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg>
+            </a>
+            <a href="#">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10.03 2.38,10.05 2.38,10.08C2.38,12.17 3.86,13.92 5.84,14.32C5.48,14.42 5.09,14.47 4.69,14.47C4.42,14.47 4.15,14.42 3.9,14.37C4.43,16.09 6.03,17.35 7.93,17.38C6.46,18.53 4.6,19.22 2.58,19.22C2.22,19.22 1.88,19.2 1.54,19.16C3.44,20.4 5.7,21.12 8.12,21.12C16,21.12 20.33,14.57 20.33,8.93C20.33,8.74 20.33,8.55 20.32,8.36C21.16,7.76 21.88,7 22.46,6Z"/></svg>
+            </a>
+        </div>
+        <p class="copyright">&copy; 2023 ARIN CEFIT AREA. All Rights Reserved.</p>
+    </footer>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">Item added to cart!</div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- MOBILE NAVBAR ---
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+            const navItems = document.querySelectorAll('.nav-links a');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when a link is clicked
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // --- HERO SLIDER ---
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.control-dot');
+            let currentSlide = 0;
+            const slideInterval = 5000; // 5 seconds
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                let next = (currentSlide + 1) % slides.length;
+                showSlide(next);
+            }
+
+            // Auto play slider
+            let slideTimer = setInterval(nextSlide, slideInterval);
+
+            // Dot controls
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    clearInterval(slideTimer);
+                    const index = parseInt(dot.getAttribute('data-index'));
+                    showSlide(index);
+                    slideTimer = setInterval(nextSlide, slideInterval); // Restart timer
+                });
+            });
+
+            // --- SCROLL ANIMATIONS ---
+            const observerOptions = {
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- MENU FILTERING ---
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const menuCards = document.querySelectorAll('.menu-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+
+                    const filter = btn.getAttribute('data-filter');
+
+                    menuCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                            // Small animation reset
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.opacity = '1', 50);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // --- TESTIMONIALS SLIDER ---
+            const track = document.getElementById('testimonial-track');
+            const prevBtn = document.getElementById('prev-testimonial');
+            const nextBtn = document.getElementById('next-testimonial');
+            const slidesCount = document.querySelectorAll('.testimonial-slide').length;
+            let testimonialIndex = 0;
+
+            function updateTestimonialSlider() {
+                const width = track.clientWidth;
+                track.style.transform = `translateX(-${testimonialIndex * 100}%)`;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                testimonialIndex = (testimonialIndex + 1) % slidesCount;
+                updateTestimonialSlider();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                testimonialIndex = (testimonialIndex - 1 + slidesCount) % slidesCount;
+                updateTestimonialSlider();
+            });
+
+            // Handle resize for slider
+            window.addEventListener('resize', updateTestimonialSlider);
+
+        });
+
+        // --- GLOBAL FUNCTIONS (Exposed to Window for Inline HTML) ---
+        window.addToCart = function(itemName) {
+            showToast(`${itemName} added to your cart!`);
+        };
+
+        window.handleFormSubmit = function(event) {
+            event.preventDefault();
+            // In a real app, you would send data to backend here.
+            showToast("Message sent successfully! We'll be in touch soon.");
+            event.target.reset();
+        };
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+</body>
+</html>
