@@ -1,0 +1,556 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxe Nails Beauty</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:linear-gradient(135deg,#dff6ff,#ffd6ec,#f4ecff);
+      overflow-x:hidden;
+      color:#333;
+    }
+
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      padding:18px 8%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(18px);
+      z-index:1000;
+      box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .logo{
+      font-size:32px;
+      font-weight:bold;
+      color:#ff4fa3;
+      text-shadow:0 0 10px #fff;
+      animation:glow 3s infinite alternate;
+    }
+
+    @keyframes glow{
+      0%{transform:scale(1)}
+      100%{transform:scale(1.05)}
+    }
+
+    nav a{
+      text-decoration:none;
+      margin:0 14px;
+      color:#333;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      color:#ff4fa3;
+    }
+
+    .icons i{
+      margin-left:15px;
+      font-size:20px;
+      color:#ff4fa3;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .icons i:hover{
+      transform:translateY(-5px) scale(1.1);
+    }
+
+    .hero{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:140px 8% 80px;
+      gap:60px;
+      position:relative;
+    }
+
+    .hero-text h1{
+      font-size:65px;
+      line-height:1.2;
+      color:#ff4fa3;
+    }
+
+    .hero-text p{
+      margin:25px 0;
+      font-size:18px;
+      line-height:1.8;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:15px 35px;
+      border-radius:50px;
+      background:linear-gradient(45deg,#ff4fa3,#7fdfff);
+      color:#fff;
+      text-decoration:none;
+      font-weight:bold;
+      box-shadow:0 10px 25px rgba(255,79,163,0.3);
+      transition:0.4s;
+    }
+
+    .btn:hover{
+      transform:translateY(-5px);
+      box-shadow:0 15px 35px rgba(255,79,163,0.5);
+    }
+
+    .hero-img img{
+      width:420px;
+      animation:float 4s ease-in-out infinite;
+      filter:drop-shadow(0 20px 30px rgba(0,0,0,0.2));
+      border-radius:30px;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-20px)}
+    }
+
+    section{
+      padding:90px 8%;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:50px;
+    }
+
+    .title h2{
+      font-size:45px;
+      color:#ff4fa3;
+      margin-bottom:15px;
+    }
+
+    .products{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.25);
+      backdrop-filter:blur(15px);
+      border-radius:25px;
+      padding:25px;
+      text-align:center;
+      transition:0.4s;
+      box-shadow:0 10px 30px rgba(0,0,0,0.1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      width:200px;
+      height:200px;
+      background:rgba(255,255,255,0.2);
+      border-radius:50%;
+      top:-100px;
+      right:-100px;
+    }
+
+    .card:hover{
+      transform:translateY(-10px) scale(1.02);
+      box-shadow:0 20px 40px rgba(255,79,163,0.25);
+    }
+
+    .card img{
+      width:100%;
+      border-radius:20px;
+      height:260px;
+      object-fit:cover;
+    }
+
+    .card h3{
+      margin:18px 0 10px;
+      color:#ff4fa3;
+    }
+
+    .price{
+      font-size:22px;
+      font-weight:bold;
+      color:#555;
+      margin-bottom:15px;
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:25px;
+    }
+
+    .gallery img{
+      width:100%;
+      height:350px;
+      object-fit:cover;
+      border-radius:25px;
+      transition:0.4s;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .gallery img:hover{
+      transform:scale(1.05);
+    }
+
+    .reviews{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:25px;
+    }
+
+    .review-box{
+      background:rgba(255,255,255,0.3);
+      backdrop-filter:blur(15px);
+      padding:30px;
+      border-radius:25px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .review-box h4{
+      color:#ff4fa3;
+      margin-bottom:10px;
+    }
+
+    .newsletter{
+      background:linear-gradient(45deg,#ffb5d9,#9ee8ff);
+      border-radius:35px;
+      text-align:center;
+      padding:60px 30px;
+      color:#fff;
+      box-shadow:0 15px 35px rgba(0,0,0,0.1);
+    }
+
+    .newsletter input{
+      width:60%;
+      padding:16px;
+      border:none;
+      border-radius:50px;
+      margin-top:20px;
+      outline:none;
+    }
+
+    footer{
+      background:#fff;
+      padding:70px 8% 30px;
+      margin-top:60px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:40px;
+    }
+
+    .footer-grid h3{
+      color:#ff4fa3;
+      margin-bottom:20px;
+    }
+
+    .footer-grid a{
+      display:block;
+      text-decoration:none;
+      color:#555;
+      margin:10px 0;
+      transition:0.3s;
+    }
+
+    .footer-grid a:hover{
+      color:#ff4fa3;
+      transform:translateX(5px);
+    }
+
+    .socials i{
+      width:45px;
+      height:45px;
+      line-height:45px;
+      text-align:center;
+      background:linear-gradient(45deg,#ff4fa3,#7fdfff);
+      color:#fff;
+      border-radius:50%;
+      margin-right:10px;
+      transition:0.4s;
+      cursor:pointer;
+    }
+
+    .socials i:hover{
+      transform:translateY(-8px) rotate(10deg);
+    }
+
+    .copy{
+      text-align:center;
+      margin-top:40px;
+      color:#777;
+    }
+
+  /* BUBBLES */
+.bubble{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,0.4);
+  animation:move 15s linear infinite;
+  z-index:1;
+}
+    @keyframes move{
+      0%{transform:translateY(0) rotate(0deg)}
+      100%{transform:translateY(-1200px) rotate(360deg)}
+    }
+
+    @media(max-width:900px){
+      .hero{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      .hero-text h1{
+        font-size:45px;
+      }
+
+      nav{
+        display:none;
+      }
+
+      .newsletter input{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- BUBBLES -->
+<div class="bubble" style="width:80px;height:80px;left:10%;bottom:-100px"></div>
+<div class="bubble" style="width:120px;height:120px;left:70%;bottom:-200px"></div>
+<div class="bubble" style="width:60px;height:60px;left:40%;bottom:-150px"></div>
+
+<header>
+  <div class="logo">LUXE NAILS</div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#products">Products</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="icons">
+    <i class="fas fa-search"></i>
+    <i class="fas fa-heart"></i>
+    <i class="fas fa-shopping-cart"></i>
+    <i class="fas fa-user"></i>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-text">
+    <h1>Luxury Nail Paint <br> Beauty Collection</h1>
+    <p>Discover elegant glossy nail paints, sparkling beauty products, feminine luxury aesthetics, and trendy beauty essentials designed for modern beauty lovers.</p>
+    <a href="#products" class="btn">Shop Now</a>
+  </div>
+
+  <div class="hero-img">
+    <img src="https://i.pinimg.com/736x/1f/f3/17/1ff3178a475ece0dd45029108da4492e.jpg" alt="Beauty">
+  </div>
+</section>
+
+<section id="products">
+  <div class="title">
+    <h2>Trending Nail Paints</h2>
+    <p>Luxury glossy collections with feminine shades</p>
+  </div>
+
+  <div class="products">
+
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/3b/53/9d/3b539d16eed3acaa5428afa6b609cda0.jpg">
+      <h3>Glossy Pink Polish</h3>
+      <div class="price">$24</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/9e/2b/2b/9e2b2b7a7b043200a0544edc649adfcc.jpg">
+      <h3>Sky Blue Matte</h3>
+      <div class="price">$28</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+    
+    <div class="card">
+      <img src="https://i.pinimg.com/1200x/44/2b/3c/442b3c17ea6a97289dca8d308fc0ff11.jpg">
+      <h3>orange Matte</h3>
+      <div class="price">$29</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+
+    
+    <div class="card">
+      <img src="https://i.pinimg.com/1200x/b0/3f/95/b03f956a15d8cb4a75efdfac8cca3ba3.jpg">
+      <h3> Matte</h3>
+      <div class="price">$30</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+
+
+    <div class="card">
+      <img src="https://i.pinimg.com/1200x/8a/34/e7/8a34e714d35420399246e64cfed9e3e2.jpg">
+      <h3>Luxury Glitter Set</h3>
+      <div class="price">$35</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/46/4f/03/464f03e70115f03a0a38c0d2bbac7204.jpg">
+      <h3>Neon Beauty Collection</h3>
+      <div class="price">$42</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+    <div class="card">
+      <img src="https://i.pinimg.com/1200x/28/9e/af/289eaf3ff0b3ec172ce2c007aa6b90e9.jpg">
+      <h3>Neon Beauty Collection</h3>
+      <div class="price">$42</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/99/3b/55/993b55951a890dc280e007fcbdc704d8.jpg">
+      <h3>Neon Beauty Collection</h3>
+      <div class="price">$42</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/bc/2b/a2/bc2ba2b4915ddf3da755d177fb4b7eb1.jpg">
+      <h3>Neon Beauty Collection</h3>
+      <div class="price">$42</div>
+      <a href="#" class="btn">Add To Cart</a>
+    </div>
+
+
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="title">
+    <h2>Beauty Inspiration</h2>
+    <p>Elegant manicure and nail art gallery</p>
+  </div>
+
+  <div class="gallery">
+    <img src="https://i.pinimg.com/736x/f9/61/fb/f961fb2ea2bd29673cd96cd237224207.jpg">
+    <img src="https://i.pinimg.com/736x/74/86/7f/74867f8476afbcccd06d8f39c5ca6f62.jpg">
+    <img src="https://i.pinimg.com/736x/31/79/09/317909383822257d4850a44c52303a44.jpg">
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="title">
+    <h2>Customer Reviews</h2>
+    <p>What beauty lovers say about us</p>
+  </div>
+
+  <div class="reviews">
+
+    <div class="review-box">
+      <h4>Sarah Khan</h4>
+      <p>Amazing glossy nail paints with luxury packaging and beautiful feminine colors. Totally love the smooth finish.</p>
+    </div>
+
+    <div class="review-box">
+      <h4>Fatima Noor</h4>
+      <p>The website design feels modern and premium. Product quality and colors are absolutely stunning.</p>
+    </div>
+
+    <div class="review-box">
+      <h4>Ayesha Malik</h4>
+      <p>Best beauty collection with trendy pastel shades and glitter polish. Highly recommended for nail art lovers.</p>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="newsletter">
+    <h2>Join Our Beauty Newsletter</h2>
+    <p>Get exclusive offers, beauty tips, and luxury nail collections.</p>
+    <input type="email" placeholder="Enter Your Email">
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-grid">
+
+    <div>
+      <h3>LUXE NAILS</h3>
+      <p>Luxury beauty and nail paint collections with premium feminine aesthetics and modern glossy designs.</p>
+    </div>
+
+    <div>
+      <h3>Quick Links</h3>
+      <a href="#home">Home</a>
+      <a href="#products">Products</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+
+    <div>
+      <h3>Customer Support</h3>
+      <a href="#">FAQs</a>
+      <a href="#">Shipping</a>
+      <a href="#">Returns</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+
+    <div>
+      <h3>Follow Us</h3>
+      <div class="socials">
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-tiktok"></i>
+        <i class="fab fa-pinterest"></i>
+        <i class="fab fa-whatsapp"></i>
+        <i class="fab fa-youtube"></i>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="copy">
+    © 2026 Luxe Nails Beauty. All Rights Reserved.
+  </div>
+</footer>
+<!-- ❄️ SNOW SCRIPT -->
+<script>
+const snow = document.getElementById("snow");
+
+for(let i=0;i<60;i++){
+  let flake = document.createElement("div");
+  flake.classList.add("snowflake");
+  flake.innerHTML = "❄";
+
+  flake.style.left = Math.random()*100 + "vw";
+  flake.style.animationDuration = (Math.random()*5+5) + "s";
+  flake.style.fontSize = (Math.random()*10+8) + "px";
+
+  snow.appendChild(flake);
+}
+</script>
+
+</body>
+</html>
+
