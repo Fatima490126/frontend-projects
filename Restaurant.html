@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Bites - Best Restaurant in Town</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #F7931E;
+            --dark: #2C2C2C;
+            --light: #F8F9FA;
+            --accent: #FFD23F;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            transition: 0.3s;
+        }
+
+        /* Hero Slider */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider {
+            position: relative;
+            height: 100%;
+            display: flex;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+            color: white;
+            max-width: 500px;
+            animation: slideInLeft 1s ease;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .menu-category {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .menu-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .category-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-category:hover .category-image img {
+            transform: scale(1.1);
+        }
+
+        .category-content {
+            padding: 2rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .category-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* Special Deals */
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .deal-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .deal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--accent);
+        }
+
+        .deal-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .gallery-item {
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .stars {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Form */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Map */
+        #map {
+            height: 300px;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .newsletter {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Floating WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+
+            .slide-content {
+                left: 5%;
+                padding: 0 1rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-grid,
+            .deals-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-icons {
+                gap: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Delicious Bites</a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#deals" class="nav-link">Deals</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <div class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <section id="home" class="hero">
+        <div class="slider">
+            <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Pizza">
+                <div class="slide-content">
+                    <h1>Delicious Bites</h1>
+                    <p>Experience the best flavors from around the world at your favorite restaurant</p>
+                    <a href="#menu" class="btn">View Menu</a>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://i.pinimg.com/736x/1f/b9/a6/1fb9a6958c8c5c7bd1c01cd0420e30ba.jpg" alt="BBQ">
+                <div class="slide-content">
+                    <h1>Authentic BBQ</h1>
+                    <p>Savor the smoky flavors of traditional BBQ prepared with love</p>
+                    <a href="#menu" class="btn">Order Now</a>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://i.pinimg.com/1200x/46/4c/d7/464cd7b759efa52eb7c1305caed09dcd.jpg" alt="Desserts">
+                <div class="slide-content">
+                    <h1>Sweet Delights</h1>
+                    <p>End your meal with our irresistible desserts and sweet treats</p>
+                    <a href="#menu" class="btn">Explore Desserts</a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-controls">
+            <div class="slider-dot active" onclick="currentSlide(1)"></div>
+            <div class="slider-dot" onclick="currentSlide(2)"></div>
+            <div class="slider-dot" onclick="currentSlide(3)"></div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="animate">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            <p class="section-subtitle">Discover our delicious offerings across all categories</p>
+            <div class="menu-grid">
+                <div class="menu-category">
+                    <div class="category-image">
+                        <img src="https://i.pinimg.com/736x/c9/c5/01/c9c5013a47c78dde12d22a8659cdb945.jpg" alt="Fast Food">
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">🍔 Fast Food</h3>
+                        <div class="category-items">
+                            <div class="menu-item">
+                                <span class="item-name">Classic Burger</span>
+                                <span class="item-price">$8.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Crispy Fries</span>
+                                <span class="item-price">$4.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Chicken Nuggets</span>
+                                <span class="item-price">$6.99</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1.5rem;" onclick="addToCart('Fast Food Combo', 12.99)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="menu-category">
+                    <div class="category-image">
+                        <img src="https://i.pinimg.com/736x/ab/0c/12/ab0c12f97f508e7c1880d027ea464e58.jpg" alt="Desi">
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">🇮🇳 Desi</h3>
+                        <div class="category-items">
+                            <div class="menu-item">
+                                <span class="item-name">Butter Chicken</span>
+                                <span class="item-price">$12.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Biryani</span>
+                                <span class="item-price">$14.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Naan Bread</span>
+                                <span class="item-price">$2.99</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1.5rem;" onclick="addToCart('Desi Thali', 18.99)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="menu-category">
+                    <div class="category-image">
+                        <img src="https://i.pinimg.com/webp/1200x/66/d5/cf/66d5cf04847f88707b9891f3d4e54d88.webp" alt="Chinese">
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">🥡 Chinese</h3>
+                        <div class="category-items">
+                            <div class="menu-item">
+                                <span class="item-name">Fried Rice</span>
+                                <span class="item-price">$9.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Chow Mein</span>
+                                <span class="item-price">$10.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Spring Rolls</span>
+                                <span class="item-price">$5.99</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1.5rem;" onclick="addToCart('Chinese Combo', 15.99)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="menu-category">
+                    <div class="category-image">
+                        <img src="https://i.pinimg.com/736x/6d/5b/34/6d5b3486eedd9d4bf1b58c83889367f7.jpg" alt="BBQ">
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">🔥 BBQ</h3>
+                        <div class="category-items">
+                            <div class="menu-item">
+                                <span class="item-name">BBQ Ribs</span>
+                                <span class="item-price">$16.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Grilled Chicken</span>
+                                <span class="item-price">$13.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">BBQ Platter</span>
+                                <span class="item-price">$24.99</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1.5rem;" onclick="addToCart('BBQ Special', 22.99)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="menu-category">
+                    <div class="category-image">
+                        <img src="https://i.pinimg.com/1200x/b1/78/57/b17857e9ba08109bbaf844dc6bd6f432.jpg" alt="Drinks">
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">🥤 Drinks</h3>
+                        <div class="category-items">
+                            <div class="menu-item">
+                                <span class="item-name">Fresh Lassi</span>
+                                <span class="item-price">$4.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Cold Coffee</span>
+                                <span class="item-price">$5.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Fresh Juice</span>
+                                <span class="item-price">$6.99</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1.5rem;" onclick="addToCart('Drink Combo', 8.99)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="menu-category">
+                    <div class="category-image">
+                        <img src="https://i.pinimg.com/736x/9c/64/1f/9c641f34a51c3d39c254f34acfb25011.jpg" alt="Desserts">
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">🍰 Desserts</h3>
+                        <div class="category-items">
+                            <div class="menu-item">
+                                <span class="item-name">Gulab Jamun</span>
+                                <span class="item-price">$5.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Ice Cream</span>
+                                <span class="item-price">$4.99</span>
+                            </div>
+                            <div class="menu-item">
+                                <span class="item-name">Ras Malai</span>
+                                <span class="item-price">$6.99</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1.5rem;" onclick="addToCart('Dessert Platter', 12.99)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Deals -->
+    <section id="deals" class="animate" style="background: var(--light);">
+        <div class="container">
+            <h2 class="section-title">Special Deals</h2>
+            <p class="section-subtitle">Limited time offers you can't miss!</p>
+            <div class="deals-grid">
+                <div class="deal-card">
+                    <div class="deal-badge">50% OFF</div>
+                    <h3>Family Combo</h3>
+                    <p>Perfect for 4 people - includes 4 mains, 2 desserts & drinks</p>
+                    <div style="font-size: 2rem; font-weight: 700; margin: 1rem 0;">$49.99</div>
+                    <button class="btn" onclick="addToCart('Family Combo', 49.99)">Order Now</button>
+                </div>
+                <div class="deal-card">
+                    <div class="deal-badge">BUY 1 GET 1</div>
+                    <h3>Lunch Special</h3>
+                    <p>Main course + drink + dessert</p>
+                    <div style="font-size: 2rem; font-weight: 700; margin: 1rem 0;">$12.99</div>
+                    <button class="btn" onclick="addToCart('Lunch Special', 12.99)">Order Now</button>
+                </div>
+                <div class="deal-card">
+                    <div class="deal-badge">LIMITED</div>
+                    <h3>BBQ Feast</h3>
+                    <p>Full BBQ platter for 2 people</p>
+                    <div style="font-size: 2rem; font-weight: 700; margin: 1rem 0;">$32.99</div>
+                    <button class="btn" onclick="addToCart('BBQ Feast', 32.99)">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="animate">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <p class="section-subtitle">A glimpse of our delicious creations</p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://i.pinimg.com/736x/7b/94/b5/7b94b5b4e3f9a45cd5d7d88ff2c33589.jpg" alt="Pizza">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.pinimg.com/736x/b7/f9/16/b7f91642b98431367cb4c0b40552ae46.jpg" alt="BBQ">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.pinimg.com/736x/e7/26/87/e72687c57ecbf8b365b152bfb6746616.jpg" alt="Dessert">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.pinimg.com/736x/e2/29/ef/e229efd0283d5f4d8df255d10fc9833f.jpg" alt="Burger">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.pinimg.com/1200x/c8/34/e4/c834e4767afd16ac4915a4a55362168e.jpg" alt="Burger">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.pinimg.com/736x/3d/fe/33/3dfe33b1f02d115a99789538a9c246b7.jpg" alt="Drinks">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="animate" style="background: var(--light);">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Best restaurant in town! The food is amazing and service is excellent."</p>
+                    <div style="margin-top: 1.5rem; font-weight: 600;">Sarah Johnson</div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"The BBQ platter was incredible! Highly recommend for family gatherings."</p>
+                    <div style="margin-top: 1.5rem; font-weight: 600;">Mike Chen</div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Desserts are to die for! Perfect ending to any meal."</p>
+                    <div style="margin-top: 1.5rem; font-weight: 600;">Priya Sharma</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="animate">
+        <div class="container">
+            <h2 class="section-title">Contact & Book Table</h2>
+            <p class="section-subtitle">Reserve your table or place an order</p>
+            <div class="contact-grid">
+                <form id="reservationForm" class="animate">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Guests</label>
+                        <select required>
+                            <option value="">Select number</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                            <option value="5+">5+ People</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Requests</label>
+                        <textarea rows="4" placeholder="Any special requirements?"></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Book Table</button>
+                </form>
+                <div class="animate">
+                    <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                        123 Food Street, Downtown, City 12345
+                    </div>
+                    <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-phone" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                        +1 (555) 123-4567
+                    </div>
+                    <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem;">
+                        <i class="fas fa-clock" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                        Open 11AM - 11PM Daily
+                    </div>
+                    <div id="map">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.566614546299!2d-73.98731968459371!3d40.75889497932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9f9b753dd%3A0x2a1d67fcf6a1e5e!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1635782345678!5m2!1sen!2sus" 
+                            width="100%" 
+                            height="300" 
+                            style="border:0; border-radius: 15px;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Delicious Bites</h3>
+                    <p>Your favorite destination for authentic flavors from around the world. Quality food, great service, every time.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul style="list-style: none;">
+                        <li><a href="#home" style="color: #ccc; text-decoration: none;">Home</a></li>
+                        <li><a href="#menu" style="color: #ccc; text-decoration: none;">Menu</a></li>
+                        <li><a href="#deals" style="color: #ccc; text-decoration: none;">Deals</a></li>
+                        <li><a href="#gallery" style="color: #ccc; text-decoration: none;">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul style="list-style: none;">
+                        <li><a href="#" style="color: #ccc; text-decoration: none;">Dine In</a></li>
+                        <li><a href="#" style="color: #ccc; text-decoration: none;">Takeaway</a></li>
+                        <li><a href="#" style="color: #ccc; text-decoration: none;">Delivery</a></li>
+                        <li><a href="#" style="color: #ccc; text-decoration: none;">Catering</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for updates and special offers</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Enter your email" style="width: 70%; padding: 0.8rem; border: none; border-radius: 25px 0 0 25px;">
+                        <button class="btn" style="border-radius: 0 25px 25px 0; padding: 0.8rem 1.5rem; margin: 0;">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #444; color: #ccc;">
+                © 2024 Delicious Bites. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/15551234567" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 20px; max-width: 500px; width: 90%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Shopping Cart</h2>
+                <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+            </div>
+            <div id="cartItems"></div>
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="btn" onclick="checkout()" style="width: 100%;">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Navbar Shrink on Scroll
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar').style.padding = window.scrollY > 100 ? '0.5rem 0' : '1rem 0';
+        });
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        }
+
+        // Hero Slider
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index - 1;
+            showSlide(currentSlideIndex);
+        }
+
+        setInterval(nextSlide, 5000);
+
+        // Cart Functionality
+        let cart = [];
+        let cartCount = 0;
+
+        function addToCart(itemName, price) {
+            cart.push({ name: itemName, price: price });
+            cartCount++;
+            document.getElementById('cartCount').textContent = cartCount;
+            alert(`${itemName} added to cart!`);
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Your cart is empty</p>';
+                return;
+            }
+            
+            let total = 0;
+            cartItems.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+                        <span>${item.name}</span>
+                        <span>$${item.price.toFixed(2)}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            cartItems.innerHTML += `<div style="font-weight: 700; font-size: 1.2rem; margin-top: 1rem;">Total: $${total.toFixed(2)}</div>`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            alert('Thank you for your order! Redirecting to payment...');
+            cart = [];
+            cartCount = 0;
+            document.getElementById('cartCount').textContent = '0';
+            toggleCart();
+        }
+
+        // Form Submission
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Table reservation request sent successfully! We will contact you soon.');
+            this.reset();
+        });
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Close cart modal when clicking outside
+        document.getElementById('cartModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleCart();
+            }
+        });
+    </script>
+</body>
+</html>
