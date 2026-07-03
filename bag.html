@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAISON ÉLAIRE — Luxury Leather Goods</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FDF6F0',
+                        'cream-dark': '#F5EDE4',
+                        'soft-pink': '#F2DDD5',
+                        'rose-gold': '#B8867B',
+                        'rose-gold-light': '#D4A99F',
+                        'rose-gold-dark': '#8B5E54',
+                        'deep-chocolate': '#2A1810',
+                        'warm-brown': '#5C4033',
+                        'warm-beige': '#E8D5C4',
+                        'muted-tan': '#C4A98E',
+                    },
+                    fontFamily: {
+                        display: ['"Cormorant Garamond"', 'serif'],
+                        body: ['"Outfit"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --cream: #FDF6F0;
+            --cream-dark: #F5EDE4;
+            --soft-pink: #F2DDD5;
+            --rose-gold: #B8867B;
+            --rose-gold-light: #D4A99F;
+            --rose-gold-dark: #8B5E54;
+            --deep-chocolate: #2A1810;
+            --warm-brown: #5C4033;
+            --warm-beige: #E8D5C4;
+            --muted-tan: #C4A98E;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.22);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--cream);
+            color: var(--deep-chocolate);
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid var(--rose-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, opacity 0.3s ease, border-color 0.3s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: var(--rose-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.08s ease;
+        }
+
+        .cursor-ring.hover {
+            transform: translate(-50%, -50%) scale(1.8);
+            border-color: var(--rose-gold-light);
+            opacity: 0.6;
+        }
+
+        /* Marble Texture Background */
+        .marble-bg {
+            background-color: #F0E6DC;
+            background-image:
+                linear-gradient(125deg, transparent 28%, rgba(180,160,140,0.13) 28.5%, rgba(180,160,140,0.08) 29%, transparent 29.5%),
+                linear-gradient(55deg, transparent 42%, rgba(170,150,130,0.1) 42.5%, rgba(170,150,130,0.06) 43%, transparent 43.5%),
+                linear-gradient(170deg, transparent 55%, rgba(190,170,150,0.09) 55.5%, rgba(190,170,150,0.05) 56%, transparent 56.5%),
+                linear-gradient(95deg, transparent 65%, rgba(175,155,135,0.11) 65.5%, rgba(175,155,135,0.06) 66%, transparent 66.5%),
+                linear-gradient(140deg, transparent 78%, rgba(185,165,145,0.08) 78.5%, transparent 79%),
+                radial-gradient(ellipse at 20% 30%, rgba(242,221,213,0.6) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 60%, rgba(232,213,196,0.5) 0%, transparent 45%),
+                radial-gradient(ellipse at 45% 80%, rgba(242,221,213,0.4) 0%, transparent 40%),
+                linear-gradient(160deg, #F2EAE2 0%, #EDE3D9 30%, #F5EDE4 55%, #EBE0D6 80%, #F0E6DC 100%);
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 8px 32px rgba(184, 134, 123, 0.06),
+                inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 12px 40px rgba(184, 134, 123, 0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* Marble Pedestal */
+        .pedestal {
+            position: relative;
+            background:
+                linear-gradient(125deg, transparent 30%, rgba(180,160,140,0.2) 30.5%, transparent 31%),
+                linear-gradient(45deg, transparent 60%, rgba(170,150,130,0.15) 60.5%, transparent 61%),
+                linear-gradient(135deg, #EDE3D9 0%, #F5EDE4 40%, #EBE0D6 70%, #F0E6DC 100%);
+            border-radius: 8px;
+            box-shadow:
+                0 20px 60px rgba(42, 24, 16, 0.12),
+                0 4px 16px rgba(42, 24, 16, 0.08),
+                inset 0 1px 0 rgba(255,255,255,0.4),
+                inset 0 -1px 0 rgba(42, 24, 16, 0.05);
+        }
+
+        .pedestal::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            border-radius: 2px;
+        }
+
+        /* Glow behind handbag */
+        .bag-glow {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(184,134,123,0.18) 0%, rgba(242,221,213,0.1) 40%, transparent 70%);
+            filter: blur(40px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        /* Reflection */
+        .bag-reflection {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 80px;
+            background: radial-gradient(ellipse, rgba(184,134,123,0.08) 0%, transparent 70%);
+            filter: blur(10px);
+        }
+
+        /* Float Animations */
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-12px) rotate(0.5deg); }
+            66% { transform: translateY(-6px) rotate(-0.3deg); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(-0.8deg); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0px); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-4px); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes lineGrow {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        .animate-float-1 { animation: float1 6s ease-in-out infinite; }
+        .animate-float-2 { animation: float2 7s ease-in-out infinite 0.5s; }
+        .animate-float-3 { animation: float3 5s ease-in-out infinite 1s; }
+
+        /* Staggered entrance */
+        .stagger-1 { animation: fadeInLeft 1s ease-out 0.2s both; }
+        .stagger-2 { animation: fadeInLeft 1s ease-out 0.4s both; }
+        .stagger-3 { animation: fadeInLeft 1s ease-out 0.6s both; }
+        .stagger-4 { animation: fadeInLeft 1s ease-out 0.8s both; }
+        .stagger-5 { animation: fadeInRight 1s ease-out 0.5s both; }
+        .stagger-6 { animation: scaleIn 1s ease-out 0.7s both; }
+        .stagger-7 { animation: scaleIn 1s ease-out 0.9s both; }
+        .stagger-8 { animation: scaleIn 1s ease-out 1.1s both; }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Decorative line */
+        .line-grow {
+            transform-origin: left;
+            animation: lineGrow 1.2s ease-out 0.5s both;
+        }
+
+        /* Shimmer text */
+        .shimmer-text {
+            background: linear-gradient(
+                110deg,
+                var(--deep-chocolate) 35%,
+                var(--rose-gold) 50%,
+                var(--deep-chocolate) 65%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* Nav transition */
+        .nav-scrolled {
+            background: rgba(253, 246, 240, 0.85) !important;
+            backdrop-filter: blur(20px) !important;
+            box-shadow: 0 4px 30px rgba(42, 24, 16, 0.06) !important;
+        }
+
+        /* Button hover shine */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-15deg);
+            transition: left 0.6s ease;
+        }
+        .btn-shine:hover::after {
+            left: 120%;
+        }
+
+        /* Product card hover */
+        .product-card {
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(42, 24, 16, 0.12);
+        }
+
+        /* Subtle noise overlay */
+        .noise-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Particle canvas */
+        #particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--rose-gold-light);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--rose-gold); }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Responsive cursor hide on touch */
+        @media (hover: none) {
+            .cursor-ring, .cursor-dot { display: none; }
+            body { cursor: auto; }
+        }
+
+        @media (max-width: 768px) {
+            .cursor-ring, .cursor-dot { display: none; }
+            body { cursor: auto; }
+        }
+    </style>
+</head>
+<body class="bg-cream">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- Navigation -->
+    <nav id="mainNav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" role="navigation" aria-label="Main navigation">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="font-display text-2xl lg:text-3xl font-600 tracking-wider text-deep-chocolate stagger-1" aria-label="Maison Élaire home">
+                    MAISON <span class="font-light italic text-rose-gold">Élaire</span>
+                </a>
+
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center gap-10 stagger-2">
+                    <a href="#" class="font-body text-sm font-300 tracking-widest uppercase text-warm-brown hover:text-rose-gold transition-colors duration-300 interactive">Collections</a>
+                    <a href="#" class="font-body text-sm font-300 tracking-widest uppercase text-warm-brown hover:text-rose-gold transition-colors duration-300 interactive">Atelier</a>
+                    <a href="#" class="font-body text-sm font-300 tracking-widest uppercase text-warm-brown hover:text-rose-gold transition-colors duration-300 interactive">Heritage</a>
+                    <a href="#" class="font-body text-sm font-300 tracking-widest uppercase text-warm-brown hover:text-rose-gold transition-colors duration-300 interactive">Boutique</a>
+                </div>
+
+                <!-- Right icons -->
+                <div class="flex items-center gap-6 stagger-3">
+                    <button class="text-warm-brown hover:text-rose-gold transition-colors interactive" aria-label="Search">
+                        <i class="fa-regular fa-search text-lg"></i>
+                    </button>
+                    <button class="text-warm-brown hover:text-rose-gold transition-colors interactive" aria-label="Wishlist">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                    </button>
+                    <button class="relative text-warm-brown hover:text-rose-gold transition-colors interactive" aria-label="Shopping bag">
+                        <i class="fa-regular fa-bag-shopping text-lg"></i>
+                        <span class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-rose-gold text-cream text-[10px] font-500 rounded-full flex items-center justify-center">2</span>
+                    </button>
+                    <button class="md:hidden text-warm-brown hover:text-rose-gold transition-colors interactive" aria-label="Menu">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex items-center overflow-hidden noise-overlay" id="hero">
+            <!-- Marble Background Layer -->
+            <div class="absolute inset-0 marble-bg parallax-bg" data-speed="0.03"></div>
+
+            <!-- Soft gradient overlays for depth -->
+            <div class="absolute inset-0 bg-gradient-to-r from-cream/70 via-transparent to-soft-pink/30 z-[1]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-cream via-transparent to-transparent z-[1]"></div>
+
+            <!-- Particle Canvas -->
+            <canvas id="particles"></canvas>
+
+            <!-- Decorative blurred shapes -->
+            <div class="absolute top-20 left-10 w-72 h-72 bg-soft-pink/30 rounded-full blur-[100px] parallax-shape" data-speed="0.05"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-warm-beige/25 rounded-full blur-[120px] parallax-shape" data-speed="0.04"></div>
+            <div class="absolute top-1/2 left-1/3 w-48 h-48 bg-rose-gold-light/10 rounded-full blur-[80px] parallax-shape" data-speed="0.06"></div>
+
+            <!-- Content -->
+            <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full pt-24 pb-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+
+                    <!-- Left: Text Content -->
+                    <div class="order-2 lg:order-1">
+                        <!-- Tag -->
+                        <div class="stagger-1 flex items-center gap-3 mb-8">
+                            <div class="w-8 h-[1px] bg-rose-gold line-grow"></div>
+                            <span class="font-body text-xs font-400 tracking-[0.3em] uppercase text-rose-gold">Autumn/Winter 2025</span>
+                        </div>
+
+                        <!-- Headline -->
+                        <h1 class="stagger-2 font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-300 leading-[0.95] text-deep-chocolate mb-6">
+                            The Art<br>
+                            <span class="shimmer-text font-400 italic">of Elegance</span>
+                        </h1>
+
+                        <!-- Subtext -->
+                        <p class="stagger-3 font-body text-base sm:text-lg font-200 text-warm-brown/80 max-w-md leading-relaxed mb-10">
+                            Handcrafted from the finest Italian full-grain leather, each piece is a testament to timeless craftsmanship and understated luxury.
+                        </p>
+
+                        <!-- CTA Buttons -->
+                        <div class="stagger-4 flex flex-wrap items-center gap-5">
+                            <a href="#" class="btn-shine interactive inline-flex items-center gap-3 bg-deep-chocolate text-cream font-body text-sm font-400 tracking-widest uppercase px-8 py-4 rounded-sm hover:bg-rose-gold-dark transition-colors duration-500 group">
+                                Discover Collection
+                                <i class="fa-solid fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                            <a href="#" class="interactive inline-flex items-center gap-3 border border-warm-brown/20 text-warm-brown font-body text-sm font-300 tracking-widest uppercase px-8 py-4 rounded-sm hover:border-rose-gold hover:text-rose-gold transition-all duration-500">
+                                Watch Film
+                                <i class="fa-regular fa-circle-play text-base"></i>
+                            </a>
+                        </div>
+
+                        <!-- Trust badges -->
+                        <div class="stagger-4 flex items-center gap-8 mt-14 pt-8 border-t border-warm-brown/8">
+                            <div>
+                                <div class="font-display text-2xl font-400 text-deep-chocolate">147</div>
+                                <div class="font-body text-[11px] font-300 tracking-wider uppercase text-warm-brown/60 mt-0.5">Years of Craft</div>
+                            </div>
+                            <div class="w-[1px] h-10 bg-warm-brown/10"></div>
+                            <div>
+                                <div class="font-display text-2xl font-400 text-deep-chocolate">Italian</div>
+                                <div class="font-body text-[11px] font-300 tracking-wider uppercase text-warm-brown/60 mt-0.5">Full-Grain Leather</div>
+                            </div>
+                            <div class="w-[1px] h-10 bg-warm-brown/10"></div>
+                            <div>
+                                <div class="font-display text-2xl font-400 text-deep-chocolate">Hand</div>
+                                <div class="font-body text-[11px] font-300 tracking-wider uppercase text-warm-brown/60 mt-0.5">Stitched Details</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Handbag Display -->
+                    <div class="order-1 lg:order-2 relative flex justify-center items-center" id="bagContainer">
+
+                        <!-- Glow -->
+                        <div class="bag-glow parallax-shape" data-speed="0.02"></div>
+
+                        <!-- Handbag Image -->
+                        <div class="relative z-10 stagger-5 parallax-shape" data-speed="0.015">
+                            <img
+                                src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=700&h=900&fit=crop&q=80"
+                                alt="Luxury Italian leather handbag from the Élaire Autumn/Winter 2025 collection"
+                                class="w-72 sm:w-80 lg:w-96 h-auto drop-shadow-2xl rounded-sm"
+                                style="filter: contrast(1.05) saturate(0.95);"
+                            >
+
+                            <!-- Reflection -->
+                            <div class="bag-reflection"></div>
+                        </div>
+
+                        <!-- Marble Pedestal -->
+                        <div class="pedestal absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-72 sm:w-80 lg:w-[420px] h-5 rounded-b-lg z-[5] stagger-6"></div>
+
+                        <!-- Floating Glassmorphism: New Collection Badge -->
+                        <div class="glass absolute -top-2 -left-2 sm:top-2 sm:left-0 lg:-left-4 rounded-2xl px-5 py-3 animate-float-1 z-20 stagger-6">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-2 h-2 rounded-full bg-rose-gold animate-pulse"></div>
+                                <span class="font-body text-[11px] font-400 tracking-[0.2em] uppercase text-deep-chocolate">New Collection</span>
+                            </div>
+                        </div>
+
+                        <!-- Floating Glassmorphism: Material -->
+                        <div class="glass absolute top-8 -right-4 sm:top-12 sm:-right-8 lg:top-4 lg:-right-12 rounded-2xl px-5 py-4 animate-float-2 z-20 stagger-7">
+                            <div class="font-body text-[10px] font-300 tracking-[0.2em] uppercase text-warm-brown/60 mb-1">Material</div>
+                            <div class="font-display text-lg font-400 text-deep-chocolate">Italian Calf</div>
+                        </div>
+
+                        <!-- Floating Glassmorphism: Price -->
+                        <div class="glass-strong absolute -bottom-4 -left-6 sm:bottom-0 sm:-left-10 lg:-bottom-2 lg:-left-16 rounded-2xl px-6 py-4 animate-float-3 z-20 stagger-8">
+                            <div class="font-body text-[10px] font-300 tracking-[0.2em] uppercase text-warm-brown/60 mb-1">Starting from</div>
+                            <div class="font-display text-2xl font-500 text-deep-chocolate">$1,290</div>
+                        </div>
+
+                        <!-- Floating Glassmorphism: Color swatches -->
+                        <div class="glass absolute -bottom-6 right-4 sm:bottom-2 sm:right-0 lg:bottom-8 lg:-right-4 rounded-2xl px-4 py-3 animate-float-1 z-20 stagger-7" style="animation-delay: 1.5s;">
+                            <div class="flex items-center gap-2.5">
+                                <button class="w-5 h-5 rounded-full border-2 border-rose-gold shadow-sm interactive" style="background: #8B5E54;" aria-label="Cognac color"></button>
+                                <button class="w-5 h-5 rounded-full border-2 border-transparent hover:border-warm-brown/30 shadow-sm transition-colors interactive" style="background: #2A1810;" aria-label="Noir color"></button>
+                                <button class="w-5 h-5 rounded-full border-2 border-transparent hover:border-warm-brown/30 shadow-sm transition-colors interactive" style="background: #D4A99F;" aria-label="Blush color"></button>
+                            </div>
+                        </div>
+
+                        <!-- Floating Glassmorphism: Rating -->
+                        <div class="glass absolute top-1/2 -right-8 sm:-right-14 lg:-right-20 rounded-2xl px-4 py-3 animate-float-2 z-20 stagger-8" style="animation-delay: 2s;">
+                            <div class="flex flex-col items-center gap-1">
+                                <div class="flex gap-0.5">
+                                    <i class="fa-solid fa-star text-[10px] text-rose-gold"></i>
+                                    <i class="fa-solid fa-star text-[10px] text-rose-gold"></i>
+                                    <i class="fa-solid fa-star text-[10px] text-rose-gold"></i>
+                                    <i class="fa-solid fa-star text-[10px] text-rose-gold"></i>
+                                    <i class="fa-solid fa-star text-[10px] text-rose-gold"></i>
+                                </div>
+                                <span class="font-body text-[10px] font-300 text-warm-brown/60">4.9 / 128</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 stagger-4">
+                <span class="font-body text-[10px] font-300 tracking-[0.3em] uppercase text-warm-brown/40">Scroll</span>
+                <div class="w-[1px] h-10 bg-gradient-to-b from-warm-brown/30 to-transparent relative overflow-hidden">
+                    <div class="w-full h-4 bg-rose-gold/60 absolute top-0 animate-[scrollDown_2s_ease-in-out_infinite]"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collection Preview Section -->
+        <section class="relative py-28 lg:py-36 bg-cream overflow-hidden" id="collection">
+            <!-- Subtle background texture -->
+            <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%232A1810&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <!-- Section Header -->
+                <div class="text-center mb-20 reveal">
+                    <div class="flex items-center justify-center gap-3 mb-6">
+                        <div class="w-10 h-[1px] bg-rose-gold"></div>
+                        <span class="font-body text-xs font-400 tracking-[0.3em] uppercase text-rose-gold">Curated Selection</span>
+                        <div class="w-10 h-[1px] bg-rose-gold"></div>
+                    </div>
+                    <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 text-deep-chocolate mb-5">
+                        The Collection
+                    </h2>
+                    <p class="font-body text-base font-200 text-warm-brown/60 max-w-lg mx-auto">
+                        Each silhouette tells a story of meticulous artistry, designed to transcend seasons and trends.
+                    </p>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                    <!-- Card 1 -->
+                    <article class="product-card group reveal" style="transition-delay: 0.1s;">
+                        <div class="relative overflow-hidden rounded-xl bg-cream-dark mb-5 aspect-[3/4]">
+                            <img
+                                src="https://images.unsplash.com/photo-1591561954557-26941169b49e?w=600&h=800&fit=crop&q=80"
+                                alt="Structured tote bag in espresso brown"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-deep-chocolate/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <!-- Quick add button -->
+                            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                                <button class="interactive glass-strong text-cream font-body text-xs font-400 tracking-widest uppercase px-6 py-3 rounded-full hover:bg-deep-chocolate/80 transition-colors">
+                                    Quick View
+                                </button>
+                            </div>
+                            <!-- Badge -->
+                            <div class="absolute top-4 left-4">
+                                <span class="glass font-body text-[10px] font-400 tracking-[0.15em] uppercase text-deep-chocolate px-3 py-1.5 rounded-full">Bestseller</span>
+                            </div>
+                        </div>
+                        <div class="px-1">
+                            <h3 class="font-display text-xl font-400 text-deep-chocolate mb-1 group-hover:text-rose-gold transition-colors duration-300">The Marlowe Tote</h3>
+                            <p class="font-body text-sm font-200 text-warm-brown/50 mb-2">Espresso / Full-Grain Calf</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-display text-lg font-400 text-deep-chocolate">$1,490</span>
+                                <div class="flex gap-1.5">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-warm-brown/15" style="background:#5C4033;"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-warm-brown/15" style="background:#2A1810;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="product-card group reveal" style="transition-delay: 0.25s;">
+                        <div class="relative overflow-hidden rounded-xl bg-cream-dark mb-5 aspect-[3/4]">
+                            <img
+                                src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=600&h=800&fit=crop&q=80"
+                                alt="Crossbody bag in blush pink"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-deep-chocolate/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                                <button class="interactive glass-strong text-cream font-body text-xs font-400 tracking-widest uppercase px-6 py-3 rounded-full hover:bg-deep-chocolate/80 transition-colors">
+                                    Quick View
+                                </button>
+                            </div>
+                            <div class="absolute top-4 left-4">
+                                <span class="glass font-body text-[10px] font-400 tracking-[0.15em] uppercase text-deep-chocolate px-3 py-1.5 rounded-full">New Arrival</span>
+                            </div>
+                        </div>
+                        <div class="px-1">
+                            <h3 class="font-display text-xl font-400 text-deep-chocolate mb-1 group-hover:text-rose-gold transition-colors duration-300">The Séline Crossbody</h3>
+                            <p class="font-body text-sm font-200 text-warm-brown/50 mb-2">Blush Rose / Nappa Leather</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-display text-lg font-400 text-deep-chocolate">$890</span>
+                                <div class="flex gap-1.5">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-warm-brown/15" style="background:#D4A99F;"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-warm-brown/15" style="background:#E8D5C4;"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-warm-brown/15" style="background:#2A1810;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 3 -->
+                    <article class="product-card group reveal" style="transition-delay: 0.4s;">
+                        <div class="relative overflow-hidden rounded-xl bg-cream-dark mb-5 aspect-[3/4]">
+                            <img
+                                src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=800&fit=crop&q=80"
+                                alt="Clutch bag in noir black"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-deep-chocolate/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                                <button class="interactive glass-strong text-cream font-body text-xs font-400 tracking-widest uppercase px-6 py-3 rounded-full hover:bg-deep-chocolate/80 transition-colors">
+                                    Quick View
+                                </button>
+                            </div>
+                            <div class="absolute top-4 left-4">
+                                <span class="glass font-body text-[10px] font-400 tracking-[0.15em] uppercase text-deep-chocolate px-3 py-1.5 rounded-full">Limited Edition</span>
+                            </div>
+                        </div>
+                        <div class="px-1">
+                            <h3 class="font-display text-xl font-400 text-deep-chocolate mb-1 group-hover:text-rose-gold transition-colors duration-300">The Vivienne Clutch</h3>
+                            <p class="font-body text-sm font-200 text-warm-brown/50 mb-2">Noir / Box Calf with Gold Hardware</p>
+                            <div class="flex items-center justify-between">
+                                <span class="font-display text-lg font-400 text-deep-chocolate">$2,150</span>
+                                <div class="flex gap-1.5">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-warm-brown/15" style="background:#2A1810;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- View All -->
+                <div class="text-center mt-16 reveal">
+                    <a href="#" class="interactive inline-flex items-center gap-3 border-b border-warm-brown/20 text-warm-brown font-body text-sm font-300 tracking-widest uppercase pb-2 hover:border-rose-gold hover:text-rose-gold transition-all duration-500 group">
+                        View All Pieces
+                        <i class="fa-solid fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Craftsmanship Banner -->
+        <section class="relative py-24 lg:py-32 overflow-hidden">
+            <div class="absolute inset-0 marble-bg"></div>
+            <div class="absolute inset-0 bg-cream/60"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div class="reveal">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-[1px] bg-rose-gold"></div>
+                            <span class="font-body text-xs font-400 tracking-[0.3em] uppercase text-rose-gold">Our Atelier</span>
+                        </div>
+                        <h2 class="font-display text-4xl sm:text-5xl font-300 text-deep-chocolate mb-6 leading-tight">
+                            Where Tradition<br>Meets <span class="italic font-400">Perfection</span>
+                        </h2>
+                        <p class="font-body text-base font-200 text-warm-brown/70 leading-relaxed mb-8 max-w-md">
+                            Each piece undergoes 47 individual hand-stitching steps, performed by our master artisans in Florence. A single bag takes over 18 hours to complete.
+                        </p>
+                        <div class="grid grid-cols-3 gap-6">
+                            <div>
+                                <div class="font-display text-3xl font-400 text-deep-chocolate">47</div>
+                                <div class="font-body text-[11px] font-300 tracking-wider uppercase text-warm-brown/50 mt-1">Hand Steps</div>
+                            </div>
+                            <div>
+                                <div class="font-display text-3xl font-400 text-deep-chocolate">18h</div>
+                                <div class="font-body text-[11px] font-300 tracking-wider uppercase text-warm-brown/50 mt-1">Per Piece</div>
+                            </div>
+                            <div>
+                                <div class="font-display text-3xl font-400 text-deep-chocolate">12</div>
+                                <div class="font-body text-[11px] font-300 tracking-wider uppercase text-warm-brown/50 mt-1">Master Artisans</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="relative rounded-2xl overflow-hidden aspect-[4/5]">
+                            <img
+                                src="https://i.pinimg.com/736x/02/97/74/0297742fccca4af64ddbbefe991413f3.jpg"
+                                alt="Artisan crafting leather in the Florence atelier"
+                                class="w-full h-full object-cover"
+                                style="filter: saturate(0.85) contrast(1.05);"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-deep-chocolate/30 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <div class="glass-strong rounded-xl px-5 py-4 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-body text-[10px] font-300 tracking-wider uppercase text-cream/70">Florence, Italy</div>
+                                        <div class="font-display text-lg font-400 text-cream">Maison Élaire Atelier</div>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-full glass flex items-center justify-center interactive">
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-cream/80 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-deep-chocolate py-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23FDF6F0&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
+                <div class="md:col-span-2">
+                    <div class="font-display text-2xl font-600 tracking-wider text-cream mb-4">
+                        MAISON <span class="font-light italic text-rose-gold-light">Élaire</span>
+                    </div>
+                    <p class="font-body text-sm font-200 text-cream/40 max-w-sm leading-relaxed mb-6">
+                        Crafting exceptional leather goods since 1878. Each piece carries the legacy of Florentine artisanship into the modern world.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="interactive w-9 h-9 rounded-full border border-cream/15 flex items-center justify-center text-cream/40 hover:text-rose-gold-light hover:border-rose-gold-light/30 transition-all" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="#" class="interactive w-9 h-9 rounded-full border border-cream/15 flex items-center justify-center text-cream/40 hover:text-rose-gold-light hover:border-rose-gold-light/30 transition-all" aria-label="Pinterest">
+                            <i class="fa-brands fa-pinterest-p text-sm"></i>
+                        </a>
+                        <a href="#" class="interactive w-9 h-9 rounded-full border border-cream/15 flex items-center justify-center text-cream/40 hover:text-rose-gold-light hover:border-rose-gold-light/30 transition-all" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-body text-xs font-400 tracking-[0.2em] uppercase text-cream/60 mb-5">Maison</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Our Heritage</a></li>
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">The Atelier</a></li>
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Sustainability</a></li>
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-body text-xs font-400 tracking-[0.2em] uppercase text-cream/60 mb-5">Client Care</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Shipping & Returns</a></li>
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Care Guide</a></li>
+                        <li><a href="#" class="interactive font-body text-sm font-200 text-cream/35 hover:text-rose-gold-light transition-colors">Repairs & Restoration</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-cream/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="font-body text-xs font-200 text-cream/25 tracking-wider">&copy; 2025 Maison Élaire. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="interactive font-body text-[11px] font-200 text-cream/25 hover:text-cream/50 transition-colors tracking-wider">Privacy</a>
+                    <a href="#" class="interactive font-body text-[11px] font-200 text-cream/25 hover:text-cream/50 transition-colors tracking-wider">Terms</a>
+                    <a href="#" class="interactive font-body text-[11px] font-200 text-cream/25 hover:text-cream/50 transition-colors tracking-wider">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast notification container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3"></div>
+
+    <style>
+        @keyframes scrollDown {
+            0% { top: -16px; opacity: 0; }
+            30% { opacity: 1; }
+            100% { top: 40px; opacity: 0; }
+        }
+
+        /* Toast animations */
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px) scale(0.95); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0) scale(1); }
+            to { opacity: 0; transform: translateX(40px) scale(0.95); }
+        }
+        .toast-enter { animation: toastIn 0.4s ease-out both; }
+        .toast-exit { animation: toastOut 0.3s ease-in both; }
+    </style>
+
+    <script>
+        // ============================
+        // Custom Cursor
+        // ============================
+        const cursorRing = document.getElementById('cursorRing');
+        const cursorDot = document.getElementById('cursorDot');
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        // Smooth ring follow
+        function animateCursor() {
+            ringX += (mouseX - ringX) * 0.12;
+            ringY += (mouseY - ringY) * 0.12;
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover effect on interactive elements
+        document.querySelectorAll('.interactive, a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+        });
+
+        // ============================
+        // Mouse Parallax (Hero)
+        // ============================
+        const hero = document.getElementById('hero');
+        const parallaxShapes = document.querySelectorAll('.parallax-shape');
+        const bagContainer = document.getElementById('bagContainer');
+
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const moveX = (e.clientX - rect.left - centerX) / centerX;
+            const moveY = (e.clientY - rect.top - centerY) / centerY;
+
+            parallaxShapes.forEach(shape => {
+                const speed = parseFloat(shape.dataset.speed) || 0.03;
+                const x = moveX * speed * 800;
+                const y = moveY * speed * 600;
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+            });
+
+            // Subtle bag tilt
+            if (bagContainer) {
+                const bagRotateY = moveX * 2;
+                const bagRotateX = -moveY * 1.5;
+                const bagImg = bagContainer.querySelector('img');
+                if (bagImg) {
+                    bagImg.style.transform = `perspective(1000px) rotateY(${bagRotateY}deg) rotateX(${bagRotateX}deg)`;
+                    bagImg.style.transition = 'transform 0.3s ease-out';
+                }
+            }
+        });
+
+        // ============================
+        // Scroll Parallax (Background)
+        // ============================
+        const parallaxBg = document.querySelector('.parallax-bg');
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            if (parallaxBg) {
+                parallaxBg.style.transform = `translateY(${scrollY * 0.3}px)`;
+            }
+        }, { passive: true });
+
+        // ============================
+        // Nav Scroll Effect
+        // ============================
+        const mainNav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                mainNav.classList.add('nav-scrolled');
+            } else {
+                mainNav.classList.remove('nav-scrolled');
+            }
+        }, { passive: true });
+
+        // ============================
+        // Particle System
+        // ============================
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const PARTICLE_COUNT = 50;
+
+        function resizeCanvas() {
+            const heroEl = document.getElementById('hero');
+            canvas.width = heroEl.offsetWidth;
+            canvas.height = heroEl.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.2 - 0.1;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                this.opacitySpeed = (Math.random() - 0.5) * 0.005;
+                // Warm gold/rose-gold tones
+                const r = 184 + Math.floor(Math.random() * 40);
+                const g = 134 + Math.floor(Math.random() * 50);
+                const b = 123 + Math.floor(Math.random() * 40);
+                this.color = `${r},${g},${b}`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity += this.opacitySpeed;
+                if (this.opacity <= 0.05 || this.opacity >= 0.5) {
+                    this.opacitySpeed *= -1;
+                }
+                if (this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                const radius = Math.max(0.1, this.size);
+                ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color},1)`;
+                ctx.fill();
+
+                // Soft glow
+                ctx.globalAlpha = this.opacity * 0.3;
+                ctx.beginPath();
+                const glowRadius = Math.max(0.1, this.size * 3);
+                ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color},0.4)`;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ============================
+        // Scroll Reveal (IntersectionObserver)
+        // ============================
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ============================
+        // Toast System
+        // ============================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast-enter glass-strong rounded-xl px-5 py-3.5 flex items-center gap-3 max-w-xs`;
+            toast.style.cssText = 'backdrop-filter: blur(24px); background: rgba(42,24,16,0.85); border: 1px solid rgba(184,134,123,0.2);';
+
+            const iconMap = {
+                success: '<i class="fa-solid fa-check text-rose-gold-light text-sm"></i>',
+                info: '<i class="fa-solid fa-bag-shopping text-rose-gold-light text-sm"></i>',
+            };
+
+            toast.innerHTML = `
+                ${iconMap[type] || iconMap.info}
+                <span class="font-body text-sm font-300 text-cream/90">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============================
+        // Quick View Buttons → Toast
+        // ============================
+        document.querySelectorAll('.product-card button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const card = btn.closest('.product-card');
+                const name = card.querySelector('h3')?.textContent || 'This piece';
+                showToast(`${name} added to wishlist`, 'success');
+            });
+        });
+
+        // ============================
+        // Color Swatch Interaction
+        // ============================
+        document.querySelectorAll('.stagger-7 .flex button').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                // Remove active border from siblings
+                swatch.parentElement.querySelectorAll('button').forEach(s => {
+                    s.style.borderColor = 'transparent';
+                });
+                swatch.style.borderColor = '#B8867B';
+                showToast('Color option selected', 'info');
+            });
+        });
+
+        // ============================
+        // CTA Button Interaction
+        // ============================
+        document.querySelectorAll('.btn-shine').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showToast('Exploring the new collection...', 'info');
+            });
+        });
+
+        // ============================
+        // Heart / Wishlist Icon
+        // ============================
+        const heartBtn = document.querySelector('[aria-label="Wishlist"]');
+        if (heartBtn) {
+            heartBtn.addEventListener('click', () => {
+                const icon = heartBtn.querySelector('i');
+                const isFilled = icon.classList.contains('fa-solid');
+                if (isFilled) {
+                    icon.classList.remove('fa-solid');
+                    icon.classList.add('fa-regular');
+                    showToast('Removed from wishlist', 'info');
+                } else {
+                    icon.classList.remove('fa-regular');
+                    icon.classList.add('fa-solid');
+                    icon.style.color = '#B8867B';
+                    showToast('Added to wishlist', 'success');
+                }
+            });
+        }
+
+        // ============================
+        // Bag icon click
+        // ============================
+        const bagBtn = document.querySelector('[aria-label="Shopping bag"]');
+        if (bagBtn) {
+            bagBtn.addEventListener('click', () => {
+                showToast('Your bag has 2 items', 'info');
+            });
+        }
+    </script>
+</body>
+</html>
