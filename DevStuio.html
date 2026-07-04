@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevStudio — Creative Digital Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background: #050505; color: #e5e5e5; overflow-x: hidden; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #00ffc4; border-radius: 10px; }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0,255,196,0.1); }
+            50% { box-shadow: 0 0 40px rgba(0,255,196,0.25); }
+        }
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes text-shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes counter {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .animate-in { animation: slideInUp 0.6s ease-out forwards; }
+        .animate-left { animation: slideInLeft 0.6s ease-out forwards; }
+        .animate-right { animation: slideInRight 0.6s ease-out forwards; }
+        .animate-fade { animation: fadeIn 0.8s ease-out forwards; }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #00ffc4, #ffffff, #00ffc4);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-shimmer 4s linear infinite;
+        }
+
+        /* Reveal on scroll */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.7s ease; }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.7s ease; }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+
+        /* Grid background */
+        .grid-bg {
+            background-image: linear-gradient(to right, #80808008 1px, transparent 1px), linear-gradient(to bottom, #80808008 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Card hover */
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .service-card:hover {
+            border-color: rgba(0,255,196,0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 0 40px rgba(0,255,196,0.08);
+        }
+        .service-card:hover .icon-box {
+            background: rgba(0,255,196,0.1);
+            border-color: rgba(0,255,196,0.3);
+        }
+
+        /* Portfolio card */
+        .portfolio-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .portfolio-card:hover { transform: scale(1.02); }
+        .portfolio-card:hover img { transform: scale(1.08); opacity: 1; }
+        .portfolio-card:hover .overlay { opacity: 1; }
+        .portfolio-card img { transition: all 0.6s ease; opacity: 0.75; }
+
+        /* Nav active */
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: #00ffc4; transition: width 0.3s; border-radius: 2px;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link:hover, .nav-link.active { color: #00ffc4; }
+
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(to right, #047857, #059669);
+            box-shadow: 0 0 30px rgba(4,120,87,0.4);
+            transition: all 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 50px rgba(0,255,196,0.4);
+            transform: translateY(-2px);
+        }
+        .btn-primary::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover::before { left: 100%; }
+
+        .btn-outline {
+            border: 1px solid rgba(0,255,196,0.3);
+            transition: all 0.3s;
+        }
+        .btn-outline:hover {
+            background: rgba(0,255,196,0.1);
+            border-color: #00ffc4;
+            box-shadow: 0 0 20px rgba(0,255,196,0.15);
+        }
+
+        /* Testimonial */
+        .testimonial-card { transition: all 0.4s; border: 1px solid rgba(255,255,255,0.05); }
+        .testimonial-card:hover { border-color: rgba(0,255,196,0.15); transform: translateY(-2px); }
+
+        /* Process step */
+        .process-step { transition: all 0.4s; }
+        .process-step:hover .step-num { background: #00ffc4; color: #000; transform: scale(1.15); }
+        .step-num { transition: all 0.4s; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            padding: 16px 24px; border-radius: 12px;
+            background: #171717; border: 1px solid rgba(0,255,196,0.3);
+            color: #e5e5e5; font-size: 14px;
+            transform: translateX(120%); transition: transform 0.4s ease;
+            box-shadow: 0 0 30px rgba(0,255,196,0.1);
+        }
+        .toast.show { transform: translateX(0); }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-menu.open { transform: translateX(0); }
+
+        /* Modal */
+        .modal-overlay {
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.show { opacity: 1; pointer-events: all; }
+        .modal-content {
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-overlay.show .modal-content { transform: scale(1) translateY(0); }
+
+        /* Filter buttons */
+        .filter-btn { transition: all 0.3s; }
+        .filter-btn.active { background: rgba(0,255,196,0.15); color: #00ffc4; border-color: rgba(0,255,196,0.3); }
+
+        /* FAQ */
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; }
+        .faq-answer.open { max-height: 300px; }
+        .faq-icon { transition: transform 0.3s; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+        /* Pricing */
+        .pricing-card { transition: all 0.4s; border: 1px solid rgba(255,255,255,0.05); }
+        .pricing-card:hover { transform: translateY(-4px); }
+        .pricing-card.featured { border-color: rgba(0,255,196,0.3); }
+        .pricing-card.featured:hover { border-color: rgba(0,255,196,0.5); box-shadow: 0 0 50px rgba(0,255,196,0.1); }
+
+        /* Back to top */
+        .back-to-top {
+            opacity: 0; pointer-events: none; transition: all 0.3s;
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: all; }
+
+        /* Cursor glow */
+        .cursor-glow {
+            position: fixed; width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,255,196,0.06) 0%, transparent 70%);
+            pointer-events: none; z-index: 0; transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+
+        /* Marquee */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-track { animation: marquee 30s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+
+        /* Input focus */
+        .form-input {
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .form-input:focus {
+            border-color: rgba(0,255,196,0.4);
+            box-shadow: 0 0 0 3px rgba(0,255,196,0.08);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+<!-- Cursor Glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+    <div class="flex items-center gap-3">
+        <i data-lucide="check-circle" class="w-5 h-5 text-[#00ffc4]"></i>
+        <span id="toastMsg">Message sent successfully!</span>
+    </div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="navbar" class="sticky top-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#home" class="flex items-center gap-2 group">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#047857] to-[#00ffc4] flex items-center justify-center transition-transform group-hover:scale-110">
+                <i data-lucide="zap" class="w-5 h-5 text-black"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tight">Dev<span class="text-[#00ffc4]">Studio</span></span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#home" class="nav-link active text-sm font-medium text-neutral-400" data-section="home">Home</a>
+            <a href="#services" class="nav-link text-sm font-medium text-neutral-400" data-section="services">Services</a>
+            <a href="#portfolio" class="nav-link text-sm font-medium text-neutral-400" data-section="portfolio">Portfolio</a>
+            <a href="#process" class="nav-link text-sm font-medium text-neutral-400" data-section="process">Process</a>
+            <a href="#pricing" class="nav-link text-sm font-medium text-neutral-400" data-section="pricing">Pricing</a>
+            <a href="#testimonials" class="nav-link text-sm font-medium text-neutral-400" data-section="testimonials">Testimonials</a>
+            <a href="#faq" class="nav-link text-sm font-medium text-neutral-400" data-section="faq">FAQ</a>
+        </div>
+
+        <!-- CTA + Mobile Toggle -->
+        <div class="flex items-center gap-4">
+            <a href="#contact" class="hidden md:inline-flex btn-primary text-sm font-semibold text-white px-5 py-2.5 rounded-full items-center gap-2">
+                Let's Talk
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <button id="menuToggle" class="md:hidden w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 transition-colors">
+                <i data-lucide="menu" class="w-5 h-5" id="menuIcon"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu fixed inset-0 z-[60] bg-[#050505]/98 backdrop-blur-xl flex flex-col" id="mobileMenu">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <a href="#home" class="flex items-center gap-2" onclick="closeMobileMenu()">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#047857] to-[#00ffc4] flex items-center justify-center">
+                <i data-lucide="zap" class="w-5 h-5 text-black"></i>
+            </div>
+            <span class="text-xl font-bold">Dev<span class="text-[#00ffc4]">Studio</span></span>
+        </a>
+        <button onclick="closeMobileMenu()" class="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+    </div>
+    <div class="flex flex-col gap-1 p-6 flex-1">
+        <a href="#home" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">Home</a>
+        <a href="#services" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">Services</a>
+        <a href="#portfolio" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">Portfolio</a>
+        <a href="#process" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">Process</a>
+        <a href="#pricing" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">Pricing</a>
+        <a href="#testimonials" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">Testimonials</a>
+        <a href="#faq" onclick="closeMobileMenu()" class="text-2xl font-semibold py-3 border-b border-white/5 hover:text-[#00ffc4] transition-colors">FAQ</a>
+        <a href="#contact" onclick="closeMobileMenu()" class="btn-primary text-lg font-semibold text-white px-6 py-4 rounded-xl text-center mt-4">Let's Talk →</a>
+    </div>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section id="home" class="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
+    <!-- Background glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#00ffc4] blur-[150px] opacity-[0.07] pointer-events-none"></div>
+    <div class="absolute top-40 right-0 w-[400px] h-[400px] bg-[#047857] blur-[120px] opacity-[0.05] pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 animate-in" style="animation-delay:0.1s">
+            <span class="w-2 h-2 rounded-full bg-[#00ffc4] animate-pulse"></span>
+            <span class="text-xs font-medium text-neutral-400 uppercase tracking-widest">Available for new projects</span>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 animate-in" style="animation-delay:0.2s">
+            We Build <br class="hidden sm:block">
+            <span class="shimmer-text">Digital Experiences</span><br class="hidden sm:block">
+            That Matter
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-in" style="animation-delay:0.35s">
+            We're a creative agency specializing in web design, development, and brand strategy. We help businesses stand out in the digital world.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in" style="animation-delay:0.5s">
+            <a href="#contact" class="btn-primary text-white font-semibold px-8 py-4 rounded-full text-base flex items-center gap-2 w-full sm:w-auto justify-center">
+                Start a Project
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+            <a href="#portfolio" class="btn-outline text-[#00ffc4] font-semibold px-8 py-4 rounded-full text-base flex items-center gap-2 w-full sm:w-auto justify-center">
+                <i data-lucide="play" class="w-5 h-5"></i>
+                View Our Work
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-6 mt-16 max-w-xl mx-auto animate-in" style="animation-delay:0.65s">
+            <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold text-white counter-value" data-target="150">0</div>
+                <div class="text-xs text-neutral-500 mt-1 uppercase tracking-wider">Projects Done</div>
+            </div>
+            <div class="text-center border-x border-white/5">
+                <div class="text-3xl md:text-4xl font-bold text-white counter-value" data-target="80">0</div>
+                <div class="text-xs text-neutral-500 mt-1 uppercase tracking-wider">Happy Clients</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold text-white counter-value" data-target="5">0</div>
+                <div class="text-xs text-neutral-500 mt-1 uppercase tracking-wider">Years Exp.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float">
+        <span class="text-[10px] text-neutral-600 uppercase tracking-widest">Scroll</span>
+        <div class="w-5 h-8 rounded-full border border-white/10 flex justify-center pt-1.5">
+            <div class="w-1 h-2 rounded-full bg-[#00ffc4] animate-bounce"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== MARQUEE ==================== -->
+<section class="border-y border-white/5 py-5 overflow-hidden">
+    <div class="flex whitespace-nowrap marquee-track">
+        <span class="inline-flex items-center gap-12 px-6 text-neutral-600 text-sm font-medium uppercase tracking-widest">
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Web Development</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>UI/UX Design</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Brand Strategy</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Mobile Apps</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>SEO Optimization</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>E-Commerce</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Cloud Solutions</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>AI Integration</span>
+        </span>
+        <span class="inline-flex items-center gap-12 px-6 text-neutral-600 text-sm font-medium uppercase tracking-widest">
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Web Development</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>UI/UX Design</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Brand Strategy</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Mobile Apps</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>SEO Optimization</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>E-Commerce</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>Cloud Solutions</span>
+            <span class="flex items-center gap-3"><i data-lucide="star" class="w-4 h-4 text-[#00ffc4]/30"></i>AI Integration</span>
+        </span>
+    </div>
+</section>
+
+<!-- ==================== SERVICES ==================== -->
+<section id="services" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+        <!-- Section Header -->
+        <div class="max-w-2xl mb-16 reveal">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">What We Do</span>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Services We <span class="text-[#00ffc4]">Offer</span></h2>
+            <p class="text-neutral-400 text-lg leading-relaxed">We provide end-to-end digital solutions to help your business grow and succeed online.</p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Service 1 -->
+            <div class="service-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.1s">
+                <div class="icon-box w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 transition-all">
+                    <i data-lucide="code-2" class="w-6 h-6 text-[#00ffc4]"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Web Development</h3>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Custom websites and web applications built with modern technologies for peak performance.</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-sm text-[#00ffc4] font-medium hover:gap-3 transition-all">
+                    Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.2s">
+                <div class="icon-box w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 transition-all">
+                    <i data-lucide="palette" class="w-6 h-6 text-[#00ffc4]"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">UI/UX Design</h3>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Beautiful, intuitive designs that enhance user experience and drive conversions.</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-sm text-[#00ffc4] font-medium hover:gap-3 transition-all">
+                    Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.3s">
+                <div class="icon-box w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 transition-all">
+                    <i data-lucide="smartphone" class="w-6 h-6 text-[#00ffc4]"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Mobile Apps</h3>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Native and cross-platform mobile applications for iOS and Android platforms.</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-sm text-[#00ffc4] font-medium hover:gap-3 transition-all">
+                    Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="service-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.15s">
+                <div class="icon-box w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 transition-all">
+                    <i data-lucide="trending-up" class="w-6 h-6 text-[#00ffc4]"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">SEO & Marketing</h3>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Data-driven SEO strategies and digital marketing to boost your online visibility.</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-sm text-[#00ffc4] font-medium hover:gap-3 transition-all">
+                    Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Service 5 -->
+            <div class="service-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.25s">
+                <div class="icon-box w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 transition-all">
+                    <i data-lucide="shopping-bag" class="w-6 h-6 text-[#00ffc4]"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">E-Commerce</h3>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Full-featured online stores with secure payments, inventory, and analytics.</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-sm text-[#00ffc4] font-medium hover:gap-3 transition-all">
+                    Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Service 6 -->
+            <div class="service-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.35s">
+                <div class="icon-box w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 transition-all">
+                    <i data-lucide="brain" class="w-6 h-6 text-[#00ffc4]"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">AI Solutions</h3>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Custom AI integrations, chatbots, and automation tools for smart businesses.</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-sm text-[#00ffc4] font-medium hover:gap-3 transition-all">
+                    Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PORTFOLIO ==================== -->
+<section id="portfolio" class="py-24 md:py-32 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#00ffc4]/[0.02] to-transparent pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <!-- Header -->
+        <div class="max-w-2xl mb-12 reveal">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">Our Work</span>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Featured <span class="text-[#00ffc4]">Projects</span></h2>
+            <p class="text-neutral-400 text-lg leading-relaxed">A selection of our best work across different industries and platforms.</p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-3 mb-10 reveal" style="transition-delay:0.1s">
+            <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium border border-white/10" data-filter="all">All</button>
+            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-neutral-400 border border-white/10 hover:border-white/20" data-filter="web">Web</button>
+            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-neutral-400 border border-white/10 hover:border-white/20" data-filter="app">App</button>
+            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-neutral-400 border border-white/10 hover:border-white/20" data-filter="branding">Branding</button>
+            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-neutral-400 border border-white/10 hover:border-white/20" data-filter="ecommerce">E-Commerce</button>
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolioGrid">
+            <div class="portfolio-card rounded-2xl overflow-hidden relative cursor-pointer group" data-category="web" onclick="openModal(0)">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="https://i.pinimg.com/736x/36/ef/2b/36ef2babe7701c0d1ea174af62de2447.jpg" alt="Project" class="w-full h-full object-cover">
+                </div>
+                <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2">Web Development</span>
+                    <h3 class="text-xl font-bold mb-1">FinTech Dashboard</h3>
+                    <p class="text-sm text-neutral-400">Real-time analytics platform for financial data</p>
+                </div>
+            </div>
+
+            <div class="portfolio-card rounded-2xl overflow-hidden relative cursor-pointer group" data-category="app" onclick="openModal(1)">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="https://i.pinimg.com/1200x/b3/f6/02/b3f602ac9ac722ac55b649bfa543a347.jpg" alt="Project" class="w-full h-full object-cover">
+                </div>
+                <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2">Mobile App</span>
+                    <h3 class="text-xl font-bold mb-1">HealthTrack App</h3>
+                    <p class="text-sm text-neutral-400">AI-powered health & fitness tracker</p>
+                </div>
+            </div>
+
+            <div class="portfolio-card rounded-2xl overflow-hidden relative cursor-pointer group" data-category="branding" onclick="openModal(2)">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="https://i.pinimg.com/736x/61/04/62/6104621370c931bc8b1b82d56ad0a417.jpg" alt="Project" class="w-full h-full object-cover">
+                </div>
+                <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2">Branding</span>
+                    <h3 class="text-xl font-bold mb-1">Luxe Brand Identity</h3>
+                    <p class="text-sm text-neutral-400">Complete brand overhaul for luxury retailer</p>
+                </div>
+            </div>
+
+            <div class="portfolio-card rounded-2xl overflow-hidden relative cursor-pointer group" data-category="ecommerce" onclick="openModal(3)">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="https://i.pinimg.com/1200x/ac/d4/90/acd4906f82576eecd3114d7acfee6575.jpg" alt="Project" class="w-full h-full object-cover">
+                </div>
+                <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2">E-Commerce</span>
+                    <h3 class="text-xl font-bold mb-1">StyleStore Platform</h3>
+                    <p class="text-sm text-neutral-400">Modern fashion e-commerce with AR try-on</p>
+                </div>
+            </div>
+
+            <div class="portfolio-card rounded-2xl overflow-hidden relative cursor-pointer group" data-category="web" onclick="openModal(4)">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="https://i.pinimg.com/1200x/22/b5/60/22b5604eca105ae195aa809dc734d071.jpg" alt="Project" class="w-full h-full object-cover">
+                </div>
+                <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2">Web Development</span>
+                    <h3 class="text-xl font-bold mb-1">EduLearn LMS</h3>
+                    <p class="text-sm text-neutral-400">Interactive learning management system</p>
+                </div>
+            </div>
+
+            <div class="portfolio-card rounded-2xl overflow-hidden relative cursor-pointer group" data-category="app" onclick="openModal(5)">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="https://i.pinimg.com/1200x/f2/20/92/f22092e82a644e9f98c2700102a15fe8.jpg" alt="Project" class="w-full h-full object-cover">
+                </div>
+                <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity flex flex-col justify-end p-6">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2">Mobile App</span>
+                    <h3 class="text-xl font-bold mb-1">FoodieGo Delivery</h3>
+                    <p class="text-sm text-neutral-400">Food delivery app with real-time tracking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROCESS ==================== -->
+<section id="process" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">How We Work</span>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Our <span class="text-[#00ffc4]">Process</span></h2>
+            <p class="text-neutral-400 text-lg leading-relaxed">A proven methodology that delivers results consistently, on time and on budget.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="process-step text-center reveal" style="transition-delay:0.1s">
+                <div class="step-num w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5 text-2xl font-bold text-[#00ffc4]">01</div>
+                <h3 class="text-lg font-semibold mb-2">Discovery</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">We understand your goals, audience, and market to create a solid strategy.</p>
+            </div>
+            <div class="process-step text-center reveal" style="transition-delay:0.2s">
+                <div class="step-num w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5 text-2xl font-bold text-[#00ffc4]">02</div>
+                <h3 class="text-lg font-semibold mb-2">Design</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">Wireframes, prototypes, and visual designs crafted to perfection.</p>
+            </div>
+            <div class="process-step text-center reveal" style="transition-delay:0.3s">
+                <div class="step-num w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5 text-2xl font-bold text-[#00ffc4]">03</div>
+                <h3 class="text-lg font-semibold mb-2">Develop</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">Clean, scalable code with rigorous testing at every step.</p>
+            </div>
+            <div class="process-step text-center reveal" style="transition-delay:0.4s">
+                <div class="step-num w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5 text-2xl font-bold text-[#00ffc4]">04</div>
+                <h3 class="text-lg font-semibold mb-2">Launch</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">Smooth deployment with ongoing support and optimization.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PRICING ==================== -->
+<section id="pricing" class="py-24 md:py-32 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#00ffc4]/[0.015] to-transparent pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">Pricing</span>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Simple, Transparent <span class="text-[#00ffc4]">Pricing</span></h2>
+            <p class="text-neutral-400 text-lg leading-relaxed">Choose a plan that fits your needs. No hidden fees, no surprises.</p>
+        </div>
+
+        <!-- Toggle -->
+        <div class="flex items-center justify-center gap-4 mb-12 reveal" style="transition-delay:0.1s">
+            <span class="text-sm font-medium" id="monthlyLabel">Monthly</span>
+            <button id="pricingToggle" class="w-14 h-7 rounded-full bg-white/10 border border-white/10 relative transition-colors" onclick="togglePricing()">
+                <div id="toggleDot" class="w-5 h-5 rounded-full bg-[#00ffc4] absolute top-1 left-1 transition-transform"></div>
+            </button>
+            <span class="text-sm font-medium text-neutral-500" id="yearlyLabel">Yearly <span class="text-[#00ffc4] text-xs">-20%</span></span>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <!-- Starter -->
+            <div class="pricing-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.15s">
+                <div class="text-sm font-medium text-neutral-400 mb-2">Starter</div>
+                <div class="flex items-baseline gap-1 mb-1">
+                    <span class="text-4xl font-bold price-monthly">$999</span>
+                    <span class="text-4xl font-bold price-yearly hidden">$799</span>
+                    <span class="text-neutral-500 text-sm">/project</span>
+                </div>
+                <p class="text-sm text-neutral-500 mb-8">Perfect for small businesses and startups.</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Up to 5 pages</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Responsive design</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Basic SEO setup</li>
+                    <li class="flex items-center gap-3 text-sm text-neutral-600"><i data-lucide="x" class="w-4 h-4 shrink-0"></i>Custom animations</li>
+                    <li class="flex items-center gap-3 text-sm text-neutral-600"><i data-lucide="x" class="w-4 h-4 shrink-0"></i>CMS integration</li>
+                </ul>
+                <a href="#contact" class="btn-outline block text-center text-[#00ffc4] font-semibold px-6 py-3 rounded-xl text-sm">Get Started</a>
+            </div>
+
+            <!-- Professional -->
+            <div class="pricing-card featured bg-neutral-900/50 rounded-2xl p-8 relative reveal" style="transition-delay:0.25s">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#00ffc4] text-black text-[10px] font-bold uppercase tracking-wider">Most Popular</div>
+                <div class="text-sm font-medium text-[#00ffc4] mb-2">Professional</div>
+                <div class="flex items-baseline gap-1 mb-1">
+                    <span class="text-4xl font-bold price-monthly">$2,499</span>
+                    <span class="text-4xl font-bold price-yearly hidden">$1,999</span>
+                    <span class="text-neutral-500 text-sm">/project</span>
+                </div>
+                <p class="text-sm text-neutral-500 mb-8">Best for growing businesses and brands.</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Up to 15 pages</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Custom animations</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Advanced SEO</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>CMS integration</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>3 months support</li>
+                </ul>
+                <a href="#contact" class="btn-primary block text-center text-white font-semibold px-6 py-3 rounded-xl text-sm">Get Started</a>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="pricing-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.35s">
+                <div class="text-sm font-medium text-neutral-400 mb-2">Enterprise</div>
+                <div class="flex items-baseline gap-1 mb-1">
+                    <span class="text-4xl font-bold price-monthly">$5,999</span>
+                    <span class="text-4xl font-bold price-yearly hidden">$4,799</span>
+                    <span class="text-neutral-500 text-sm">/project</span>
+                </div>
+                <p class="text-sm text-neutral-500 mb-8">For large-scale projects and enterprises.</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Unlimited pages</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Custom everything</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>API integrations</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>Priority support</li>
+                    <li class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#00ffc4] shrink-0"></i>12 months support</li>
+                </ul>
+                <a href="#contact" class="btn-outline block text-center text-[#00ffc4] font-semibold px-6 py-3 rounded-xl text-sm">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section id="testimonials" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">Testimonials</span>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">What Clients <span class="text-[#00ffc4]">Say</span></h2>
+            <p class="text-neutral-400 text-lg leading-relaxed">Don't just take our word for it — hear from the people we've worked with.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="testimonial-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.1s">
+                <div class="flex gap-1 mb-5">
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                </div>
+                <p class="text-neutral-300 text-sm leading-relaxed mb-6">"DevStudio transformed our online presence completely. The website they built increased our conversions by 340% in just 3 months. Absolutely incredible work."</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://i.pinimg.com/736x/ed/0c/be/ed0cbe25c301f7e5a3e596ea7f9b972d.jpg" class="w-11 h-11 rounded-full object-cover" alt="Client">
+                    <div>
+                        <div class="text-sm font-semibold">Sarah Johnson</div>
+                        <div class="text-xs text-neutral-500">CEO, TechVenture</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.2s">
+                <div class="flex gap-1 mb-5">
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                </div>
+                <p class="text-neutral-300 text-sm leading-relaxed mb-6">"The mobile app they developed for us is flawless. Users love the interface and we've seen a 5x increase in daily active users. Highly recommend!"</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://i.pinimg.com/736x/4e/09/c4/4e09c45e262c596f7a12833f581f5d9c.jpg" class="w-11 h-11 rounded-full object-cover" alt="Client">
+                    <div>
+                        <div class="text-sm font-semibold">Michael Chen</div>
+                        <div class="text-xs text-neutral-500">Founder, HealthTrack</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card bg-neutral-900/50 rounded-2xl p-8 reveal" style="transition-delay:0.3s">
+                <div class="flex gap-1 mb-5">
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-[#00ffc4] fill-[#00ffc4]"></i>
+                </div>
+                <p class="text-neutral-300 text-sm leading-relaxed mb-6">"Working with DevStudio was a game-changer. Their strategic approach to branding gave us a unique identity that sets us apart from every competitor."</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://i.pinimg.com/736x/30/29/b4/3029b4facd6e9a3df27f7db3848a8a78.jpg" class="w-11 h-11 rounded-full object-cover" alt="Client">
+                    <div>
+                        <div class="text-sm font-semibold">Emma Williams</div>
+                        <div class="text-xs text-neutral-500">CMO, Luxe Retail</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+<section id="faq" class="py-24 md:py-32 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#00ffc4]/[0.015] to-transparent pointer-events-none"></div>
+    <div class="max-w-3xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-16 reveal">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">FAQ</span>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Frequently Asked <span class="text-[#00ffc4]">Questions</span></h2>
+            <p class="text-neutral-400 text-lg">Everything you need to know about working with us.</p>
+        </div>
+
+        <div class="space-y-4" id="faqContainer">
+            <div class="faq-item bg-neutral-900/50 rounded-xl border border-white/5 overflow-hidden reveal" style="transition-delay:0.1s">
+                <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-base pr-4">How long does a typical project take?</span>
+                    <i data-lucide="plus" class="w-5 h-5 text-[#00ffc4] faq-icon shrink-0"></i>
+                </button>
+                <div class="faq-answer px-6">
+                    <p class="text-neutral-400 text-sm leading-relaxed pb-6">Most projects take 4-8 weeks depending on complexity. A simple landing page can be done in 1-2 weeks, while a full web application might take 8-12 weeks. We'll give you a detailed timeline during our discovery call.</p>
+                </div>
+            </div>
+
+            <div class="faq-item bg-neutral-900/50 rounded-xl border border-white/5 overflow-hidden reveal" style="transition-delay:0.15s">
+                <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-base pr-4">What technologies do you use?</span>
+                    <i data-lucide="plus" class="w-5 h-5 text-[#00ffc4] faq-icon shrink-0"></i>
+                </button>
+                <div class="faq-answer px-6">
+                    <p class="text-neutral-400 text-sm leading-relaxed pb-6">We use modern tech stacks including React, Next.js, Vue, Node.js, Python, Flutter, and more. We choose the best technology for each project based on requirements, scalability needs, and budget.</p>
+                </div>
+            </div>
+
+            <div class="faq-item bg-neutral-900/50 rounded-xl border border-white/5 overflow-hidden reveal" style="transition-delay:0.2s">
+                <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-base pr-4">Do you offer post-launch support?</span>
+                    <i data-lucide="plus" class="w-5 h-5 text-[#00ffc4] faq-icon shrink-0"></i>
+                </button>
+                <div class="faq-answer px-6">
+                    <p class="text-neutral-400 text-sm leading-relaxed pb-6">Yes! All our plans include post-launch support ranging from 1 to 12 months. We also offer ongoing maintenance packages for clients who want continued support, updates, and performance monitoring.</p>
+                </div>
+            </div>
+
+            <div class="faq-item bg-neutral-900/50 rounded-xl border border-white/5 overflow-hidden reveal" style="transition-delay:0.25s">
+                <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-base pr-4">Can you work with our existing team?</span>
+                    <i data-lucide="plus" class="w-5 h-5 text-[#00ffc4] faq-icon shrink-0"></i>
+                </button>
+                <div class="faq-answer px-6">
+                    <p class="text-neutral-400 text-sm leading-relaxed pb-6">Absolutely! We frequently collaborate with in-house teams. Whether you need us to lead the project or augment your existing development team, we're flexible and adapt to your workflow.</p>
+                </div>
+            </div>
+
+            <div class="faq-item bg-neutral-900/50 rounded-xl border border-white/5 overflow-hidden reveal" style="transition-delay:0.3s">
+                <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-base pr-4">What's your payment structure?</span>
+                    <i data-lucide="plus" class="w-5 h-5 text-[#00ffc4] faq-icon shrink-0"></i>
+                </button>
+                <div class="faq-answer px-6">
+                    <p class="text-neutral-400 text-sm leading-relaxed pb-6">We typically work with a 40% upfront deposit, 30% at the design approval stage, and 30% upon launch. For larger projects, we can create custom milestone-based payment plans that work for both parties.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section id="contact" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            <!-- Left -->
+            <div class="reveal-left">
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ffc4] mb-4 block">Get in Touch</span>
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">Let's Build Something <span class="text-[#00ffc4]">Amazing</span></h2>
+                <p class="text-neutral-400 text-lg leading-relaxed mb-10">Have a project in mind? We'd love to hear about it. Fill out the form and we'll get back to you within 24 hours.</p>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                            <i data-lucide="mail" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 mb-0.5">Email</div>
+                            <a href="mailto:hello@devstudio.com" class="text-sm font-medium hover:text-[#00ffc4] transition-colors">hello@devstudio.com</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                            <i data-lucide="phone" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 mb-0.5">Phone</div>
+                            <a href="tel:+1234567890" class="text-sm font-medium hover:text-[#00ffc4] transition-colors">+1 (234) 567-890</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 mb-0.5">Location</div>
+                            <span class="text-sm font-medium">San Francisco, CA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="flex gap-3 mt-10">
+                    <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:bg-[#00ffc4]/10 transition-all" aria-label="Twitter">
+                        <i data-lucide="twitter" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:bg-[#00ffc4]/10 transition-all" aria-label="GitHub">
+                        <i data-lucide="github" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:bg-[#00ffc4]/10 transition-all" aria-label="LinkedIn">
+                        <i data-lucide="linkedin" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:bg-[#00ffc4]/10 transition-all" aria-label="Instagram">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:bg-[#00ffc4]/10 transition-all" aria-label="Dribbble">
+                        <i data-lucide="dribbble" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right - Form -->
+            <div class="reveal-right">
+                <form id="contactForm" class="bg-neutral-900/50 border border-white/5 rounded-2xl p-8 space-y-5" onsubmit="handleSubmit(event)">
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="text-xs font-medium text-neutral-400 mb-2 block">First Name *</label>
+                            <input type="text" name="firstName" required class="form-input w-full bg-white/5 rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600" placeholder="John">
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-neutral-400 mb-2 block">Last Name *</label>
+                            <input type="text" name="lastName" required class="form-input w-full bg-white/5 rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600" placeholder="Doe">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-neutral-400 mb-2 block">Email *</label>
+                        <input type="email" name="email" required class="form-input w-full bg-white/5 rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600" placeholder="john@example.com">
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-neutral-400 mb-2 block">Service Interested In</label>
+                        <select name="service" class="form-input w-full bg-white/5 rounded-xl px-4 py-3 text-sm text-white appearance-none cursor-pointer" style="background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center;">
+                            <option value="" class="bg-neutral-900">Select a service</option>
+                            <option value="web" class="bg-neutral-900">Web Development</option>
+                            <option value="design" class="bg-neutral-900">UI/UX Design</option>
+                            <option value="app" class="bg-neutral-900">Mobile App</option>
+                            <option value="seo" class="bg-neutral-900">SEO & Marketing</option>
+                            <option value="ecommerce" class="bg-neutral-900">E-Commerce</option>
+                            <option value="ai" class="bg-neutral-900">AI Solutions</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-neutral-400 mb-2 block">Budget Range</label>
+                        <select name="budget" class="form-input w-full bg-white/5 rounded-xl px-4 py-3 text-sm text-white appearance-none cursor-pointer" style="background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22/></svg>');background-repeat:no-repeat;background-position:right 12px center;">
+                            <option value="" class="bg-neutral-900">Select budget range</option>
+                            <option value="1k-3k" class="bg-neutral-900">$1,000 - $3,000</option>
+                            <option value="3k-5k" class="bg-neutral-900">$3,000 - $5,000</option>
+                            <option value="5k-10k" class="bg-neutral-900">$5,000 - $10,000</option>
+                            <option value="10k+" class="bg-neutral-900">$10,000+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-neutral-400 mb-2 block">Project Details *</label>
+                        <textarea name="message" required rows="4" class="form-input w-full bg-white/5 rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 resize-none" placeholder="Tell us about your project..."></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn" class="btn-primary w-full text-white font-semibold px-6 py-4 rounded-xl text-base flex items-center justify-center gap-2">
+                        <span id="submitText">Send Message</span>
+                        <i data-lucide="send" class="w-4 h-4" id="submitIcon"></i>
+                        <svg id="submitSpinner" class="hidden w-5 h-5 animate-spin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31 31" stroke-linecap="round"/></svg>
+                    </button>
+                    <p class="text-xs text-neutral-600 text-center">We'll respond within 24 hours. No spam, ever.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="border-t border-white/5 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+            <!-- Brand -->
+            <div class="lg:col-span-1">
+                <a href="#home" class="flex items-center gap-2 mb-5">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#047857] to-[#00ffc4] flex items-center justify-center">
+                        <i data-lucide="zap" class="w-5 h-5 text-black"></i>
+                    </div>
+                    <span class="text-xl font-bold">Dev<span class="text-[#00ffc4]">Studio</span></span>
+                </a>
+                <p class="text-sm text-neutral-500 leading-relaxed mb-5">Building digital experiences that transform businesses and delight users worldwide.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center hover:bg-[#00ffc4]/10 transition-colors" aria-label="Twitter"><i data-lucide="twitter" class="w-4 h-4 text-neutral-500"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center hover:bg-[#00ffc4]/10 transition-colors" aria-label="GitHub"><i data-lucide="github" class="w-4 h-4 text-neutral-500"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center hover:bg-[#00ffc4]/10 transition-colors" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4 text-neutral-500"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-sm font-semibold mb-5">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#home" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Home</a></li>
+                    <li><a href="#services" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Services</a></li>
+                    <li><a href="#portfolio" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Portfolio</a></li>
+                    <li><a href="#pricing" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Pricing</a></li>
+                    <li><a href="#contact" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div>
+                <h4 class="text-sm font-semibold mb-5">Services</h4>
+                <ul class="space-y-3">
+                    <li><a href="#services" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Web Development</a></li>
+                    <li><a href="#services" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">UI/UX Design</a></li>
+                    <li><a href="#services" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Mobile Apps</a></li>
+                    <li><a href="#services" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">SEO & Marketing</a></li>
+                    <li><a href="#services" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">AI Solutions</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h4 class="text-sm font-semibold mb-5">Stay Updated</h4>
+                <p class="text-sm text-neutral-500 mb-4">Subscribe to our newsletter for tips and updates.</p>
+                <form id="newsletterForm" onsubmit="handleNewsletter(event)" class="flex gap-2">
+                    <input type="email" required placeholder="Your email" class="form-input flex-1 bg-white/5 rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-600 min-w-0">
+                    <button type="submit" class="btn-primary px-4 py-2.5 rounded-xl shrink-0">
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-white"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bottom -->
+        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-xs text-neutral-600">© 2025 DevStudio. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="text-xs text-neutral-600 hover:text-neutral-400 transition-colors">Privacy Policy</a>
+                <a href="#" class="text-xs text-neutral-600 hover:text-neutral-400 transition-colors">Terms of Service</a>
+                <a href="#" class="text-xs text-neutral-600 hover:text-neutral-400 transition-colors">Cookies</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ==================== PROJECT MODAL ==================== -->
+<div class="modal-overlay fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6" id="projectModal" onclick="closeModal(event)">
+    <div class="modal-content bg-[#171717] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/10" onclick="event.stopPropagation()">
+        <div class="relative">
+            <img id="modalImage" src="" alt="Project" class="w-full aspect-video object-cover rounded-t-2xl">
+            <button onclick="closeModalDirect()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:bg-black/80 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <div class="p-8">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-[#00ffc4] mb-2 block" id="modalCategory">Category</span>
+            <h3 class="text-2xl font-bold mb-3" id="modalTitle">Project Title</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed mb-6" id="modalDesc">Project description goes here.</p>
+            <div class="flex flex-wrap gap-2 mb-6" id="modalTags"></div>
+            <a href="#contact" onclick="closeModalDirect()" class="btn-primary inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-xl text-sm">
+                Start Similar Project <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-[#00ffc4] text-black flex items-center justify-center shadow-lg shadow-[#00ffc4]/20 hover:scale-110 transition-transform" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i data-lucide="chevron-up" class="w-5 h-5"></i>
+</button>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+// Initialize Lucide icons
+lucide.createIcons();
+
+// ===== CURSOR GLOW =====
+const cursorGlow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', (e) => {
+    cursorGlow.style.left = e.clientX + 'px';
+    cursorGlow.style.top = e.clientY + 'px';
+});
+
+// ===== MOBILE MENU =====
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+let menuOpen = false;
+
+menuToggle.addEventListener('click', () => {
+    menuOpen ? closeMobileMenu() : openMobileMenu();
+});
+
+function openMobileMenu() {
+    menuOpen = true;
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// ===== SCROLL REVEAL =====
+const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ===== ACTIVE NAV ON SCROLL =====
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link[data-section]');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (scrollY >= sectionTop) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.section === current) link.classList.add('active');
+    });
+
+    // Back to top button
+    const btn = document.getElementById('backToTop');
+    if (scrollY > 500) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+
+    // Navbar shadow on scroll
+    const nav = document.getElementById('navbar');
+    if (scrollY > 20) nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+    else nav.style.borderBottomColor = 'rgba(255,255,255,0.03)';
+});
+
+// ===== COUNTER ANIMATION =====
+const counterValues = document.querySelectorAll('.counter-value');
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                el.textContent = Math.floor(current) + (target >= 100 ? '+' : '+');
+            }, 25);
+            counterObserver.unobserve(el);
+        }
+    });
+}, { threshold: 0.5 });
+counterValues.forEach(el => counterObserver.observe(el));
+
+// ===== PORTFOLIO FILTER =====
+const filterBtns = document.querySelectorAll('.filter-btn');
+const portfolioCards = document.querySelectorAll('.portfolio-card');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+
+        portfolioCards.forEach((card, index) => {
+            const category = card.dataset.category;
+            if (filter === 'all' || category === filter) {
+                card.style.display = 'block';
+                card.style.animation = `slideInUp 0.4s ease-out ${index * 0.08}s forwards`;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+
+// ===== PROJECT MODAL =====
+const projectData = [
+    { title: 'FinTech Dashboard', category: 'Web Development', desc: 'A real-time financial analytics dashboard built with React and D3.js. Features live data streaming, interactive charts, portfolio tracking, and automated reporting. The platform handles 10,000+ concurrent users with sub-100ms response times.', img: 'https://picsum.photos/seed/devstudio-web1/800/450.jpg', tags: ['React', 'D3.js', 'Node.js', 'WebSocket'] },
+    { title: 'HealthTrack App', category: 'Mobile App', desc: 'An AI-powered health and fitness tracking application. Uses machine learning to provide personalized workout plans, nutrition advice, and sleep analysis. Available on both iOS and Android with 50K+ downloads in the first month.', img: 'https://picsum.photos/seed/devstudio-app1/800/450.jpg', tags: ['Flutter', 'TensorFlow', 'Firebase', 'HealthKit'] },
+    { title: 'Luxe Brand Identity', category: 'Branding', desc: 'A complete brand overhaul for a luxury fashion retailer. Included logo redesign, brand guidelines, packaging design, social media templates, and a cohesive visual language that increased brand recognition by 200%.', img: 'https://picsum.photos/seed/devstudio-brand1/800/450.jpg', tags: ['Branding', 'Figma', 'Illustration', 'Print'] },
+    { title: 'StyleStore Platform', category: 'E-Commerce', desc: 'A modern fashion e-commerce platform with AR try-on technology. Features personalized recommendations, real-time inventory, multi-currency support, and achieved a 45% increase in average order value post-launch.', img: 'https://picsum.photos/seed/devstudio-ecom1/800/450.jpg', tags: ['Next.js', 'Stripe', 'AR.js', 'PostgreSQL'] },
+    { title: 'EduLearn LMS', category: 'Web Development', desc: 'An interactive learning management system with video courses, live classes, quizzes, progress tracking, and certification. Supports 100K+ students with real-time collaboration features and AI-assisted content creation.', img: 'https://picsum.photos/seed/devstudio-web2/800/450.jpg', tags: ['Vue.js', 'WebRTC', 'AWS', 'MongoDB'] },
+    { title: 'FoodieGo Delivery', category: 'Mobile App', desc: 'A food delivery application with real-time GPS tracking, AI-powered restaurant recommendations, scheduled ordering, and a rider management system. Processes 5,000+ orders daily across 3 cities.', img: 'https://picsum.photos/seed/devstudio-app2/800/450.jpg', tags: ['React Native', 'Google Maps', 'Socket.io', 'Redis'] }
+];
+
+function openModal(index) {
+    const data = projectData[index];
+    document.getElementById('modalImage').src = data.img;
+    document.getElementById('modalCategory').textContent = data.category;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalDesc').textContent = data.desc;
+    const tagsContainer = document.getElementById('modalTags');
+    tagsContainer.innerHTML = data.tags.map(t => `<span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-neutral-400">${t}</span>`).join('');
+    document.getElementById('projectModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    lucide.createIcons();
+}
+
+function closeModal(e) {
+    if (e.target === e.currentTarget) closeModalDirect();
+}
+function closeModalDirect() {
+    document.getElementById('projectModal').classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModalDirect();
+        closeMobileMenu();
+    }
+});
+
+// ===== FAQ TOGGLE =====
+function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-answer');
+    const isOpen = item.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(faq => {
+        faq.classList.remove('open');
+        faq.querySelector('.faq-answer').classList.remove('open');
+    });
+
+    // Open clicked if it was closed
+    if (!isOpen) {
+        item.classList.add('open');
+        answer.classList.add('open');
+    }
+}
+
+// ===== PRICING TOGGLE =====
+let isYearly = false;
+function togglePricing() {
+    isYearly = !isYearly;
+    const dot = document.getElementById('toggleDot');
+    const monthlyLabel = document.getElementById('monthlyLabel');
+    const yearlyLabel = document.getElementById('yearlyLabel');
+
+    if (isYearly) {
+        dot.style.transform = 'translateX(28px)';
+        monthlyLabel.classList.add('text-neutral-500');
+        monthlyLabel.classList.remove('text-white');
+        yearlyLabel.classList.remove('text-neutral-500');
+        yearlyLabel.classList.add('text-white');
+    } else {
+        dot.style.transform = 'translateX(0)';
+        monthlyLabel.classList.remove('text-neutral-500');
+        monthlyLabel.classList.add('text-white');
+        yearlyLabel.classList.add('text-neutral-500');
+        yearlyLabel.classList.remove('text-white');
+    }
+
+    document.querySelectorAll('.price-monthly').forEach(el => el.classList.toggle('hidden', isYearly));
+    document.querySelectorAll('.price-yearly').forEach(el => el.classList.toggle('hidden', !isYearly));
+}
+
+// ===== CONTACT FORM =====
+function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const text = document.getElementById('submitText');
+    const icon = document.getElementById('submitIcon');
+    const spinner = document.getElementById('submitSpinner');
+
+    // Validate
+    const form = e.target;
+    const email = form.email.value;
+    if (!email.includes('@') || !email.includes('.')) {
+        showToast('Please enter a valid email address.', 'error');
+        return;
+    }
+
+    // Loading state
+    btn.disabled = true;
+    text.textContent = 'Sending...';
+    icon.classList.add('hidden');
+    spinner.classList.remove('hidden');
+
+    // Simulate sending
+    setTimeout(() => {
+        btn.disabled = false;
+        text.textContent = 'Send Message';
+        icon.classList.remove('hidden');
+        spinner.classList.add('hidden');
+        form.reset();
+        showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
+    }, 2000);
+}
+
+// ===== NEWSLETTER =====
+function handleNewsletter(e) {
+    e.preventDefault();
+    const input = e.target.querySelector('input');
+    if (!input.value.includes('@')) {
+        showToast('Please enter a valid email.', 'error');
+        return;
+    }
+    input.value = '';
+    showToast('Subscribed! Welcome to our newsletter.', 'success');
+}
+
+// ===== TOAST =====
+function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const icon = toast.querySelector('i, svg');
+
+    toastMsg.textContent = msg;
+    if (type === 'error') {
+        toast.style.borderColor = 'rgba(255,80,80,0.4)';
+        icon.style.color = '#ff5050';
+    } else {
+        toast.style.borderColor = 'rgba(0,255,196,0.3)';
+        icon.style.color = '#00ffc4';
+    }
+
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// ===== SMOOTH SCROLL FOR ALL ANCHOR LINKS =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+    });
+});
+</script>
+</body>
+</html>
