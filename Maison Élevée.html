@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAISON ÉLEVÉE — Haute Couture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0a0908;
+  --fg: #f0e6d8;
+  --muted: #8a7e72;
+  --accent: #c8956c;
+  --accent-light: #e4c4a0;
+  --card: rgba(15,13,11,0.85);
+  --border: rgba(200,149,108,0.15);
+  --glass: rgba(200,149,108,0.06);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', 'Segoe UI', sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:300;overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* Loader */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease,visibility 1.2s ease}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#loader .brand{font-family:var(--serif);font-size:2.4rem;font-weight:300;letter-spacing:.5em;color:var(--fg);margin-bottom:2rem}
+#loader .bar-track{width:200px;height:1px;background:rgba(255,255,255,.1);position:relative;overflow:hidden}
+#loader .bar-fill{height:100%;background:var(--accent);width:0%;transition:width .3s ease}
+#loader .pct{font-family:var(--sans);font-size:.7rem;letter-spacing:.3em;color:var(--muted);margin-top:1.2rem;text-transform:uppercase}
+
+/* Three.js canvas */
+#scene-container{position:fixed;inset:0;z-index:0}
+#scene-container canvas{display:block}
+
+/* Content overlay */
+#content-overlay{position:relative;z-index:1}
+
+/* Navigation */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.8rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:background .5s ease,backdrop-filter .5s ease}
+nav.scrolled{background:rgba(10,9,8,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--serif);font-size:1.15rem;font-weight:400;letter-spacing:.45em;color:var(--fg);text-decoration:none;text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:.72rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s ease;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s ease}
+.nav-links a:hover{color:var(--fg)}
+.nav-links a:hover::after{width:100%}
+.nav-menu-btn{display:none;background:none;border:none;color:var(--fg);font-size:1.2rem;cursor:pointer}
+
+/* Hero */
+.hero{height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 5rem;position:relative}
+.hero-tag{font-family:var(--sans);font-size:.65rem;font-weight:400;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem;opacity:0;transform:translateY(20px);animation:fadeUp 1s ease .8s forwards}
+.hero-title{font-family:var(--serif);font-size:clamp(3rem,8vw,7.5rem);font-weight:300;line-height:.95;letter-spacing:-.02em;color:var(--fg);margin-bottom:1.5rem;opacity:0;transform:translateY(30px);animation:fadeUp 1.2s ease 1s forwards}
+.hero-title em{font-style:italic;font-weight:300;color:var(--accent-light)}
+.hero-sub{font-family:var(--sans);font-size:.85rem;font-weight:200;color:var(--muted);max-width:420px;line-height:1.7;opacity:0;transform:translateY(20px);animation:fadeUp 1s ease 1.3s forwards;margin-bottom:2.5rem}
+.hero-cta{display:inline-flex;align-items:center;gap:1rem;font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);text-decoration:none;opacity:0;transform:translateY(20px);animation:fadeUp 1s ease 1.5s forwards;transition:gap .3s ease}
+.hero-cta:hover{gap:1.5rem}
+.hero-cta i{font-size:.6rem;transition:transform .3s ease}
+.hero-cta:hover i{transform:translateX(3px)}
+.scroll-hint{position:absolute;bottom:2rem;right:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeUp 1s ease 2s forwards}
+.scroll-hint span{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollPulse 2s ease infinite}
+
+/* Section: Collection */
+.section-collection{padding:8rem 3rem;position:relative}
+.section-collection::before{content:'';position:absolute;top:0;left:3rem;right:3rem;height:1px;background:linear-gradient(to right,transparent,var(--border),transparent)}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem}
+.section-label{font-family:var(--sans);font-size:.6rem;font-weight:400;letter-spacing:.4em;text-transform:uppercase;color:var(--accent)}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:300;margin-top:.5rem}
+.section-link{font-family:var(--sans);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.8rem;transition:color .3s ease}
+.section-link:hover{color:var(--accent)}
+.collection-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.collection-item{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4}
+.collection-item img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.25,.46,.45,.94),filter .6s ease;filter:brightness(.85) saturate(.9)}
+.collection-item:hover img{transform:scale(1.08);filter:brightness(1) saturate(1)}
+.collection-item .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,8,.7) 0%,transparent 50%);opacity:0;transition:opacity .5s ease;display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem}
+.collection-item:hover .overlay{opacity:1}
+.collection-item .item-name{font-family:var(--serif);font-size:1.3rem;font-weight:300;margin-bottom:.3rem}
+.collection-item .item-price{font-family:var(--sans);font-size:.7rem;letter-spacing:.15em;color:var(--accent)}
+
+/* Section: Editorial */
+.section-editorial{padding:8rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.editorial-img{width:100%;aspect-ratio:3/4;overflow:hidden;position:relative}
+.editorial-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.5s ease}
+.editorial-img:hover img{transform:scale(1.04)}
+.editorial-img::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none}
+.editorial-content .section-label{margin-bottom:1.5rem}
+.editorial-content h2{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.15;margin-bottom:1.5rem}
+.editorial-content h2 em{font-style:italic;color:var(--accent-light)}
+.editorial-content p{font-size:.85rem;font-weight:200;color:var(--muted);line-height:1.8;margin-bottom:2rem;max-width:440px}
+.editorial-cta{display:inline-flex;align-items:center;gap:1rem;font-family:var(--sans);font-size:.68rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--fg);text-decoration:none;border:1px solid var(--border);padding:1rem 2rem;transition:all .4s ease}
+.editorial-cta:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+
+/* Section: Runway */
+.section-runway{padding:8rem 3rem;text-align:center;position:relative}
+.section-runway::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(to right,transparent,var(--border),transparent)}
+.runway-title{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;margin-bottom:1rem}
+.runway-title em{font-style:italic;color:var(--accent-light)}
+.runway-sub{font-family:var(--sans);font-size:.8rem;font-weight:200;color:var(--muted);max-width:500px;margin:0 auto 3rem;line-height:1.7}
+.runway-stats{display:flex;justify-content:center;gap:5rem;margin-top:4rem}
+.stat-item .stat-num{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--accent)}
+.stat-item .stat-label{font-family:var(--sans);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:.3rem}
+
+/* Footer */
+footer{padding:4rem 3rem 2rem;border-top:1px solid var(--border)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:4rem}
+.footer-brand{font-family:var(--serif);font-size:1.1rem;letter-spacing:.4em;text-transform:uppercase;margin-bottom:1rem}
+.footer-desc{font-size:.75rem;color:var(--muted);line-height:1.7;max-width:280px;font-weight:200}
+.footer-col h4{font-family:var(--sans);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fg);margin-bottom:1.2rem}
+.footer-col a{display:block;font-size:.75rem;color:var(--muted);text-decoration:none;margin-bottom:.6rem;font-weight:200;transition:color .3s ease}
+.footer-col a:hover{color:var(--accent)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--border)}
+.footer-bottom span{font-size:.65rem;color:var(--muted);letter-spacing:.1em;font-weight:200}
+.footer-socials{display:flex;gap:1.2rem}
+.footer-socials a{color:var(--muted);font-size:.85rem;transition:color .3s ease;text-decoration:none}
+.footer-socials a:hover{color:var(--accent)}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+
+/* Keyframes */
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+
+/* Responsive */
+@media(max-width:1024px){
+  .collection-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+  .section-editorial{grid-template-columns:1fr;gap:2.5rem}
+  .editorial-img{max-height:500px}
+  .runway-stats{gap:3rem}
+}
+@media(max-width:768px){
+  nav{padding:1.2rem 1.5rem}
+  .nav-links{display:none}
+  .nav-menu-btn{display:block}
+  .hero{padding:0 1.5rem 3rem}
+  .section-collection,.section-editorial,.section-runway{padding:5rem 1.5rem}
+  .collection-grid{grid-template-columns:1fr 1fr;gap:1rem}
+  .section-header{flex-direction:column;align-items:flex-start;gap:1rem}
+  .runway-stats{flex-direction:column;gap:2rem}
+  .footer-top{grid-template-columns:1fr;gap:2rem}
+  footer{padding:3rem 1.5rem 1.5rem}
+  .footer-bottom{flex-direction:column;gap:1rem;text-align:center}
+}
+@media(max-width:480px){
+  .collection-grid{grid-template-columns:1fr;max-width:350px;margin:0 auto}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loader">
+  <div class="brand">MAISON ÉLEVÉE</div>
+  <div class="bar-track"><div class="bar-fill" id="loader-fill"></div></div>
+  <div class="pct" id="loader-pct">0%</div>
+</div>
+
+<!-- 3D Scene -->
+<div id="scene-container"></div>
+
+<!-- Content Overlay -->
+<div id="content-overlay">
+
+  <!-- Navigation -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">Maison Élevée</a>
+    <ul class="nav-links">
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#editorial">Atelier</a></li>
+      <li><a href="#runway">Runway</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+    <button class="nav-menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-tag">Autumn / Winter 2025</div>
+    <h1 class="hero-title">The Art of<br><em>Silent</em> Elegance</h1>
+    <p class="hero-sub">Where sculptural fabric meets architectural form. Each piece is a dialogue between material and movement, designed for those who speak through presence.</p>
+    <a href="#collection" class="hero-cta">Explore the Collection <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Collection Section -->
+  <section class="section-collection" id="collection">
+    <div class="section-header">
+      <div>
+        <div class="section-label reveal">Featured Pieces</div>
+        <h2 class="section-title reveal reveal-delay-1">AW25 Collection</h2>
+      </div>
+      <a href="#" class="section-link reveal reveal-delay-2">View All <i class="fa-solid fa-arrow-right" style="font-size:.5rem"></i></a>
+    </div>
+    <div class="collection-grid">
+      <div class="collection-item reveal">
+        <img src="https://www.baoleely.com/cdn/shop/files/luxurious-princess-white-a-line-long-sleeves-lace-wedding-dress.jpg?v=1761733101&width=832" alt="Ivory Silk Drape Dress" loading="lazy">
+        <div class="overlay">
+          <div class="item-name">Ivory Silk Drape</div>
+          <div class="item-price">$4,280</div>
+        </div>
+      </div>
+      <div class="collection-item reveal reveal-delay-1">
+        <img src="https://i.pinimg.com/736x/8e/05/04/8e05045ef3a46a7ad98395ff009bfc2c.jpg" alt="Charcoal Wool Overcoat" loading="lazy">
+        <div class="overlay">
+          <div class="item-name">Charcoal Wool Coat</div>
+          <div class="item-price">$6,150</div>
+        </div>
+      </div>
+      <div class="collection-item reveal reveal-delay-2">
+        <img src="https://i.pinimg.com/736x/27/1b/d8/271bd80ad0e32de73f09eb1a4970130c.jpg" alt="Cream Sculptural Knit" loading="lazy">
+        <div class="overlay">
+          <div class="item-name">Sculptural Knit</div>
+          <div class="item-price">$3,490</div>
+        </div>
+      </div>
+      <div class="collection-item reveal reveal-delay-3">
+        <img src="https://i.pinimg.com/736x/89/ff/f8/89fff8377943789c6888e937d88b2b5b.jpg" alt="Gold Thread Evening Gown" loading="lazy">
+        <div class="overlay">
+          <div class="item-name">Gold Thread Gown</div>
+          <div class="item-price">$12,800</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Section -->
+  <section class="section-editorial" id="editorial">
+    <div class="editorial-img reveal">
+      <img src="https://i.pinimg.com/736x/37/de/a0/37dea05fd4ba52bb8835aeb6f4a5152c.jpg" alt="Atelier" loading="lazy">
+    </div>
+    <div class="editorial-content">
+      <div class="section-label reveal">The Atelier</div>
+      <h2 class="reveal reveal-delay-1">Crafted by Hand,<br>Defined by <em>Vision</em></h2>
+      <p class="reveal reveal-delay-2">In our Paris atelier, master artisans transform the finest silk and merino wool into living sculptures. Every seam, every fold is a deliberate act of creation — a pursuit of that rare equilibrium between structure and fluidity.</p>
+      <a href="#" class="editorial-cta reveal reveal-delay-3">Discover Our Process <i class="fa-solid fa-arrow-right" style="font-size:.55rem"></i></a>
+    </div>
+  </section>
+
+  <!-- Runway Section -->
+  <section class="section-runway" id="runway">
+    <div class="section-label reveal">Virtual Runway Experience</div>
+    <h2 class="runway-title reveal reveal-delay-1">Walk the <em>Immersive</em> Runway</h2>
+    <p class="runway-sub reveal reveal-delay-2">Step into our digital atelier. Experience each garment as it moves through a surreal architectural space — silk catching warm light, wool holding sculptural form.</p>
+    <div class="runway-stats">
+      <div class="stat-item reveal">
+        <div class="stat-num">47</div>
+        <div class="stat-label">Look Pieces</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Master Artisans</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-num">840</div>
+        <div class="stat-label">Hours of Craft</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Maison Élevée</div>
+        <p class="footer-desc">Haute couture at the intersection of architecture and the human form. Paris, Milan, Tokyo.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Maison</h4>
+        <a href="#">Our Story</a>
+        <a href="#">Ateliers</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h4>Collections</h4>
+        <a href="#">AW25</a>
+        <a href="#">SS25</a>
+        <a href="#">Archive</a>
+        <a href="#">Bridal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="#">Private Appointments</a>
+        <a href="#">Made to Measure</a>
+        <a href="#">Gift Cards</a>
+        <a href="#">Care Guide</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Maison Élevée. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        <a href="#" aria-label="Vogue"><i class="fa-solid fa-play"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+/* ============ SCENE SETUP ============ */
+const container = document.getElementById('scene-container');
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0a0908, 0.028);
+
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 3.5, 14);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+/* ============ LIGHTING ============ */
+// Warm ambient fill
+const ambient = new THREE.AmbientLight(0x2a1a0e, 0.6);
+scene.add(ambient);
+
+// Key light — warm, from upper right
+const keyLight = new THREE.SpotLight(0xffeedd, 40, 30, Math.PI / 5, 0.5, 1.5);
+keyLight.position.set(5, 10, 6);
+keyLight.target.position.set(0, 2, 0);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.set(1024, 1024);
+keyLight.shadow.bias = -0.001;
+scene.add(keyLight);
+scene.add(keyLight.target);
+
+// Fill light — cooler, from left
+const fillLight = new THREE.SpotLight(0xc4d4e8, 12, 25, Math.PI / 4, 0.6, 2);
+fillLight.position.set(-6, 7, 4);
+fillLight.target.position.set(-1, 1, 0);
+scene.add(fillLight);
+scene.add(fillLight.target);
+
+// Rim light — behind, for silhouette
+const rimLight = new THREE.SpotLight(0xffd4a0, 25, 20, Math.PI / 6, 0.4, 1.5);
+rimLight.position.set(0, 6, -6);
+rimLight.target.position.set(0, 2, 2);
+scene.add(rimLight);
+scene.add(rimLight.target);
+
+// Ground accent light
+const groundLight = new THREE.PointLight(0xc8956c, 3, 10, 2);
+groundLight.position.set(0, 0.1, 3);
+scene.add(groundLight);
+
+/* ============ MATERIALS ============ */
+const silkCream = new THREE.MeshPhysicalMaterial({
+  color: 0xf0e6d8,
+  roughness: 0.12,
+  metalness: 0.0,
+  clearcoat: 0.6,
+  clearcoatRoughness: 0.08,
+  sheen: 1.0,
+  sheenColor: new THREE.Color(0xffe8cc),
+  sheenRoughness: 0.15,
+  side: THREE.DoubleSide,
+});
+
+const silkChampagne = new THREE.MeshPhysicalMaterial({
+  color: 0xe4c4a0,
+  roughness: 0.15,
+  metalness: 0.0,
+  clearcoat: 0.5,
+  clearcoatRoughness: 0.1,
+  sheen: 0.9,
+  sheenColor: new THREE.Color(0xffd4a0),
+  sheenRoughness: 0.2,
+  side: THREE.DoubleSide,
+});
+
+const silkRose = new THREE.MeshPhysicalMaterial({
+  color: 0xd4a088,
+  roughness: 0.18,
+  metalness: 0.0,
+  clearcoat: 0.4,
+  sheen: 0.8,
+  sheenColor: new THREE.Color(0xffb8a0),
+  sheenRoughness: 0.2,
+  side: THREE.DoubleSide,
+});
+
+const woolCharcoal = new THREE.MeshPhysicalMaterial({
+  color: 0x2a2520,
+  roughness: 0.85,
+  metalness: 0.0,
+  sheen: 0.3,
+  sheenColor: new THREE.Color(0x5a5048),
+  sheenRoughness: 0.8,
+  side: THREE.DoubleSide,
+});
+
+const woolIvory = new THREE.MeshPhysicalMaterial({
+  color: 0xe8e0d4,
+  roughness: 0.75,
+  metalness: 0.0,
+  sheen: 0.4,
+  sheenColor: new THREE.Color(0xfff8f0),
+  sheenRoughness: 0.6,
+  side: THREE.DoubleSide,
+});
+
+const stoneMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0x8a8078,
+  roughness: 0.25,
+  metalness: 0.05,
+  clearcoat: 0.3,
+  clearcoatRoughness: 0.15,
+});
+
+const darkStoneMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0x3a3530,
+  roughness: 0.3,
+  metalness: 0.08,
+  clearcoat: 0.2,
+  clearcoatRoughness: 0.2,
+});
+
+/* ============ FABRIC CURVE CREATION ============ */
+function createDrapedFabric(width, depth, segW, segD, fabricMat, transforms) {
+  const geo = new THREE.PlaneGeometry(width, depth, segW, segD);
+  const pos = geo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    let z = 0;
+    for (const t of transforms) {
+      z += t.fn(x / (width * 0.5), y / (depth * 0.5)) * t.amp;
+    }
+    // Add subtle organic noise
+    z += Math.sin(x * 1.7 + y * 0.9) * 0.04 + Math.cos(x * 0.8 - y * 1.3) * 0.03;
+    pos.setZ(i, z);
+  }
+  geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, fabricMat);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+/* ============ FABRIC TRANSFORM LIBRARY ============ */
+const fabricTransforms = {
+  cascade: { fn: (u, v) => Math.pow(Math.max(0, 1 - Math.abs(v)), 1.8) * Math.cos(u * 0.8), amp: 1.8 },
+  drape: { fn: (u, v) => Math.exp(-u * u * 2) * Math.sin(v * Math.PI * 0.8), amp: 2.2 },
+  wave: { fn: (u, v) => Math.sin(u * Math.PI * 1.2) * Math.cos(v * Math.PI * 0.6), amp: 0.8 },
+  pleat: { fn: (u, v) => Math.abs(Math.sin(u * Math.PI * 3.5)) * (1 - v * 0.5), amp: 0.5 },
+  fall: { fn: (u, v) => -Math.pow(Math.max(0, v + 0.3), 2) * 0.4 + Math.sin(u * 1.5) * 0.3, amp: 1.5 },
+  twist: { fn: (u, v) => Math.sin(u * Math.PI + v * 2) * (1 - Math.abs(u) * 0.5), amp: 1.0 },
+};
+
+/* ============ CREATE DRAPED FABRICS ============ */
+const fabrics = [];
+
+// Large back drape — cream silk, cascading
+const fabric1 = createDrapedFabric(12, 8, 60, 40, silkCream, [fabricTransforms.cascade, fabricTransforms.wave]);
+fabric1.position.set(0, 4.5, -4);
+fabric1.rotation.x = -0.15;
+scene.add(fabric1);
+fabrics.push({ mesh: fabric1, phaseX: 0, phaseY: 0.3, amp: 0.02, speed: 0.4 });
+
+// Left side drape — champagne silk
+const fabric2 = createDrapedFabric(8, 10, 40, 50, silkChampagne, [fabricTransforms.drape, fabricTransforms.pleat]);
+fabric2.position.set(-6, 3, 0);
+fabric2.rotation.y = 0.6;
+fabric2.rotation.x = -0.1;
+scene.add(fabric2);
+fabrics.push({ mesh: fabric2, phaseX: 1.2, phaseY: 0.8, amp: 0.025, speed: 0.35 });
+
+// Right side — rose silk
+const fabric3 = createDrapedFabric(7, 9, 35, 45, silkRose, [fabricTransforms.twist, fabricTransforms.cascade]);
+fabric3.position.set(6.5, 3.5, -1);
+fabric3.rotation.y = -0.5;
+fabric3.rotation.x = -0.12;
+scene.add(fabric3);
+fabrics.push({ mesh: fabric3, phaseX: 2.5, phaseY: 1.5, amp: 0.022, speed: 0.45 });
+
+// Top canopy — cream silk, subtle wave
+const fabric4 = createDrapedFabric(14, 10, 50, 35, silkCream, [fabricTransforms.wave, fabricTransforms.fall]);
+fabric4.position.set(0, 7.5, -2);
+fabric4.rotation.x = 0.3;
+scene.add(fabric4);
+fabrics.push({ mesh: fabric4, phaseX: 0.5, phaseY: 2.0, amp: 0.015, speed: 0.3 });
+
+// Wool drape — charcoal, back-left
+const fabric5 = createDrapedFabric(6, 8, 30, 40, woolCharcoal, [fabricTransforms.drape, fabricTransforms.fall]);
+fabric5.position.set(-4, 2.5, -3);
+fabric5.rotation.y = 0.3;
+scene.add(fabric5);
+fabrics.push({ mesh: fabric5, phaseX: 3.0, phaseY: 0.5, amp: 0.012, speed: 0.25 });
+
+// Wool panel — ivory, right side
+const fabric6 = createDrapedFabric(5, 7, 25, 35, woolIvory, [fabricTransforms.pleat, fabricTransforms.twist]);
+fabric6.position.set(5, 2, 2);
+fabric6.rotation.y = -0.8;
+fabric6.rotation.x = -0.05;
+scene.add(fabric6);
+fabrics.push({ mesh: fabric6, phaseX: 1.8, phaseY: 2.8, amp: 0.018, speed: 0.32 });
+
+// Small accent drape — front left
+const fabric7 = createDrapedFabric(5, 6, 25, 30, silkChampagne, [fabricTransforms.cascade, fabricTransforms.twist]);
+fabric7.position.set(-5, 5, 3);
+fabric7.rotation.y = 0.4;
+fabric7.rotation.x = -0.2;
+scene.add(fabric7);
+fabrics.push({ mesh: fabric7, phaseX: 4.0, phaseY: 1.0, amp: 0.02, speed: 0.38 });
+
+/* ============ ARCHITECTURAL ELEMENTS ============ */
+// Polished floor
+const floorGeo = new THREE.PlaneGeometry(30, 30, 1, 1);
+const floorMat = new THREE.MeshPhysicalMaterial({
+  color: 0x1a1816,
+  roughness: 0.15,
+  metalness: 0.1,
+  clearcoat: 0.8,
+  clearcoatRoughness: 0.05,
+  reflectivity: 0.9,
+});
+const floor = new THREE.Mesh(floorGeo, floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+// Stone columns
+function createColumn(x, z, height, radius) {
+  const r = Math.max(0.01, radius);
+  const h = Math.max(0.01, height);
+  const geo = new THREE.CylinderGeometry(r, r * 1.1, h, 24, 1);
+  const mesh = new THREE.Mesh(geo, stoneMaterial);
+  mesh.position.set(x, h / 2, z);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  scene.add(mesh);
+  // Base
+  const baseGeo = new THREE.CylinderGeometry(r * 1.4, r * 1.5, 0.15, 24);
+  const base = new THREE.Mesh(baseGeo, darkStoneMaterial);
+  base.position.set(x, 0.075, z);
+  base.receiveShadow = true;
+  scene.add(base);
+  // Capital
+  const capGeo = new THREE.CylinderGeometry(r * 1.3, r * 1.05, 0.2, 24);
+  const cap = new THREE.Mesh(capGeo, darkStoneMaterial);
+  cap.position.set(x, h - 0.1, z);
+  scene.add(cap);
+  return mesh;
+}
+
+createColumn(-7, -5, 8, 0.3);
+createColumn(7, -5, 8, 0.3);
+createColumn(-8, 3, 6, 0.25);
+createColumn(8, 3, 6, 0.25);
+createColumn(-4, -6, 7, 0.28);
+createColumn(4, -6, 7, 0.28);
+
+// Stone bench / plinth
+const plinthGeo = new THREE.BoxGeometry(3, 0.6, 1.2);
+const plinth = new THREE.Mesh(plinthGeo, darkStoneMaterial);
+plinth.position.set(0, 0.3, 4);
+plinth.castShadow = true;
+plinth.receiveShadow = true;
+scene.add(plinth);
+
+// Arch elements — subtle architectural frames
+function createArch(x, z, rotY, scale) {
+  const s = Math.max(0.01, scale);
+  const group = new THREE.Group();
+  // Left pillar
+  const pillarGeo = new THREE.BoxGeometry(0.2 * s, 4 * s, 0.2 * s);
+  const lPillar = new THREE.Mesh(pillarGeo, stoneMaterial);
+  lPillar.position.set(-1.5 * s, 2 * s, 0);
+  lPillar.castShadow = true;
+  group.add(lPillar);
+  // Right pillar
+  const rPillar = new THREE.Mesh(pillarGeo, stoneMaterial);
+  rPillar.position.set(1.5 * s, 2 * s, 0);
+  rPillar.castShadow = true;
+  group.add(rPillar);
+  // Top beam
+  const beamGeo = new THREE.BoxGeometry(3.2 * s, 0.2 * s, 0.25 * s);
+  const beam = new THREE.Mesh(beamGeo, stoneMaterial);
+  beam.position.set(0, 4 * s, 0);
+  beam.castShadow = true;
+  group.add(beam);
+  group.position.set(x, 0, z);
+  group.rotation.y = rotY;
+  scene.add(group);
+  return group;
+}
+
+createArch(-3, -3, 0.2, 1);
+createArch(4, -2, -0.15, 0.9);
+
+// Scattered stone blocks
+const blockGeo = new THREE.BoxGeometry(0.8, 0.4, 0.6);
+for (let i = 0; i < 5; i++) {
+  const block = new THREE.Mesh(blockGeo, darkStoneMaterial);
+  block.position.set(
+    (Math.random() - 0.5) * 12,
+    0.2,
+    (Math.random() - 0.5) * 10 + 1
+  );
+  block.rotation.y = Math.random() * Math.PI;
+  block.castShadow = true;
+  block.receiveShadow = true;
+  scene.add(block);
+}
+
+/* ============ PARTICLES — DUST MOTES ============ */
+const particleCount = 600;
+const particlePositions = new Float32Array(particleCount * 3);
+const particleSizes = new Float32Array(particleCount);
+const particleAlphas = new Float32Array(particleCount);
+const particleVelocities = [];
+
+for (let i = 0; i < particleCount; i++) {
+  particlePositions[i * 3] = (Math.random() - 0.5) * 20;
+  particlePositions[i * 3 + 1] = Math.random() * 10;
+  particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 16;
+  particleSizes[i] = Math.random() * 3 + 0.5;
+  particleAlphas[i] = Math.random() * 0.5 + 0.1;
+  particleVelocities.push({
+    x: (Math.random() - 0.5) * 0.003,
+    y: (Math.random() - 0.5) * 0.002 + 0.001,
+    z: (Math.random() - 0.5) * 0.003,
+  });
+}
+
+const particleGeo = new THREE.BufferGeometry();
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+particleGeo.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
+
+const particleMat = new THREE.PointsMaterial({
+  color: 0xffe8cc,
+  size: 0.04,
+  transparent: true,
+  opacity: 0.35,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+  sizeAttenuation: true,
+});
+
+const particles = new THREE.Points(particleGeo, particleMat);
+scene.add(particles);
+
+/* ============ AVATAR SILHOUETTE ============ */
+// Simplified abstract mannequin form — elegant silhouette
+const avatarGroup = new THREE.Group();
+
+// Torso
+const torsoGeo = new THREE.CylinderGeometry(0.22, 0.32, 1.6, 16);
+const torsoMat = new THREE.MeshPhysicalMaterial({
+  color: 0x1a1816,
+  roughness: 0.6,
+  metalness: 0.1,
+  sheen: 0.5,
+  sheenColor: new THREE.Color(0x3a3028),
+  sheenRoughness: 0.4,
+});
+const torso = new THREE.Mesh(torsoGeo, torsoMat);
+torso.position.y = 3.2;
+avatarGroup.add(torso);
+
+// Head
+const headGeo = new THREE.SphereGeometry(0.18, 16, 12);
+const headMat = new THREE.MeshPhysicalMaterial({ color: 0x2a2520, roughness: 0.5, metalness: 0.05 });
+const head = new THREE.Mesh(headGeo, headMat);
+head.position.y = 4.25;
+avatarGroup.add(head);
+
+// Skirt / gown shape — silk material
+const skirtGeo = new THREE.CylinderGeometry(0.3, 1.2, 2.2, 24, 8, true);
+const skirtPos = skirtGeo.attributes.position;
+for (let i = 0; i < skirtPos.count; i++) {
+  const x = skirtPos.getX(i);
+  const z = skirtPos.getZ(i);
+  const y = skirtPos.getY(i);
+  // Add organic drape to skirt
+  const distFromCenter = Math.sqrt(x * x + z * z);
+  const wave = Math.sin(Math.atan2(z, x) * 6 + y * 2) * 0.08 * (1 + y);
+  const scale = 1 + wave;
+  skirtPos.setX(i, x * scale);
+  skirtPos.setZ(i, z * scale);
+}
+skirtGeo.computeVertexNormals();
+const skirt = new THREE.Mesh(skirtGeo, silkCream.clone());
+skirt.material.side = THREE.DoubleSide;
+skirt.position.y = 1.4;
+skirt.castShadow = true;
+avatarGroup.add(skirt);
+
+// Shoulders
+const shoulderGeo = new THREE.SphereGeometry(0.12, 8, 8);
+const lShoulder = new THREE.Mesh(shoulderGeo, torsoMat);
+lShoulder.position.set(-0.35, 3.9, 0);
+avatarGroup.add(lShoulder);
+const rShoulder = new THREE.Mesh(shoulderGeo, torsoMat);
+rShoulder.position.set(0.35, 3.9, 0);
+avatarGroup.add(rShoulder);
+
+avatarGroup.position.set(0, 0, 2);
+avatarGroup.scale.setScalar(1.1);
+scene.add(avatarGroup);
+
+/* ============ MOUSE & SCROLL TRACKING ============ */
+const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+let scrollY = 0;
+let scrollTarget = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.targetY = (e.clientY / window.innerHeight) * 2 - 1;
+});
+
+window.addEventListener('scroll', () => {
+  scrollTarget = window.scrollY;
+});
+
+/* ============ ANIMATION LOOP ============ */
+const clock = new THREE.Clock();
+const cameraBasePos = new THREE.Vector3(0, 3.5, 14);
+const cameraLookAt = new THREE.Vector3(0, 2.5, 0);
+
+function animate() {
+  requestAnimationFrame(animate);
+  const elapsed = clock.getElapsedTime();
+  const delta = clock.getDelta();
+
+  // Smooth mouse
+  mouse.x += (mouse.targetX - mouse.x) * 0.05;
+  mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+  // Smooth scroll
+  scrollY += (scrollTarget - scrollY) * 0.08;
+  const scrollNorm = scrollY / (document.body.scrollHeight - window.innerHeight || 1);
+
+  // Animate fabric vertices
+  for (const f of fabrics) {
+    const pos = f.mesh.geometry.attributes.position;
+    const base = f.mesh.userData.basePositions;
+    if (!base) {
+      f.mesh.userData.basePositions = new Float32Array(pos.array);
+      continue;
+    }
+    for (let i = 0; i < pos.count; i++) {
+      const bx = base[i * 3];
+      const by = base[i * 3 + 1];
+      const bz = base[i * 3 + 2];
+      const wave = Math.sin(bx * 1.5 + elapsed * f.speed + f.phaseX) *
+                   Math.cos(by * 1.2 + elapsed * f.speed * 0.7 + f.phaseY) * f.amp;
+      pos.setZ(i, bz + wave);
+    }
+    pos.needsUpdate = true;
+    f.mesh.geometry.computeVertexNormals();
+  }
+
+  // Animate particles
+  const pPos = particles.geometry.attributes.position;
+  for (let i = 0; i < particleCount; i++) {
+    let x = pPos.getX(i) + particleVelocities[i].x + Math.sin(elapsed * 0.3 + i) * 0.0005;
+    let y = pPos.getY(i) + particleVelocities[i].y;
+    let z = pPos.getZ(i) + particleVelocities[i].z + Math.cos(elapsed * 0.2 + i) * 0.0005;
+    // Wrap around
+    if (y > 10) y = 0;
+    if (x > 10) x = -10;
+    if (x < -10) x = 10;
+    if (z > 8) z = -8;
+    if (z < -8) z = 8;
+    pPos.setXYZ(i, x, y, z);
+  }
+  pPos.needsUpdate = true;
+
+  // Animate avatar subtle sway
+  avatarGroup.rotation.y = Math.sin(elapsed * 0.15) * 0.08 + mouse.x * 0.1;
+  avatarGroup.position.x = Math.sin(elapsed * 0.2) * 0.15;
+
+  // Skirt subtle animation
+  if (skirt.geometry.attributes.position) {
+    const sPos = skirt.geometry.attributes.position;
+    // Just rotate skirt slightly for movement feel
+    skirt.rotation.y = Math.sin(elapsed * 0.25) * 0.03;
+  }
+
+  // Cinematic camera
+  const scrollCamOffset = scrollNorm * 6;
+  const camX = cameraBasePos.x + mouse.x * 2.5 + Math.sin(elapsed * 0.12) * 0.5;
+  const camY = cameraBasePos.y - mouse.y * 1.0 - scrollCamOffset * 0.3 + Math.sin(elapsed * 0.08) * 0.2;
+  const camZ = cameraBasePos.z - scrollCamOffset * 0.8;
+  camera.position.set(camX, camY, Math.max(4, camZ));
+
+  const lookX = cameraLookAt.x + mouse.x * 0.8;
+  const lookY = cameraLookAt.y - mouse.y * 0.4 - scrollNorm * 2;
+  const lookZ = cameraLookAt.z - scrollCamOffset * 0.3;
+  camera.lookAt(lookX, lookY, lookZ);
+
+  // Subtle light breathing
+  keyLight.intensity = 40 + Math.sin(elapsed * 0.3) * 3;
+  rimLight.intensity = 25 + Math.sin(elapsed * 0.25 + 1) * 2;
+  groundLight.intensity = 3 + Math.sin(elapsed * 0.5) * 0.5;
+
+  renderer.render(scene, camera);
+}
+
+/* ============ RESIZE ============ */
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* ============ LOADING ============ */
+const loaderFill = document.getElementById('loader-fill');
+const loaderPct = document.getElementById('loader-pct');
+const loaderEl = document.getElementById('loader');
+let loadProgress = 0;
+
+function simulateLoading() {
+  loadProgress += Math.random() * 8 + 2;
+  if (loadProgress > 100) loadProgress = 100;
+  loaderFill.style.width = loadProgress + '%';
+  loaderPct.textContent = Math.floor(loadProgress) + '%';
+  if (loadProgress < 100) {
+    setTimeout(simulateLoading, 80 + Math.random() * 120);
+  } else {
+    setTimeout(() => {
+      loaderEl.classList.add('hidden');
+      animate();
+    }, 400);
+  }
+}
+simulateLoading();
+
+/* ============ SCROLL REVEAL ============ */
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+revealElements.forEach(el => observer.observe(el));
+
+/* ============ NAV SCROLL EFFECT ============ */
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 80) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+}, { passive: true });
+
+</script>
+</body>
+</html>
