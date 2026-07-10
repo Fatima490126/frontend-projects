@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en" class="light scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NeuralAI - Next-generation AI platform that transforms your workflow with intelligent automation, predictive analytics, and seamless integration.">
+  <meta name="keywords" content="AI, SaaS, Machine Learning, Automation, Neural Networks">
+  <meta name="author" content="NeuralAI">
+  <meta property="og:title" content="NeuralAI - The Future of Intelligent Automation">
+  <meta property="og:description" content="Transform your workflow with next-gen AI platform">
+  <meta property="og:type" content="website">
+  <title>NeuralAI — The Future of Intelligent Automation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            neural: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    ::selection { background: rgba(99, 102, 241, 0.3); color: #6366f1; }
+    .dark ::selection { background: rgba(147, 197, 253, 0.3); color: #93c5fd; }
+
+    /* Loading Screen */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #ede9fe 100%);
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .dark #loader {
+      background: linear-gradient(135deg, #0a0a0f 0%, #0f1029 50%, #0a0a1a 100%);
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-ring {
+      width: 60px; height: 60px; border-radius: 50%;
+      border: 3px solid rgba(99, 102, 241, 0.15);
+      border-top-color: #6366f1;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-text {
+      margin-top: 20px; font-size: 13px; font-weight: 500; letter-spacing: 3px;
+      text-transform: uppercase; color: #6366f1; animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+    /* Scroll Progress */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 10000;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6, #3b82f6);
+      width: 0%; transition: width 0.05s linear;
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .dark .glass {
+      background: rgba(15, 15, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .dark .glass-card {
+      background: rgba(15, 15, 35, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .glass-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    .dark .glass-card:hover {
+      box-shadow: 0 20px 60px rgba(99, 102, 241, 0.1);
+      border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 30%, #3b82f6 60%, #06b6d4 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-warm {
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Gradient Button */
+    .btn-gradient {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #3b82f6 100%);
+      color: white; border: none; position: relative; overflow: hidden;
+      transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+    }
+    .btn-gradient::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #60a5fa 100%);
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .btn-gradient:hover::before { opacity: 1; }
+    .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5); }
+    .btn-gradient span { position: relative; z-index: 1; }
+
+    .btn-outline {
+      border: 1.5px solid rgba(99, 102, 241, 0.4); color: #6366f1;
+      background: transparent; transition: all 0.3s ease;
+    }
+    .dark .btn-outline { border-color: rgba(129, 140, 248, 0.4); color: #818cf8; }
+    .btn-outline:hover {
+      background: rgba(99, 102, 241, 0.08); border-color: #6366f1;
+      transform: translateY(-1px);
+    }
+
+    /* Floating Animation */
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+    @keyframes float-slow { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+    @keyframes float-reverse { 0%, 100% { transform: translateY(-10px); } 50% { transform: translateY(10px); } }
+    .float { animation: float 6s ease-in-out infinite; }
+    .float-slow { animation: float-slow 8s ease-in-out infinite; }
+    .float-reverse { animation: float-reverse 5s ease-in-out infinite; }
+
+    /* Glow Orbs */
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4;
+      pointer-events: none;
+    }
+    .dark .orb { opacity: 0.2; }
+
+    /* Mega Menu */
+    .mega-menu {
+      opacity: 0; visibility: hidden; transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mega-trigger:hover .mega-menu {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+
+    /* Counter */
+    .counter-value { font-variant-numeric: tabular-nums; }
+
+    /* Pricing Toggle */
+    .pricing-toggle input:checked + .toggle-bg { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+    .pricing-toggle input:checked + .toggle-bg .toggle-dot { transform: translateX(24px); }
+    .toggle-bg {
+      width: 52px; height: 28px; background: #d1d5db; border-radius: 14px;
+      transition: background 0.3s ease; cursor: pointer; position: relative;
+    }
+    .dark .toggle-bg { background: #374151; }
+    .toggle-dot {
+      width: 22px; height: 22px; background: white; border-radius: 50%;
+      position: absolute; top: 3px; left: 3px;
+      transition: transform 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* FAQ */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease; }
+    .faq-answer.open { max-height: 300px; }
+    .faq-icon { transition: transform 0.3s ease; }
+    .faq-item.active .faq-icon { transform: rotate(45deg); }
+
+    /* Parallax */
+    .parallax-bg { will-change: transform; }
+
+    /* Reveal animations */
+    .reveal { opacity: 0; transform: translateY(40px); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); }
+    .reveal-right { opacity: 0; transform: translateX(40px); }
+    .reveal-scale { opacity: 0; transform: scale(0.9); }
+
+    /* Tooltip */
+    .tooltip { position: relative; }
+    .tooltip::after {
+      content: attr(data-tip); position: absolute; bottom: 100%; left: 50%;
+      transform: translateX(-50%) translateY(8px); padding: 6px 12px;
+      background: #1f2937; color: white; font-size: 11px; border-radius: 6px;
+      white-space: nowrap; opacity: 0; visibility: hidden;
+      transition: all 0.2s ease; pointer-events: none;
+    }
+    .dark .tooltip::after { background: #e5e7eb; color: #111827; }
+    .tooltip:hover::after { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
+
+    /* Smooth image load */
+    img[loading="lazy"] { opacity: 0; transition: opacity 0.5s ease; }
+    img[loading="lazy"].loaded { opacity: 1; }
+
+    /* Neural network lines */
+    .neural-line {
+      stroke-dasharray: 200; stroke-dashoffset: 200;
+      animation: draw-line 3s ease-in-out infinite;
+    }
+    @keyframes draw-line { 0% { stroke-dashoffset: 200; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -200; } }
+
+    /* Dot pulse */
+    .dot-pulse {
+      animation: dot-pulse 2s ease-in-out infinite;
+    }
+    @keyframes dot-pulse {
+      0%, 100% { r: 3; opacity: 0.6; }
+      50% { r: 5; opacity: 1; }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.5); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; z-index: 9998;
+      padding: 16px 24px; border-radius: 12px;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Map */
+    .map-container { border-radius: 16px; overflow: hidden; }
+
+    /* Workflow connector */
+    .workflow-connector {
+      position: absolute; width: 2px; background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+      left: 50%; transform: translateX(-50%);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+
+    @media (max-width: 768px) {
+      .hero-illustration { transform: scale(0.7); }
+      .float-element { display: none; }
+    }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-900 dark:bg-[#0a0a0f] dark:text-gray-100 overflow-x-hidden">
+
+  <!-- Loading Screen -->
+  <div id="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">NeuralAI</div>
+  </div>
+
+  <!-- Scroll Progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast glass-card text-sm font-medium flex items-center gap-2">
+    <iconify-icon icon="lucide:check-circle" class="text-green-500 text-lg"></iconify-icon>
+    <span id="toast-msg">Success!</span>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-[1000] transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mt-4 glass rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between" id="header-inner">
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-2.5 group">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
+            <iconify-icon icon="lucide:brain" class="text-white text-lg"></iconify-icon>
+          </div>
+          <span class="text-lg font-bold tracking-tight">Neural<span class="gradient-text">AI</span></span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden lg:flex items-center gap-1">
+          <a href="#features" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10">Features</a>
+
+          <!-- Mega Menu Trigger -->
+          <div class="mega-trigger relative">
+            <button class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10 flex items-center gap-1">
+              Solutions <iconify-icon icon="lucide:chevron-down" class="text-xs"></iconify-icon>
+            </button>
+            <div class="mega-menu absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[600px]">
+              <div class="glass-card rounded-2xl p-6 grid grid-cols-2 gap-4">
+                <a href="#workflow" class="flex items-start gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <iconify-icon icon="lucide:workflow" class="text-white"></iconify-icon>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AI Workflows</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Automate complex processes</div>
+                  </div>
+                </a>
+                <a href="#demo" class="flex items-start gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <iconify-icon icon="lucide:bar-chart-3" class="text-white"></iconify-icon>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Analytics</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Deep data insights</div>
+                  </div>
+                </a>
+                <a href="#pricing" class="flex items-start gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                    <iconify-icon icon="lucide:shield-check" class="text-white"></iconify-icon>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Enterprise</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Scale with confidence</div>
+                  </div>
+                </a>
+                <a href="#contact" class="flex items-start gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                    <iconify-icon icon="lucide:headphones" class="text-white"></iconify-icon>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Support</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">24/7 dedicated help</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <a href="#pricing" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10">Pricing</a>
+          <a href="#testimonials" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10">Testimonials</a>
+          <a href="#blog" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10">Blog</a>
+          <a href="#contact" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/10">Contact</a>
+        </nav>
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-3">
+          <!-- Dark/Light Toggle -->
+          <button id="theme-toggle" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors tooltip" data-tip="Toggle theme">
+            <iconify-icon icon="lucide:sun" class="text-lg dark:hidden text-gray-600"></iconify-icon>
+            <iconify-icon icon="lucide:moon" class="text-lg hidden dark:inline text-gray-300"></iconify-icon>
+          </button>
+
+          <a href="#pricing" class="hidden sm:inline-flex btn-outline px-4 py-2 rounded-xl text-sm font-medium">
+            <span>Log In</span>
+          </a>
+          <a href="#pricing" class="hidden sm:inline-flex btn-gradient px-5 py-2.5 rounded-xl text-sm font-semibold">
+            <span>Get Started Free</span>
+          </a>
+
+          <!-- Mobile Menu Toggle -->
+          <button id="mobile-toggle" class="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">
+            <iconify-icon icon="lucide:menu" class="text-xl"></iconify-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed inset-y-0 right-0 w-80 max-w-full z-[1001] glass p-6 pt-20">
+    <button id="mobile-close" class="absolute top-6 right-6 w-9 h-9 rounded-xl flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10">
+      <iconify-icon icon="lucide:x" class="text-xl"></iconify-icon>
+    </button>
+    <nav class="flex flex-col gap-2">
+      <a href="#features" class="mobile-link px-4 py-3 text-sm font-medium rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">Features</a>
+      <a href="#workflow" class="mobile-link px-4 py-3 text-sm font-medium rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">Solutions</a>
+      <a href="#pricing" class="mobile-link px-4 py-3 text-sm font-medium rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">Pricing</a>
+      <a href="#testimonials" class="mobile-link px-4 py-3 text-sm font-medium rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">Testimonials</a>
+      <a href="#blog" class="mobile-link px-4 py-3 text-sm font-medium rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">Blog</a>
+      <a href="#contact" class="mobile-link px-4 py-3 text-sm font-medium rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors">Contact</a>
+      <div class="border-t border-gray-200 dark:border-white/10 mt-4 pt-4 flex flex-col gap-2">
+        <a href="#" class="btn-outline px-4 py-2.5 rounded-xl text-sm font-medium text-center">Log In</a>
+        <a href="#pricing" class="btn-gradient px-4 py-2.5 rounded-xl text-sm font-semibold text-center"><span>Get Started Free</span></a>
+      </div>
+    </nav>
+  </div>
+  <div id="mobile-overlay" class="fixed inset-0 bg-black/30 z-[1000] hidden"></div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
+    <!-- Background Orbs -->
+    <div class="orb w-[500px] h-[500px] bg-indigo-400 -top-40 -left-40 float" style="filter:blur(100px);"></div>
+    <div class="orb w-[400px] h-[400px] bg-purple-400 top-1/3 -right-32 float-slow" style="filter:blur(90px);"></div>
+    <div class="orb w-[300px] h-[300px] bg-blue-400 bottom-0 left-1/3 float-reverse" style="filter:blur(80px);"></div>
+
+    <!-- Grid Pattern -->
+    <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" style="background-image: radial-gradient(circle, #6366f1 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Badge -->
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8">
+        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        <span class="text-xs font-medium tracking-wide text-gray-600 dark:text-gray-300">Now in Public Beta — v2.0 Released</span>
+        <iconify-icon icon="lucide:arrow-right" class="text-xs text-indigo-500"></iconify-icon>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="reveal text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter leading-[1.05]">
+        The Future of<br>
+        <span class="gradient-text">Intelligent</span> Automation
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="reveal mt-6 text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
+        NeuralAI transforms your workflow with next-generation machine learning, predictive analytics, and seamless integration — all in one powerful platform.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="reveal mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#pricing" class="btn-gradient px-8 py-4 rounded-2xl text-sm font-semibold tracking-wide flex items-center gap-2 w-full sm:w-auto justify-center">
+          <span>Start Free Trial</span>
+          <iconify-icon icon="lucide:arrow-right" class="text-base"></iconify-icon>
+        </a>
+        <a href="#demo" class="btn-outline px-8 py-4 rounded-2xl text-sm font-semibold tracking-wide flex items-center gap-2 w-full sm:w-auto justify-center">
+          <iconify-icon icon="lucide:play-circle" class="text-base"></iconify-icon>
+          <span>Watch Demo</span>
+        </a>
+      </div>
+
+      <!-- Hero AI Illustration -->
+      <div class="relative mt-16 md:mt-20 max-w-4xl mx-auto hero-illustration">
+        <div class="relative glass-card rounded-3xl p-2 md:p-3">
+          <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+            <img src="https://images.openai.com/static-rsc-4/djVou6mDoCvldwz5eSdeEsZaBKaaaWcke6k2IVI5JMBvTEur1tyyFiUtLGAlfNNYfjB5YDg4EzpELJNubKOZ3YO0J7BgdgTee6MyZUBtSLzDY7Vn9Uz2iHegxqtxezp9xUYNnEM-o3-MDFBqbu3iGIgg2Yp8B_M9cS0pDi77QQSUcTJoxuYsESwe2Pmy1B0e?purpose=fullsize" alt="NeuralAI Dashboard" class="w-full h-auto" loading="eager">
+
+            <!-- Floating UI Elements -->
+            <div class="float-element absolute top-6 right-6 float glass-card rounded-xl p-3 flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center">
+                <iconify-icon icon="lucide:trending-up" class="text-white text-sm"></iconify-icon>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] text-gray-500 dark:text-gray-400">Accuracy</div>
+                <div class="text-sm font-bold text-green-600 dark:text-green-400">99.7%</div>
+              </div>
+            </div>
+
+            <div class="float-element absolute bottom-6 left-6 float-slow glass-card rounded-xl p-3 flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                <iconify-icon icon="lucide:zap" class="text-white text-sm"></iconify-icon>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] text-gray-500 dark:text-gray-400">Processing</div>
+                <div class="text-sm font-bold text-indigo-600 dark:text-indigo-400">2.3ms</div>
+              </div>
+            </div>
+
+            <div class="float-element absolute top-1/2 left-6 -translate-y-1/2 float-reverse glass-card rounded-xl p-3 hidden md:flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+                <iconify-icon icon="lucide:shield-check" class="text-white text-sm"></iconify-icon>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] text-gray-500 dark:text-gray-400">Security</div>
+                <div class="text-sm font-bold text-amber-600 dark:text-amber-400">SOC 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trusted By -->
+      <div class="reveal mt-16">
+        <p class="text-xs font-medium tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-6">Trusted by industry leaders</p>
+        <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-40 dark:opacity-30">
+          <iconify-icon icon="simple-icons:google" class="text-3xl md:text-4xl"></iconify-icon>
+          <iconify-icon icon="simple-icons:microsoft" class="text-3xl md:text-4xl"></iconify-icon>
+          <iconify-icon icon="simple-icons:amazon" class="text-3xl md:text-4xl"></iconify-icon>
+          <iconify-icon icon="simple-icons:meta" class="text-3xl md:text-4xl"></iconify-icon>
+          <iconify-icon icon="simple-icons:apple" class="text-3xl md:text-4xl"></iconify-icon>
+          <iconify-icon icon="simple-icons:nvidia" class="text-3xl md:text-4xl hidden sm:block"></iconify-icon>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES SECTION ===== -->
+  <section id="features" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="orb w-[400px] h-[400px] bg-purple-300 top-20 -right-40" style="filter:blur(100px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+          <iconify-icon icon="lucide:sparkles" class="text-sm"></iconify-icon>
+          CORE FEATURES
+        </div>
+        <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+          Everything you need to<br><span class="gradient-text">supercharge your AI</span>
+        </h2>
+        <p class="reveal mt-4 text-gray-500 dark:text-gray-400 text-base md:text-lg font-light">
+          Powerful features designed for modern teams. Build, deploy, and scale AI models with unprecedented ease.
+        </p>
+      </div>
+
+      <!-- Feature Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="reveal glass-card rounded-2xl p-7 group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/20">
+            <iconify-icon icon="lucide:brain-circuit" class="text-white text-xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Neural Processing</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Advanced neural networks that process millions of data points in real-time with 99.7% accuracy.</p>
+          <a href="#" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all">
+            Learn more <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="reveal glass-card rounded-2xl p-7 group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
+            <iconify-icon icon="lucide:bar-chart-3" class="text-white text-xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Predictive Analytics</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Forecast trends and patterns with machine learning models that improve over time automatically.</p>
+          <a href="#" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all">
+            Learn more <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="reveal glass-card rounded-2xl p-7 group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/20">
+            <iconify-icon icon="lucide:lock" class="text-white text-xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Enterprise Security</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">SOC 2 Type II, GDPR, and HIPAA compliant with end-to-end encryption and zero-trust architecture.</p>
+          <a href="#" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all">
+            Learn more <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="reveal glass-card rounded-2xl p-7 group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-amber-500/20">
+            <iconify-icon icon="lucide:plug" class="text-white text-xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">200+ Integrations</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Connect with your existing tools seamlessly — Slack, Salesforce, AWS, GCP, and hundreds more.</p>
+          <a href="#" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all">
+            Learn more <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="reveal glass-card rounded-2xl p-7 group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-green-500/20">
+            <iconify-icon icon="lucide:gauge" class="text-white text-xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Blazing Performance</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Sub-3ms inference with our distributed edge computing network spanning 40+ global regions.</p>
+          <a href="#" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all">
+            Learn more <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="reveal glass-card rounded-2xl p-7 group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-red-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-rose-500/20">
+            <iconify-icon icon="lucide:code-2" class="text-white text-xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">API-First Design</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">RESTful and GraphQL APIs with SDKs for Python, Node.js, Go, and Rust. Build anything.</p>
+          <a href="#" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all">
+            Learn more <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS / COUNTERS SECTION ===== -->
+  <section class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center text-white">
+        <div class="reveal">
+          <div class="text-4xl md:text-5xl font-extrabold counter-value" data-target="500" data-suffix="+">0</div>
+          <div class="text-sm md:text-base text-white/70 mt-2 font-light">Enterprise Clients</div>
+        </div>
+        <div class="reveal">
+          <div class="text-4xl md:text-5xl font-extrabold counter-value" data-target="99.9" data-suffix="%" data-decimal="true">0</div>
+          <div class="text-sm md:text-base text-white/70 mt-2 font-light">Uptime SLA</div>
+        </div>
+        <div class="reveal">
+          <div class="text-4xl md:text-5xl font-extrabold counter-value" data-target="50" data-suffix="M+">0</div>
+          <div class="text-sm md:text-base text-white/70 mt-2 font-light">API Calls / Day</div>
+        </div>
+        <div class="reveal">
+          <div class="text-4xl md:text-5xl font-extrabold counter-value" data-target="40" data-suffix="+">0</div>
+          <div class="text-sm md:text-base text-white/70 mt-2 font-light">Global Regions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AI WORKFLOW SECTION ===== -->
+  <section id="workflow" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="orb w-[350px] h-[350px] bg-blue-300 bottom-0 -left-32" style="filter:blur(100px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+          <iconify-icon icon="lucide:workflow" class="text-sm"></iconify-icon>
+          HOW IT WORKS
+        </div>
+        <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+          Three steps to<br><span class="gradient-text">AI-powered success</span>
+        </h2>
+      </div>
+
+      <!-- Workflow Steps -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 relative">
+        <!-- Connector Lines (desktop) -->
+        <div class="hidden md:block absolute top-16 left-[calc(33.33%+0px)] w-[calc(33.33%)] h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-30"></div>
+        <div class="hidden md:block absolute top-16 left-[calc(66.66%+0px)] w-[calc(33.33%)] h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 opacity-30"></div>
+
+        <!-- Step 1 -->
+        <div class="reveal glass-card rounded-2xl p-8 text-center relative">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center mx-auto mb-6 text-white text-xl font-bold shadow-lg shadow-indigo-500/30">1</div>
+          <div class="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center mx-auto mb-5">
+            <iconify-icon icon="lucide:upload-cloud" class="text-3xl text-indigo-500"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Connect Your Data</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Upload datasets, connect APIs, or integrate your existing databases in seconds.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="reveal glass-card rounded-2xl p-8 text-center relative">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mx-auto mb-6 text-white text-xl font-bold shadow-lg shadow-purple-500/30">2</div>
+          <div class="w-16 h-16 rounded-2xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center mx-auto mb-5">
+            <iconify-icon icon="lucide:cpu" class="text-3xl text-purple-500"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Train Models</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Our AutoML engine selects and optimizes the best model architecture for your data.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="reveal glass-card rounded-2xl p-8 text-center relative">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mx-auto mb-6 text-white text-xl font-bold shadow-lg shadow-blue-500/30">3</div>
+          <div class="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center mx-auto mb-5">
+            <iconify-icon icon="lucide:rocket" class="text-3xl text-blue-500"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Deploy & Scale</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">One-click deployment to our global edge network with auto-scaling built in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCT DEMO SECTION ===== -->
+  <section id="demo" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-900/50 dark:to-[#0a0a0f]"></div>
+    <div class="orb w-[500px] h-[500px] bg-indigo-300 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="filter:blur(120px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left Content -->
+        <div>
+          <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+            <iconify-icon icon="lucide:monitor-play" class="text-sm"></iconify-icon>
+            PRODUCT DEMO
+          </div>
+          <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+            See NeuralAI<br><span class="gradient-text">in action</span>
+          </h2>
+          <p class="reveal mt-4 text-gray-500 dark:text-gray-400 text-base md:text-lg font-light leading-relaxed">
+            Watch how our platform processes real-world data, generates predictions, and delivers actionable insights — all in real-time.
+          </p>
+
+          <div class="reveal mt-8 space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="lucide:check" class="text-green-600 dark:text-green-400 text-xs"></iconify-icon>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Real-time data visualization with interactive dashboards</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="lucide:check" class="text-green-600 dark:text-green-400 text-xs"></iconify-icon>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Drag-and-drop model builder — no coding required</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="lucide:check" class="text-green-600 dark:text-green-400 text-xs"></iconify-icon>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">One-click export to PDF, CSV, or API endpoint</p>
+            </div>
+          </div>
+
+          <a href="#pricing" class="reveal btn-gradient inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold mt-8">
+            <span>Try It Free</span>
+            <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- Right - Demo Image -->
+        <div class="reveal-scale">
+          <div class="relative">
+            <div class="glass-card rounded-3xl p-3">
+              <img src="https://images.openai.com/static-rsc-4/1o2pIa6HRi1B_udU9bRKmYyC2nitNIntpraDBIf_FxLWhVSVcz7dmNFrliYK_pwFz3ZCJFpE8d4zXUiLwyyxIuHfsWDHC1yWWAJ1fNQJF_c28RwDSEJVfxSF_CU_lM9S1D0R2sRehzL7NHaOObLkKc42lUxf98XUUzqsgm5QNLbz7MsrNAi66GI4vPDbLpq6?purpose=fullsize" alt="NeuralAI Product Demo" class="w-full rounded-2xl" loading="lazy" onload="this.classList.add('loaded')">
+            </div>
+            <!-- Play button overlay -->
+            <button id="play-demo-btn" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-2xl hover:scale-110 transition-transform group">
+              <iconify-icon icon="lucide:play" class="text-3xl text-indigo-600 ml-1 group-hover:scale-110 transition-transform"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING SECTION ===== -->
+  <section id="pricing" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="orb w-[400px] h-[400px] bg-purple-300 -top-40 right-0" style="filter:blur(100px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+          <iconify-icon icon="lucide:credit-card" class="text-sm"></iconify-icon>
+          PRICING
+        </div>
+        <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+          Simple, transparent<br><span class="gradient-text">pricing</span>
+        </h2>
+        <p class="reveal mt-4 text-gray-500 dark:text-gray-400 text-base md:text-lg font-light">Start free, scale as you grow. No hidden fees.</p>
+
+        <!-- Toggle -->
+        <div class="reveal flex items-center justify-center gap-3 mt-8">
+          <span class="text-sm font-medium text-gray-600 dark:text-gray-300" id="label-monthly">Monthly</span>
+          <label class="pricing-toggle relative inline-block">
+            <input type="checkbox" id="pricing-toggle" class="sr-only">
+            <div class="toggle-bg">
+              <div class="toggle-dot"></div>
+            </div>
+          </label>
+          <span class="text-sm font-medium text-gray-400 dark:text-gray-500" id="label-yearly">Yearly <span class="text-xs text-green-500 font-semibold">-20%</span></span>
+        </div>
+      </div>
+
+      <!-- Pricing Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <!-- Starter -->
+        <div class="reveal glass-card rounded-2xl p-8 flex flex-col">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold">Starter</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">For individuals & small projects</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold pricing-amount" data-monthly="29" data-yearly="23">$29</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">/month</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> 10,000 API calls/month</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> 3 AI models</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Basic analytics</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Email support</li>
+            <li class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500"><iconify-icon icon="lucide:x" class="text-gray-300 dark:text-gray-600"></iconify-icon> Custom models</li>
+          </ul>
+          <button class="btn-outline w-full py-3 rounded-xl text-sm font-semibold" onclick="showToast('Starting your free trial...')">Get Started</button>
+        </div>
+
+        <!-- Pro (Featured) -->
+        <div class="reveal glass-card rounded-2xl p-8 flex flex-col relative border-2 border-indigo-500/50 shadow-xl shadow-indigo-500/10">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-semibold tracking-wide">
+            MOST POPULAR
+          </div>
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold">Pro</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">For growing teams & startups</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold pricing-amount" data-monthly="99" data-yearly="79">$99</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">/month</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> 100,000 API calls/month</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Unlimited AI models</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Advanced analytics</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Priority support</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Custom models</li>
+          </ul>
+          <button class="btn-gradient w-full py-3 rounded-xl text-sm font-semibold" onclick="showToast('Starting your Pro trial...')"><span>Get Started</span></button>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="reveal glass-card rounded-2xl p-8 flex flex-col">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold">Enterprise</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">For large-scale organizations</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold">Custom</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Unlimited API calls</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Unlimited everything</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> White-label solution</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> Dedicated account manager</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><iconify-icon icon="lucide:check" class="text-green-500"></iconify-icon> SLA & on-premise option</li>
+          </ul>
+          <button class="btn-outline w-full py-3 rounded-xl text-sm font-semibold" onclick="showToast('Our team will contact you shortly!')">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS SECTION ===== -->
+  <section id="testimonials" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-900/50 dark:to-[#0a0a0f]"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+          <iconify-icon icon="lucide:message-circle" class="text-sm"></iconify-icon>
+          TESTIMONIALS
+        </div>
+        <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+          Loved by <span class="gradient-text">thousands</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Testimonial 1 -->
+        <div class="reveal glass-card rounded-2xl p-7">
+          <div class="flex items-center gap-1 mb-4">
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">"NeuralAI cut our data processing time by 80%. The predictive models are insanely accurate and the team support is world-class."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://images.openai.com/static-rsc-4/2f8_ItVn0H5f60X_QuxDzK2Vg3crwp4rcuLaFa7Ns__sBmv05iYslzxHiCFlQT7zZwl-OZedq6qegFgTIX0Lp6HJRR6afPHaoBS3ewezOk7d79oOg6hwCCb7oDNESSceIpmCIa02uivHUsoPGJhIcmOxesw8KiY5ZcH1NMNa2n0cOR1hYaJJXtNdM6n-VuD2?purpose=fullsize" alt="Sarah Chen" class="w-10 h-10 rounded-full object-cover" loading="lazy" onload="this.classList.add('loaded')">
+            <div>
+              <div class="text-sm font-semibold">Sarah Chen</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">CTO, TechFlow Inc.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="reveal glass-card rounded-2xl p-7">
+          <div class="flex items-center gap-1 mb-4">
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">"We migrated from three different AI tools to NeuralAI. It replaced all of them and performed better. The ROI was immediate."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://images.openai.com/static-rsc-4/b_rbVi8H-J2nClboAe66cBuIwudvUSj_J1R8HD6VQVVOps4u4Q6EunD7cDdU9FOLhAD9LgZESoZG4yhJzskX92wqJHypKAilaj0s66s560Nkq00oIArfUPV_AIIn3Qc6LQwmbq9N7Pf8US_dtHyrkgvJy1n55IS4Rkch-mtTXk6Jw9wsB5hHusvhN0gCR8NW?purpose=fullsize" alt="Marcus Johnson" class="w-10 h-10 rounded-full object-cover" loading="lazy" onload="this.classList.add('loaded')">
+            <div>
+              <div class="text-sm font-semibold">Marcus Johnson</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">VP Engineering, DataScale</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="reveal glass-card rounded-2xl p-7">
+          <div class="flex items-center gap-1 mb-4">
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+            <iconify-icon icon="lucide:star" class="text-amber-400 text-sm"></iconify-icon>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">"The API is beautifully designed. Our developers were up and running in 30 minutes. The documentation is the best I've seen."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://images.openai.com/static-rsc-4/lwqZU2z-ShT5MUleF8wTXipfneUb2X-zzam3KRwBp77JnepqOQNJkmHiaJoqvC3gBYW6C3yyvEr3xMqiFdFQjU79jihshDMhvZmf3Vh66zcAh245sKxPRlyEc7_9Spy4iep7UDixhAqvqvyzpgKSPIOP51-6NJJdc9lJ9dALMDlJ2ZC0QwmOjTzXpYyrSBib?purpose=fullsize" alt="Elena Rodriguez" class="w-10 h-10 rounded-full object-cover" loading="lazy" onload="this.classList.add('loaded')">
+            <div>
+              <div class="text-sm font-semibold">Elena Rodriguez</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">Lead Developer, NovaSoft</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section id="faq" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-12">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+          <iconify-icon icon="lucide:help-circle" class="text-sm"></iconify-icon>
+          FAQ
+        </div>
+        <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+          Frequently asked <span class="gradient-text">questions</span>
+        </h2>
+      </div>
+
+      <div class="space-y-3" id="faq-container">
+        <div class="faq-item reveal glass-card rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full flex items-center justify-between p-5 text-left">
+            <span class="text-sm font-semibold pr-4">How does the free trial work?</span>
+            <iconify-icon icon="lucide:plus" class="faq-icon text-lg text-indigo-500 flex-shrink-0"></iconify-icon>
+          </button>
+          <div class="faq-answer px-5 pb-5">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">You get full access to the Pro plan for 14 days — no credit card required. After the trial, you can choose to subscribe or downgrade to our free tier with limited features.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal glass-card rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full flex items-center justify-between p-5 text-left">
+            <span class="text-sm font-semibold pr-4">Can I switch plans at any time?</span>
+            <iconify-icon icon="lucide:plus" class="faq-icon text-lg text-indigo-500 flex-shrink-0"></iconify-icon>
+          </button>
+          <div class="faq-answer px-5 pb-5">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Absolutely! You can upgrade, downgrade, or cancel your plan at any time. When upgrading, you'll be prorated for the remainder of your billing cycle.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal glass-card rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full flex items-center justify-between p-5 text-left">
+            <span class="text-sm font-semibold pr-4">What kind of support do you offer?</span>
+            <iconify-icon icon="lucide:plus" class="faq-icon text-lg text-indigo-500 flex-shrink-0"></iconify-icon>
+          </button>
+          <div class="faq-answer px-5 pb-5">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Starter gets email support (24hr response). Pro gets priority chat & email (2hr response). Enterprise gets a dedicated account manager, phone support, and custom SLA.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal glass-card rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full flex items-center justify-between p-5 text-left">
+            <span class="text-sm font-semibold pr-4">Is my data secure?</span>
+            <iconify-icon icon="lucide:plus" class="faq-icon text-lg text-indigo-500 flex-shrink-0"></iconify-icon>
+          </button>
+          <div class="faq-answer px-5 pb-5">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Yes. We're SOC 2 Type II certified, GDPR compliant, and HIPAA ready. All data is encrypted at rest (AES-256) and in transit (TLS 1.3). Enterprise customers can also deploy on-premise.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal glass-card rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full flex items-center justify-between p-5 text-left">
+            <span class="text-sm font-semibold pr-4">Do you offer custom AI model training?</span>
+            <iconify-icon icon="lucide:plus" class="faq-icon text-lg text-indigo-500 flex-shrink-0"></iconify-icon>
+          </button>
+          <div class="faq-answer px-5 pb-5">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Yes! Pro and Enterprise plans include custom model training. Our AutoML engine handles architecture search, hyperparameter tuning, and model optimization automatically.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOG PREVIEW SECTION ===== -->
+  <section id="blog" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-900/50 dark:to-[#0a0a0f]"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4">
+        <div>
+          <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+            <iconify-icon icon="lucide:pen-tool" class="text-sm"></iconify-icon>
+            BLOG
+          </div>
+          <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+            Latest <span class="gradient-text">insights</span>
+          </h2>
+        </div>
+        <a href="#" class="reveal btn-outline px-5 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2">
+          View All <iconify-icon icon="lucide:arrow-right" class="text-xs"></iconify-icon>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Blog 1 -->
+        <article class="reveal glass-card rounded-2xl overflow-hidden group">
+          <div class="aspect-[16/10] overflow-hidden">
+            <img src="https://images.openai.com/static-rsc-4/L-Yh9KPImV3NIZwXjDyooJtVoZzSLomgTI7HxWPinlLbmmlhqoKkFMlogRxgWn2ZA8wkTu0K_91gricwBbmeF_rxuixpNGKLiJhSa0M4GwhGzwb7pe4nyT18uj4HldyC3LS2ug0RMMql2feqZaTGDPu9IbZCJz2XC7wDFxtMcmzZ-EmpDdjDpBe6rfDXoDtK?purpose=fullsize" alt="The Future of AI" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onload="this.classList.add('loaded')">
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-medium">AI Trends</span>
+              <span>Dec 15, 2024</span>
+            </div>
+            <h3 class="text-base font-semibold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">The Future of AI: What to Expect in 2025</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">Exploring the emerging trends that will shape the next generation of artificial intelligence...</p>
+          </div>
+        </article>
+
+        <!-- Blog 2 -->
+        <article class="reveal glass-card rounded-2xl overflow-hidden group">
+          <div class="aspect-[16/10] overflow-hidden">
+            <img src="https://images.openai.com/static-rsc-4/Lqx0ys-hXYbFjn-yNxErVp9D_wtyZ1JZ6bayPG7UASlc8jpsDW18rQHznjJ9wlA6c8j553qY95CECKdPmC_xfJetWtXwquNsdF00Ew7KI0HeFSb4-lfN2AR2mQlBoSZjniT9tmMNJZW5m7lt3FzwKRa_ymrtCAWyMoQGopZSACX1KalhO1a4nnVSzXzoPS6Z?purpose=fullsize" alt="MLOps Best Practices" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onload="this.classList.add('loaded')">
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
+              <span class="px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 font-medium">Engineering</span>
+              <span>Dec 10, 2024</span>
+            </div>
+            <h3 class="text-base font-semibold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">MLOps Best Practices for Production AI Systems</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">A comprehensive guide to deploying and maintaining machine learning models at scale...</p>
+          </div>
+        </article>
+
+        <!-- Blog 3 -->
+        <article class="reveal glass-card rounded-2xl overflow-hidden group">
+          <div class="aspect-[16/10] overflow-hidden">
+            <img src="https://images.openai.com/static-rsc-4/lfv5_x3d9SpLAIXRZg-bD8OPBQlk83A8mgPWxsXLs_ieBUwwcKlNKCsX5G2ixgmDQPG1L7vjuFJmFYUZXX59Hw1uZS7hrJ_2NQ8TcMQEAi-hK2L8DL82KHqRIK6gQF5Eo0MF5d032Xx_K5YcyLBVwooC1pF4YwshHW7ytlTbCCWluXZacWL40iZSrqf2ibyj?purpose=fullsize" alt="AI Ethics" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onload="this.classList.add('loaded')">
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
+              <span class="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 font-medium">Ethics</span>
+              <span>Dec 5, 2024</span>
+            </div>
+            <h3 class="text-base font-semibold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">Building Responsible AI: Ethics in the Age of Automation</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">How organizations can ensure their AI systems are fair, transparent, and accountable...</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEWSLETTER SECTION ===== -->
+  <section class="py-24 md:py-32 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="reveal relative rounded-3xl overflow-hidden">
+        <!-- Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+
+        <div class="relative z-10 px-8 py-16 md:px-16 md:py-20 text-center">
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
+            Stay ahead of the curve
+          </h2>
+          <p class="mt-4 text-white/70 text-base md:text-lg font-light max-w-xl mx-auto">
+            Get weekly insights on AI trends, product updates, and exclusive tutorials delivered to your inbox.
+          </p>
+          <form id="newsletter-form" class="mt-8 flex flex-col sm:flex-row items-center gap-3 max-w-md mx-auto">
+            <input type="email" id="newsletter-email" placeholder="Enter your email" required class="w-full sm:flex-1 px-5 py-3.5 rounded-xl bg-white/15 border border-white/20 text-white placeholder:text-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 backdrop-blur-sm">
+            <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-indigo-600 text-sm font-semibold hover:bg-white/90 transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
+              Subscribe <iconify-icon icon="lucide:send" class="text-sm"></iconify-icon>
+            </button>
+          </form>
+          <p class="mt-4 text-xs text-white/50">No spam. Unsubscribe at any time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section id="contact" class="py-24 md:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-900/50 dark:to-[#0a0a0f]"></div>
+    <div class="orb w-[400px] h-[400px] bg-blue-300 bottom-0 right-0" style="filter:blur(100px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium tracking-wide mb-4">
+          <iconify-icon icon="lucide:mail" class="text-sm"></iconify-icon>
+          CONTACT US
+        </div>
+        <h2 class="reveal text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+          Let's build something <span class="gradient-text">amazing</span>
+        </h2>
+        <p class="reveal mt-4 text-gray-500 dark:text-gray-400 text-base md:text-lg font-light">Have a question or want a demo? We'd love to hear from you.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
+        <!-- Contact Form -->
+        <div class="reveal glass-card rounded-2xl p-8">
+          <form id="contact-form" class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">First Name</label>
+                <input type="text" required placeholder="John" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-colors">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Last Name</label>
+                <input type="text" required placeholder="Doe" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-colors">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Email</label>
+              <input type="email" required placeholder="john@company.com" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-colors">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Subject</label>
+              <select class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-colors text-gray-600 dark:text-gray-300">
+                <option>General Inquiry</option>
+                <option>Product Demo</option>
+                <option>Enterprise Sales</option>
+                <option>Technical Support</option>
+                <option>Partnership</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Message</label>
+              <textarea rows="4" required placeholder="Tell us about your project..." class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-colors resize-none"></textarea>
+            </div>
+            <button type="submit" class="btn-gradient w-full py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2">
+              <span>Send Message</span>
+              <iconify-icon icon="lucide:send" class="text-sm"></iconify-icon>
+            </button>
+          </form>
+        </div>
+
+        <!-- Map & Info -->
+        <div class="space-y-6">
+          <!-- Google Maps -->
+          <div class="reveal glass-card rounded-2xl overflow-hidden map-container h-[300px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835434509374!2d-122.41941548468177!3d37.77492977975892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064e5b1a5c3%3A0x5b1a5c3e5b1a5c3!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1702000000000!5m2!1sen!2sus"
+              width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade" title="NeuralAI Office Location">
+            </iframe>
+          </div>
+
+          <!-- Contact Info Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="reveal glass-card rounded-xl p-5 flex items-start gap-3">
+              <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="lucide:map-pin" class="text-indigo-500"></iconify-icon>
+              </div>
+              <div>
+                <div class="text-sm font-semibold mb-0.5">Office</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">123 AI Boulevard, San Francisco, CA 94105</div>
+              </div>
+            </div>
+            <div class="reveal glass-card rounded-xl p-5 flex items-start gap-3">
+              <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="lucide:mail" class="text-purple-500"></iconify-icon>
+              </div>
+              <div>
+                <div class="text-sm font-semibold mb-0.5">Email</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">hello@neuralai.com</div>
+              </div>
+            </div>
+            <div class="reveal glass-card rounded-xl p-5 flex items-start gap-3">
+              <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="lucide:phone" class="text-blue-500"></iconify-icon>
+              </div>
+              <div>
+                <div class="text-sm font-semibold mb-0.5">Phone</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">+1 (555) 123-4567</div>
+              </div>
+            </div>
+            <div class="reveal glass-card rounded-xl p-5 flex items-start gap-3">
+              <div class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="lucide:clock" class="text-green-500"></iconify-icon>
+              </div>
+              <div>
+                <div class="text-sm font-semibold mb-0.5">Hours</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">Mon–Fri, 9AM–6PM PST</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="relative pt-16 pb-8 border-t border-gray-200 dark:border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
+        <!-- Brand Column -->
+        <div class="col-span-2">
+          <a href="#hero" class="flex items-center gap-2.5 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <iconify-icon icon="lucide:brain" class="text-white text-lg"></iconify-icon>
+            </div>
+            <span class="text-lg font-bold tracking-tight">Neural<span class="gradient-text">AI</span></span>
+          </a>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xs mb-5">
+            Next-generation AI platform for modern teams. Build, deploy, and scale intelligent applications.
+          </p>
+          <!-- Social Icons -->
+          <div class="flex items-center gap-3">
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors tooltip" data-tip="Twitter/X">
+              <iconify-icon icon="simple-icons:x" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors tooltip" data-tip="LinkedIn">
+              <iconify-icon icon="simple-icons:linkedin" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors tooltip" data-tip="GitHub">
+              <iconify-icon icon="simple-icons:github" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors tooltip" data-tip="Discord">
+              <iconify-icon icon="simple-icons:discord" class="text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors tooltip" data-tip="YouTube">
+              <iconify-icon icon="simple-icons:youtube" class="text-sm"></iconify-icon>
+            </a>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-4">Product</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#features" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Features</a></li>
+            <li><a href="#pricing" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Pricing</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Integrations</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Changelog</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Roadmap</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-4">Resources</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Documentation</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">API Reference</a></li>
+            <li><a href="#blog" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Blog</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Tutorials</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Community</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-4">Company</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Careers</a></li>
+            <li><a href="#contact" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Press Kit</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Partners</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-4">Legal</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Cookie Policy</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Security</a></li>
+            <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">GDPR</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="pt-8 border-t border-gray-200 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-400 dark:text-gray-500">© 2024 NeuralAI. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            All systems operational
+          </span>
+          <a href="#hero" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors tooltip" data-tip="Back to top">
+            <iconify-icon icon="lucide:arrow-up" class="text-sm"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ===== LOADING SCREEN =====
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+        initAnimations();
+      }, 800);
+    });
+
+    // ===== LENIS SMOOTH SCROLLING =====
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Sync Lenis with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+
+    // ===== SCROLL PROGRESS BAR =====
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      document.getElementById('scroll-progress').style.width = progress + '%';
+    });
+
+    // ===== HEADER SCROLL EFFECT =====
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      const scrollTop = window.scrollY;
+      if (scrollTop > 100) {
+        header.style.paddingTop = '0';
+      } else {
+        header.style.paddingTop = '0';
+      }
+      lastScroll = scrollTop;
+    });
+
+    // ===== DARK/LIGHT MODE TOGGLE =====
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    // Check saved theme
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+      html.classList.remove('light');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      html.classList.toggle('light');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // ===== MOBILE MENU =====
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileClose = document.getElementById('mobile-close');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    function openMobile() {
+      mobileMenu.classList.add('open');
+      mobileOverlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobile() {
+      mobileMenu.classList.remove('open');
+      mobileOverlay.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    mobileToggle.addEventListener('click', openMobile);
+    mobileClose.addEventListener('click', closeMobile);
+    mobileOverlay.addEventListener('click', closeMobile);
+    mobileLinks.forEach(link => link.addEventListener('click', closeMobile));
+
+    // ===== GSAP ANIMATIONS =====
+    function initAnimations() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Reveal Up
+      gsap.utils.toArray('.reveal').forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1, y: 0, duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              toggleActions: 'play none none none'
+            },
+            delay: i % 3 * 0.1
+          }
+        );
+      });
+
+      // Reveal Left
+      gsap.utils.toArray('.reveal-left').forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, x: -40 },
+          {
+            opacity: 1, x: 0, duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+          }
+        );
+      });
+
+      // Reveal Right
+      gsap.utils.toArray('.reveal-right').forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, x: 40 },
+          {
+            opacity: 1, x: 0, duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+          }
+        );
+      });
+
+      // Reveal Scale
+      gsap.utils.toArray('.reveal-scale').forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, scale: 0.9 },
+          {
+            opacity: 1, scale: 1, duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+          }
+        );
+      });
+
+      // Animated Counters
+      const counters = document.querySelectorAll('.counter-value');
+      counters.forEach(counter => {
+        const target = parseFloat(counter.dataset.target);
+        const suffix = counter.dataset.suffix || '';
+        const isDecimal = counter.dataset.decimal === 'true';
+
+        ScrollTrigger.create({
+          trigger: counter,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            gsap.to({ val: 0 }, {
+              val: target,
+              duration: 2,
+              ease: 'power2.out',
+              onUpdate: function() {
+                const current = this.targets()[0].val;
+                counter.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current)) + suffix;
+              }
+            });
+          }
+        });
+      });
+
+      // Parallax for orbs
+      gsap.utils.toArray('.orb').forEach(orb => {
+        gsap.to(orb, {
+          y: -80,
+          scrollTrigger: {
+            trigger: orb.parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        });
+      });
+
+      // Hero stagger animation
+      const heroElements = document.querySelectorAll('#hero .reveal');
+      gsap.fromTo(heroElements,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0, duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          delay: 0.2
+        }
+      );
+    }
+
+    // ===== PRICING TOGGLE =====
+    const pricingToggle = document.getElementById('pricing-toggle');
+    const pricingAmounts = document.querySelectorAll('.pricing-amount');
+    const labelMonthly = document.getElementById('label-monthly');
+    const labelYearly = document.getElementById('label-yearly');
+
+    pricingToggle.addEventListener('change', () => {
+      const isYearly = pricingToggle.checked;
+      pricingAmounts.forEach(el => {
+        const price = isYearly ? el.dataset.yearly : el.dataset.monthly;
+        gsap.to(el, {
+          opacity: 0, y: -10, duration: 0.2,
+          onComplete: () => {
+            el.textContent = '$' + price;
+            gsap.to(el, { opacity: 1, y: 0, duration: 0.2 });
+          }
+        });
+      });
+      labelMonthly.classList.toggle('text-gray-400', isYearly);
+      labelMonthly.classList.toggle('dark:text-gray-500', isYearly);
+      labelMonthly.classList.toggle('text-gray-600', !isYearly);
+      labelMonthly.classList.toggle('dark:text-gray-300', !isYearly);
+      labelYearly.classList.toggle('text-gray-600', isYearly);
+      labelYearly.classList.toggle('dark:text-gray-300', isYearly);
+      labelYearly.classList.toggle('text-gray-400', !isYearly);
+      labelYearly.classList.toggle('dark:text-gray-500', !isYearly);
+    });
+
+    // ===== FAQ ACCORDION =====
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const isActive = item.classList.contains('active');
+
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(faq => {
+          faq.classList.remove('active');
+          faq.querySelector('.faq-answer').classList.remove('open');
+        });
+
+        // Open clicked (if wasn't active)
+        if (!isActive) {
+          item.classList.add('active');
+          answer.classList.add('open');
+        }
+      });
+    });
+
+    // ===== TOAST NOTIFICATION =====
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msg = document.getElementById('toast-msg');
+      msg.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    // ===== NEWSLETTER FORM =====
+    document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      if (email) {
+        showToast('Welcome aboard! Check your inbox.');
+        document.getElementById('newsletter-email').value = '';
+      }
+    });
+
+    // ===== CONTACT FORM =====
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Message sent! We\'ll get back to you soon.');
+      e.target.reset();
+    });
+
+    // ===== PLAY DEMO BUTTON =====
+    document.getElementById('play-demo-btn').addEventListener('click', () => {
+      showToast('Demo video would play here in production');
+    });
+
+    // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          lenis.scrollTo(target, { offset: -80 });
+        }
+      });
+    });
+
+    // ===== LAZY LOAD IMAGES =====
+    document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+      if (img.complete) {
+        img.classList.add('loaded');
+      }
+    });
+  </script>
+</body>
+</html>
